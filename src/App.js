@@ -30,9 +30,9 @@ function App() {
         <Route path='/numberswarmup' element={<NumbersWarmUp />} />
         <Route path='/numbers2' element={<Numbers2 />} />
         <Route path='/numbers3' element={<Numbers3 />} />
-        <Route path='/jobswarmup' element={<JobsWarmUp />} />
-        <Route path='/jobs2' element={<GameBoard />} />
-        <Route path='/jobs3' element={<Jobs3 />} />
+        <Route path='/jobswarmup' element={<GameBoard />} />
+        <Route path='/jobs2' element={<Jobs3 />} />
+        <Route path='/jobs3' element={<JobsWarmUp />} />
         
       </Routes>
       </BrowserRouter>

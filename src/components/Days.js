@@ -3,8 +3,6 @@ import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { useNavigate } from "react-router-dom";
 import caterpillarImage from "../Assets/days.jpg";
-import sunday from "../Assets/sunday.png";
-import monday from "../Assets/monday.jpg";
 import Confetti from "react-confetti";
 
 const days = [
@@ -63,12 +61,12 @@ const DropZone = ({ day, correctDay, onDrop, style }) => {
   return (
     <div
       ref={drop}
-      className={`absolute w-28 h-28 rounded-full flex items-center justify-center border-4 border-red-500 ${
+      className={`absolute w-28 h-28 rounded-full flex items-center justify-center border-4 border-green-300 ${
         isOver && canDrop ? "bg-gray-200" : ""
       }`}
       style={{
         ...style,
-        backgroundColor: isPlaced ? "red" : "transparent",
+        backgroundColor: isPlaced ? "green" : "transparent",
         color: isPlaced ? "white" : "black",
       }}
     >
@@ -120,18 +118,6 @@ const DaysOfWeekGame = () => {
             Arrange the Days in Order!
           </h1>
         </div>
-        <img
-              src={sunday}
-              alt="Sun"
-              className="absolute w-32 h-32 animate-bounce"
-              style={{ top: "15%", left: "5%" }}
-            />
-        <img
-              src={monday}
-              alt="Sun"
-              className="absolute w-32 h-32 animate-bounce"
-              style={{ top: "15%", right: "5%" }}
-            />
 
         <div className="relative w-[768px] h-[532px] mb-6 items-center cursor-pointer">
           {showConfetti && <Confetti width={750} height={600} />}
@@ -155,7 +141,7 @@ const DaysOfWeekGame = () => {
             <DropZone correctDay="Saturday" day={placements["Saturday"] ? "Saturday" : ""} onDrop={handleDrop} style={{ top: "69%", left: "63%" }} />
           </div>
 
-          <div className="flex font-bold justify-center gap-2 -mt-2">
+          <div className="flex font-bold justify-center gap-2 -mt-4">
             {availableDays.map((day) => (
               <DraggableDay key={day} day={day} onDrop={handleDrop} />
             ))}

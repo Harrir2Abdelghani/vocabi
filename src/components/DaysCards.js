@@ -7,7 +7,7 @@ import arr from '../Assets/arr.png';
 
 const AttentionGames = () => {
   return (
-    <div className="flex flex-col items-center p-6 bg-pink-100 min-h-screen">
+    <div id="days-games" className="flex flex-col items-center p-6 bg-pink-100 min-h-screen">
       <h2 className="text-3xl font-bold text-black mb-8">Days Games</h2>
       <div className="relative">
         {/* Arrow Image */}

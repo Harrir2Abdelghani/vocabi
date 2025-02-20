@@ -7,7 +7,7 @@ import arr from '../Assets/arr.png';
 
 const AttentionGames = () => {
   return (
-    <div className="flex flex-col items-center p-6 bg-purple-400 min-h-screen">
+    <div id="numbers-games" className="flex flex-col items-center p-6 bg-purple-400 min-h-screen">
       <h2 className="text-3xl font-bold text-black mb-8 mt-4">Numbers Games</h2>
       <div className="relative">
         {/* Arrow Image */}
@@ -37,7 +37,7 @@ const AttentionGames = () => {
                 <img
                   src={innerImage}
                   alt="Inner Content"
-                  className="w-48 mt-14 h-96 object-contain z-20 transition-transform duration-300 transform hover:scale-110"
+                  className="w-60 mt-14 h-96 object-contain z-20 transition-transform duration-300 transform hover:scale-110"
                 />
               </div>
             </div>

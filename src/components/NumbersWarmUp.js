@@ -100,11 +100,13 @@ const CountAndDragGame = () => {
     const remainingQuestions = questionsPool.slice(1);
     if (remainingQuestions.length === 0) {
       setShowConfetti(true);
+      setGameCompleted(true); // Set gameCompleted to true when all answers are correct
     } else {
       setQuestionsPool(remainingQuestions);
       setCurrentQuestion(remainingQuestions[0]);
     }
   };
+  
 
   return (
     <div  style={{
@@ -125,11 +127,11 @@ const CountAndDragGame = () => {
 
           {/* Shapes Section */}
           <div className="flex flex-col items-center mb-8">
-            <div className="flex items-center justify-center mb-4 animate-bounce border-2 border-black rounded-xl">
+            <div className="flex items-center justify-center mb-4 animate-bounce border-2 border-red-200 rounded-xl">
               {Array.from({ length: currentQuestion.count }).map((_, idx) => (
                 <span
                   key={idx}
-                  className="text-5xl mx-1 "
+                  className="text-5xl mx-1 my-2 "
                   style={{ animationDelay: `${idx * 0.1}s` }}
                 >
                   {currentQuestion.shape.icon}
@@ -172,22 +174,24 @@ const CountAndDragGame = () => {
         </div>
       )}
 
-<div className="absolute left-0 bottom-0 ml-4 mb-16">
-          <button
-            onClick={() => navigate('/')}
-            className="bg-orange-500 text-white px-4 py-2 rounded hover:bg-pink-700"
-          >
-            Previous
-          </button>
-        </div>
-        <div className="absolute right-0 bottom-0 mr-4 mb-16">
-          <button
-            onClick={() => navigate('/numbers2')}
-            className="bg-orange-500 text-white px-4 py-2 rounded hover:bg-pink-700"
-          >
-            Next
-          </button>
-        </div>
+<div className="w-full fixed bottom-4 left-0 flex justify-between px-4">
+  <button
+    className="py-2 px-4 bg-red-500 text-white rounded-lg shadow-lg hover:bg-red-600"
+    onClick={() => window.location.href = '/'}
+  >
+    Previous
+  </button>
+  <button
+  className={`py-2 px-4 text-white rounded-lg shadow-lg ${
+    gameCompleted ? "bg-red-500 hover:bg-red-600" : "bg-gray-400 cursor-not-allowed"
+  }`}
+  onClick={() => window.location.href = '/numbers2'}
+  disabled={!gameCompleted} // Disable button if game is not completed
+>
+  Next
+</button>
+
+</div>
     </div>
   );
 };
