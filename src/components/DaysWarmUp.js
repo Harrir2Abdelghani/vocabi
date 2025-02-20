@@ -192,7 +192,8 @@ const DayGame = () => {
     Previous
   </button>
   <button
-    className="py-2 px-4 bg-red-500 text-white rounded-lg shadow-lg hover:bg-red-600"
+  disabled={availableDays.length > 0}
+  className={`py-2 px-4 bg-red-500 text-white rounded-lg shadow-lg ${availableDays.length > 0 ? "opacity-50 cursor-not-allowed" : "hover:bg-red-600"}`}
     onClick={() => window.location.href = '/days2'}
   >
     Next

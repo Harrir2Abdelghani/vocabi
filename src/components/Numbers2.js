@@ -8,15 +8,15 @@ const shuffleArray = (array) => {
 
 const NumberMatchQuiz = () => {
   const quizData = [
-    { question: "One", answer: 1 },
-    { question: "Two", answer: 2 },
-    { question: "Three", answer: 3 },
-    { question: "Four", answer: 4 },
-    { question: "Five", answer: 5 },
-    { question: "Six", answer: 6 },
+    { question: "Twenty Seven", answer: 27 },
+    { question: "Sixty", answer: 60 },
+    { question: "Eighty Eight", answer: 88 },
+    { question: "Eleven", answer: 11 },
+    { question: "Thirty Four", answer: 34 },
+    { question: "Nine", answer: 9 },
   ];
 
-  const answerOptions = [1, 2, 3, 4, 5, 6];
+  const answerOptions = [9, 88, 11, 60, 34, 27];
 
   const [selectedAnswers, setSelectedAnswers] = useState({});
   const [correctAnswers, setCorrectAnswers] = useState({});
@@ -30,6 +30,15 @@ const NumberMatchQuiz = () => {
       .map(() => shuffleArray([...answerOptions]))
   );
 
+  const [gameCompleted, setGameCompleted] = useState(false);
+
+useEffect(() => {
+  if (Object.keys(correctAnswers).length === quizData.length) {
+    setConfetti(true);
+    setGameCompleted(true); // Enable Next button when all answers are correct
+    setTimeout(() => setConfetti(false), 10000);
+  }
+}, [correctAnswers]);
   const handleAnswer = (selectedAnswer, questionIndex) => {
     const isAnswerCorrect = selectedAnswer === quizData[questionIndex].answer;
 
@@ -70,7 +79,7 @@ const NumberMatchQuiz = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {quizData.map((question, questionIndex) => (
           <div key={questionIndex} className="bg-white p-6 rounded-2xl shadow-lg text-center space-y-4">
-            <h2 className="text-2xl font-semibold text-gray-800">{`What is this number: ${question.question}?`}</h2>
+            <h2 className="text-2xl font-semibold text-gray-800">{`Find number: ${question.question}?`}</h2>
 
             <div className="flex justify-center gap-4">
               {shuffledOptions[questionIndex].map((option) => {
@@ -119,11 +128,15 @@ const NumberMatchQuiz = () => {
     Previous
   </button>
   <button
-    className="py-2 px-4 bg-red-500 text-white rounded-lg shadow-lg hover:bg-red-600"
-    onClick={() => window.location.href = '/numbers3'}
-  >
-    Next
-  </button>
+  className={`py-2 px-4 text-white rounded-lg shadow-lg ${
+    gameCompleted ? "bg-red-500 hover:bg-red-600" : "bg-gray-400 cursor-not-allowed"
+  }`}
+  onClick={() => window.location.href = '/numbers3'}
+  disabled={!gameCompleted} // Disable button if game is not completed
+>
+  Next
+</button>
+
 </div>
     </div>
   );

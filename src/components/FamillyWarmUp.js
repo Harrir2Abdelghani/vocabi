@@ -8,8 +8,8 @@ import grandfatherImg from "../Assets/grandfather.jpg";
 import grandmotherImg from "../Assets/grandmother.jpg";
 import fatherImg from "../Assets/father.png";
 import motherImg from "../Assets/mother.jpg";
-import brotherImg from "../Assets/brother.webp";
-import sisterImg from "../Assets/sister.webp";
+import brotherImg from "../Assets/brother.png";
+import sisterImg from "../Assets/sister.png";
 import meImg from "../Assets/mee.png";
 import babyImg from "../Assets/baby.jpg";
 
@@ -36,6 +36,7 @@ const familyImages = {
   Me: meImg,
   Baby: babyImg,
 };
+
 // Draggable Component
 const DraggableItem = ({ name }) => {
   const [{ isDragging }, drag] = useDrag(() => ({
@@ -85,7 +86,7 @@ const DropTarget = ({ familyMember, onDrop, isPlaced }) => {
         <img
           src={familyImages[familyMember.name]}
           alt={familyMember.name}
-          className="w-full h-full p-0  rounded-full object-cover border-2 border-white "
+          className="w-full h-full p-0 rounded-full object-cover  "
         />
       ) : (
         <div className="w-16 h-16 bg-transparent rounded-full"></div> // Placeholder circle
@@ -115,6 +116,9 @@ const FamilyTreeGame = () => {
     }
   }, [placedMembers]);
 
+  // Disable "Next" button if not all members are placed
+  const isNextButtonDisabled = placedMembers.length !== initialFamilyMembers.length;
+
   return (
     <DndProvider backend={HTML5Backend}>
       <div className="relative w-screen h-screen overflow-hidden flex items-center justify-center bg-pink-200">
@@ -128,9 +132,6 @@ const FamilyTreeGame = () => {
               <DraggableItem key={member.id} name={member.name} />
             ))}
         </div>
-
-        {/* Bottom Draggable Items */}
-        
 
         {/* Family Tree Background */}
         <div className="relative mt-20 flex items-center justify-center">
@@ -155,21 +156,23 @@ const FamilyTreeGame = () => {
               <DraggableItem key={member.id} name={member.name} />
             ))}
         </div>
+
+        <div className="w-full fixed bottom-4 left-0 flex justify-between px-4">
+          <button
+            className="py-2 px-4 bg-red-500 text-white rounded-lg shadow-lg hover:bg-red-600"
+            onClick={() => window.location.href = '/'}
+          >
+            Previous
+          </button>
+          <button
+            className={`py-2 px-4 rounded-lg shadow-lg ${isNextButtonDisabled ? 'bg-gray-400' : 'bg-red-500 hover:bg-red-600'} text-white`}
+            onClick={() => !isNextButtonDisabled && (window.location.href = '/familly2')}
+            disabled={isNextButtonDisabled}
+          >
+            Next
+          </button>
+        </div>
       </div>
-      <div className="w-full fixed bottom-4 left-0 flex justify-between px-4">
-  <button
-    className="py-2 px-4 bg-red-500 text-white rounded-lg shadow-lg hover:bg-red-600"
-    onClick={() => window.location.href = '/'}
-  >
-    Previous
-  </button>
-  <button
-    className="py-2 px-4 bg-red-500 text-white rounded-lg shadow-lg hover:bg-red-600"
-    onClick={() => window.location.href = '/familly2'}
-  >
-    Next
-  </button>
-</div>
     </DndProvider>
   );
 };

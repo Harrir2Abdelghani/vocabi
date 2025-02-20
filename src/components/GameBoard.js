@@ -10,12 +10,12 @@ function GameBoard() {
   const [secondCard, setSecondCard] = React.useState(null); 
   const [stopFlip, setStopFlip] = React.useState(false); 
   const [won, setWon] = React.useState(0); 
-  const [gameFinished, setGameFinished] = React.useState(false); // To track if game is finished
-  const [currentRound, setCurrentRound] = React.useState(0); // Track the current round
+  const [gameFinished, setGameFinished] = React.useState(false); 
+  const [currentRound, setCurrentRound] = React.useState(0); 
   
-  const totalRounds = 6; // Total rounds to win the game
+  const totalRounds = 6; 
   
-  // This function starts a new game
+  
   function NewGame() { 
     setTimeout(() => { 
       const randomOrderArray = Data.sort(() => 0.5 - Math.random()); 
@@ -24,11 +24,11 @@ function GameBoard() {
       setFirstCard(null); 
       setSecondCard(null); 
       setWon(0); 
-      setGameFinished(false); // Reset the game finished status
+      setGameFinished(false); 
     }, 1200); 
   } 
 
-  // This function helps in storing the firstCard and secondCard value
+  
   function handleSelectedCards(item) { 
     if (firstCard !== null && firstCard.id !== item.id) { 
       setSecondCard(item); 
@@ -37,7 +37,7 @@ function GameBoard() {
     } 
   } 
 
-  // Check for card match and handle win condition
+  
   React.useEffect(() => { 
     if (firstCard && secondCard) { 
       setStopFlip(true); 
@@ -61,7 +61,7 @@ function GameBoard() {
     } 
   }, [firstCard, secondCard]); 
 
-  // After the selected images have been checked, reset the selected cards
+  
   function removeSelection() { 
     setFirstCard(null); 
     setSecondCard(null); 
@@ -69,19 +69,19 @@ function GameBoard() {
     setMoves((prevValue) => prevValue + 1); 
   } 
 
-  // Starts the game when the component loads
+  
   React.useEffect(() => { 
     NewGame(); 
   }, []); 
 
-  // Track when the game is finished
+  
   React.useEffect(() => {
     if (won === totalRounds) {
       setGameFinished(true);
     }
   }, [won]);
 
-  // Handle next and previous round buttons
+  
   function handleNext() {
     if (gameFinished && currentRound < totalRounds - 1) {
       setCurrentRound(currentRound + 1);
@@ -97,11 +97,11 @@ function GameBoard() {
   }
 
   return ( 
-    <div className="bg-gray-100 min-h-screen flex flex-col justify-center items-center"> 
-      {gameFinished && <Confetti />} {/* Show confetti when the game is finished */}
+    <div className="bg-gray-300 min-h-screen flex flex-col justify-center items-center"> 
+      {gameFinished && <Confetti />} 
 
 
-      <div className="grid grid-cols-4 gap-4 mb-8 mt-10"> 
+      <div className="grid grid-cols-4 gap-10 mb-4 mt-10"> 
         { 
           cardsArray.map((item) => ( 
             <Card 
@@ -128,13 +128,16 @@ function GameBoard() {
 <div className="w-full fixed bottom-4 left-0 flex justify-between px-4">
   <button
     className="py-2 px-4 bg-red-500 text-white rounded-lg shadow-lg hover:bg-red-600"
-    onClick={() => window.location.href = '/jobswarmup'}
+    onClick={() => window.location.href = '/'}
   >
     Previous
   </button>
   <button
-    className="py-2 px-4 bg-red-500 text-white rounded-lg shadow-lg hover:bg-red-600"
-    onClick={() => window.location.href = '/jobs3'}
+    className={`py-2 px-4 text-white rounded-lg shadow-lg ${
+      gameFinished ? "bg-red-500 hover:bg-red-600" : "bg-gray-400 cursor-not-allowed"
+    }`}
+    onClick={() => window.location.href = '/jobs2'}
+    disabled={!gameFinished} // Disable button if game is not finished
   >
     Next
   </button>

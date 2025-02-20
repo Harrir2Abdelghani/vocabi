@@ -4,41 +4,47 @@ import Confetti from 'react-confetti';
 const JobQuizGame = () => {
   const jobsQuiz = [
     {
-      question: "Which job involves helping sick people?",
-      options: ["Teacher", "Doctor", "Chef", "Engineer"],
-      answer: "Doctor",
+      question: "I drive a bus!",
+      options: ["Teacher", "Driver", "Chef", "Engineer"],
+      answer: "Driver",
       image: "https://example.com/doctor-image.jpg"
     },
     {
-      question: "Who works to build buildings?",
-      options: ["Artist", "Builder", "Pilot", "Scientist"],
-      answer: "Builder",
+      question: "I fix cars!",
+      options: ["Artist", "Builder", "Pilot", "Mechanic"],
+      answer: "Mechanic",
       image: "https://example.com/builder-image.jpg"
     },
     {
-      question: "Who helps animals?",
-      options: ["Veterinarian", "Chef", "Driver", "Writer"],
-      answer: "Veterinarian",
+      question: "I bake bread!",
+      options: ["Baker", "Chef", "Driver", "Writer"],
+      answer: "Baker",
       image: "https://example.com/veterinarian-image.jpg"
     },
     {
-      question: "Who teaches kids in school?",
-      options: ["Teacher", "Nurse", "Artist", "Cleaner"],
-      answer: "Teacher",
+      question: "I cut hair!",
+      options: ["Teacher", "Nurse", "Artist", "Barber"],
+      answer: "Barber",
       image: "https://example.com/teacher-image.jpg"
     },
     {
-      question: "Who drives cars for passengers?",
-      options: ["Pilot", "Engineer", "Driver", "Baker"],
-      answer: "Driver",
+      question: "I put out fires!",
+      options: ["Pilot", "Firefighter", "Driver", "Baker"],
+      answer: "Firefighter",
       image: "https://example.com/driver-image.jpg"
     },
     {
-      question: "Who bakes cakes?",
-      options: ["Doctor", "Baker", "Nurse", "Chef"],
-      answer: "Baker",
+      question: "I help sick people!",
+      options: ["Doctor", "Baker", "Pilot", "Chef"],
+      answer: "Doctor",
       image: "https://example.com/baker-image.jpg"
-    }
+    },
+    {
+      question: "I serve food at restaurent!",
+      options: ["Teacher", "Doctor", "Waiter", "Engineer"],
+      answer: "Waiter",
+      image: "https://example.com/doctor-image.jpg"
+    },
   ];
 
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -67,11 +73,11 @@ const JobQuizGame = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-gray-100"
+    <div className="flex flex-col items-center justify-center h-screen bg-yellow-400"
       style={{ backgroundImage: 'url(https://img.freepik.com/premium-vector/diverse-professional-presenting-empty-vertical-banner_74102-199.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
       {gameFinished && <Confetti />}
-      <div className="bg-white p-6 rounded-lg shadow-md w-80">
-        <h1 className="text-2xl font-bold text-center text-gray-700 mb-4">Job Quiz Game</h1>
+      <div className="bg-yellow-100 p-6 rounded-lg shadow-md w-80">
+        <h1 className="text-2xl font-bold text-center text-blue-700 mb-4">Job Quiz Game</h1>
         <div className="text-center mb-4">
           <p className="text-lg font-medium text-gray-600">{jobsQuiz[currentQuestion].question}</p>
         </div>
@@ -80,7 +86,7 @@ const JobQuizGame = () => {
             <button
               key={index}
               className={`w-full p-3 rounded-lg border text-gray-800 font-semibold transition-colors ${
-                selectedAnswer === option ? (option === jobsQuiz[currentQuestion].answer ? "bg-green-400" : "bg-red-400") : "bg-gray-300 hover:bg-gray-400"
+                selectedAnswer === option ? (option === jobsQuiz[currentQuestion].answer ? "bg-green-400" : "bg-red-400") : "bg-purple-400 hover:bg-gray-400"
               }`}
               onClick={() => handleAnswer(option)}
             >
@@ -99,10 +105,20 @@ const JobQuizGame = () => {
       <div className="w-full fixed bottom-4 left-0 flex justify-between px-4">
         <button
           className="py-2 px-4 bg-red-500 text-white rounded-lg shadow-lg hover:bg-red-600"
-          onClick={() => window.location.href = '/jobs2'}
+          onClick={() => window.location.href = '/jobswarmup'}
         >
           Previous
         </button>
+        <button
+  className={`py-2 px-4 text-white rounded-lg shadow-lg ${
+    gameFinished ? "bg-red-500 hover:bg-red-600" : "bg-gray-400 cursor-not-allowed"
+  }`}
+  onClick={() => window.location.href = '/jobs3'}
+  disabled={!gameFinished} // Disable button if game is not finished
+>
+  Next
+</button>
+
       </div>
       <div className="flex justify-center mt-4">
         <button

@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import arrow from '../Assets/Arrow.png';
 
 const mathEquations = [
-  { equation: '1 + 1 =', answer: 'TWO' },
-  { equation: '2 + 2 =', answer: 'FOUR' },
-  { equation: '3 + 2 =', answer: 'FIVE' },
-  { equation: '4 + 1 =', answer: 'FIVE' },
-  { equation: '5 - 3 =', answer: 'TWO' },
+  { equation: '15 + 24 =', answer: 'THIRTYNINE' },
+  { equation: '10 + 10 =', answer: 'TWENTY' },
+  { equation: '44 + 6 =', answer: 'FIFTY' },
+  { equation: '5 + 3 =', answer: 'EIGHT' },
+  { equation: '99 + 1 =', answer: 'ONEHUNDRED' },
 ];
 
 const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
@@ -49,7 +49,7 @@ const MathGame = () => {
   };
 
   return (
-    <div style={{ backgroundImage: 'url(https://t4.ftcdn.net/jpg/00/58/53/09/360_F_58530900_9QKwaKK4Pp1ZF1F51WRsp7WnijyGSV9S.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }} className="flex flex-col lg:flex-row justify-between items-center h-screen p-4 lg:p-8">
+    <div className="flex flex-col lg:flex-row justify-between items-center h-screen p-4 lg:p-8">
       <div className="w-full lg:w-2/3">
         <h1 className="text-xl lg:text-2xl font-bold mb-4 text-black text-center lg:text-left">Math Game</h1>
         <div className="grid grid-cols-1 gap-4">
@@ -109,15 +109,15 @@ const MathGame = () => {
         </div>
       </div>
       
-      <div className="w-full lg:w-1/3 mt-12 mr-[600px] lg:mt-8">
-        <h2 className="text-xl lg:text-2xl font-bold mb-4 text-center lg:text-left">Alphabet Table</h2>
+      <div className="w-full lg:w-1/3 mt-12 mr-[40px] lg:mt-8">
+        <h2 className="text-xl lg:text-2xl font-bold mb-4 text-center ">Alphabet Table</h2>
         <div className="grid grid-cols-5 gap-2">
           {alphabet.map((letter, idx) => (
             <div
               key={idx}
               draggable
               onDragStart={(e) => handleDragStart(e, letter)}
-              className="w-10 h-10 lg:w-12 lg:h-12 bg-cyan-200 flex items-center justify-center cursor-pointer border-2 border-gray-300"
+              className="w-10 h-10 lg:w-12 lg:h-12 bg-cyan-300 flex items-center justify-center cursor-pointer border-2 border-gray-300"
             >
               {letter}
             </div>

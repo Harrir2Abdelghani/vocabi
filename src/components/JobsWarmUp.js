@@ -106,15 +106,9 @@ const CrosswordGame = () => {
 <div className="w-full fixed bottom-4 left-0 flex justify-between px-4">
   <button
     className="py-2 px-4 bg-red-500 text-white rounded-lg shadow-lg hover:bg-red-600"
-    onClick={() => window.location.href = '/'}
-  >
-    Previous
-  </button>
-  <button
-    className="py-2 px-4 bg-red-500 text-white rounded-lg shadow-lg hover:bg-red-600"
     onClick={() => window.location.href = '/jobs2'}
   >
-    Next
+    Previous
   </button>
 </div>
 

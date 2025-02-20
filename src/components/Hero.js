@@ -3,7 +3,6 @@ import cloud1 from '../Assets/cloud1.png';
 import hero from '../Assets/hero.jpg';
 import button from '../Assets/button.png';
 import arrow from '../Assets/Arrow.png';
-import ArrowDown from '../Assets/ArrowDown.png'
 
 const Hero = () => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -35,16 +34,18 @@ const Hero = () => {
     </p>
 
     <div className="flex items-center justify-center space-x-0">
+      <a href="#days-games">
       <div className="relative w-40 ml-4">
         <img
           src={button}
           className="h-12 w-full object-cover rounded-lg mt-8"
           alt="Button Logo"
         />
-        <span className="absolute inset-0 flex items-center justify-center mt-4  text-black text-lg font-bold md:mt-6 md:text-xl">
+        <span className="absolute inset-0 flex items-center justify-center mt-0  text-black text-lg font-bold md:mt-0 md:text-xl">
           Explore Now
         </span>
       </div>
+      </a>
 
       <img
         src={arrow}
@@ -58,14 +59,9 @@ const Hero = () => {
   
     <img
       src={hero}
-      className="object-cover w-full max-w-[820px] ml-24 -mr-10  animate-pulse"
+      className="object-cover w-full max-w-[520px]  -mr-40  animate-pulse"
       alt="Hero Image"
     />
-    <img
-        src={ArrowDown}
-        className="h-16 object-cover  rounded-lg -mt-80 mr-10 animate-pulse"
-        alt="Arrow Logo"
-      />
   </div>
 </section>
 
