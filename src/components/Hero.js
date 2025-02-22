@@ -26,12 +26,8 @@ const Hero = () => {
     />
 
     <h1 className="text-3xl font-bold text-pink-600 font-mono text-center mt-10 md:text-4xl">
-      The Future Begins Here
+      Your Vocabulary Grows Here!
     </h1>
-
-    <p className="text-center text-gray-700 leading-relaxed px-4 md:px-6">
-      Learning is the process of acquiring new understanding, knowledge, behaviors, skills, values, attitudes, and preferences.
-    </p>
 
     <div className="flex items-center justify-center space-x-0">
       <a href="#days-games">

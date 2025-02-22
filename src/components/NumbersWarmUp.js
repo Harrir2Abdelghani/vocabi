@@ -179,7 +179,7 @@ const CountAndDragGame = () => {
     className="py-2 px-4 bg-red-500 text-white rounded-lg shadow-lg hover:bg-red-600"
     onClick={() => window.location.href = '/'}
   >
-    Previous
+    ⬅ Previous
   </button>
   <button
   className={`py-2 px-4 text-white rounded-lg shadow-lg ${
@@ -188,7 +188,7 @@ const CountAndDragGame = () => {
   onClick={() => window.location.href = '/numbers2'}
   disabled={!gameCompleted} // Disable button if game is not completed
 >
-  Next
+  Next ➡
 </button>
 
 </div>

@@ -8,53 +8,55 @@ const shuffleArray = (array) => {
 
 const NumberMatchQuiz = () => {
   const quizData = [
-    { question: "Twenty Seven", answer: 27 },
-    { question: "Sixty", answer: 60 },
-    { question: "Eighty Eight", answer: 88 },
-    { question: "Eleven", answer: 11 },
-    { question: "Thirty Four", answer: 34 },
-    { question: "Nine", answer: 9 },
+    { question: "Twenty Seven", answer: 27, options: [27, 13, 72, 20] },
+    { question: "Sixty", answer: 60, options: [60, 22, 6, 16] },
+    { question: "Eighty Eight", answer: 88, options: [88, 54, 80, 18] },
+    { question: "Eleven", answer: 11, options: [11, 100, 12, 47] },
+    { question: "Thirty Four", answer: 34, options: [34, 56, 30, 43] },
+    { question: "Nine", answer: 9, options: [9, 66, 19, 90] },
   ];
 
-  const answerOptions = [9, 88, 11, 60, 34, 27];
-
   const [selectedAnswers, setSelectedAnswers] = useState({});
-  const [correctAnswers, setCorrectAnswers] = useState({});
   const [showPopup, setShowPopup] = useState(false);
   const [popupMessage, setPopupMessage] = useState("");
   const [popupColor, setPopupColor] = useState("");
   const [confetti, setConfetti] = useState(false);
-  const [shuffledOptions, setShuffledOptions] = useState(
-    Array(6)
-      .fill(null)
-      .map(() => shuffleArray([...answerOptions]))
-  );
-
+  const [shuffledOptions, setShuffledOptions] = useState([]);
   const [gameCompleted, setGameCompleted] = useState(false);
+  const [showCongrats, setShowCongrats] = useState(false);
 
-useEffect(() => {
-  if (Object.keys(correctAnswers).length === quizData.length) {
-    setConfetti(true);
-    setGameCompleted(true); // Enable Next button when all answers are correct
-    setTimeout(() => setConfetti(false), 10000);
-  }
-}, [correctAnswers]);
+  useEffect(() => {
+    setShuffledOptions(quizData.map((q) => shuffleArray(q.options)));
+  }, []);
+
+  useEffect(() => {
+    const correctCount = Object.keys(selectedAnswers).filter(
+      key => selectedAnswers[key].status === "correct"
+    ).length;
+    
+    if (correctCount === quizData.length) {
+      setConfetti(true);
+      setGameCompleted(true);
+      setShowCongrats(true);
+      setTimeout(() => {
+        setConfetti(false);
+      }, 10000);
+    }
+  }, [selectedAnswers]);
+
   const handleAnswer = (selectedAnswer, questionIndex) => {
     const isAnswerCorrect = selectedAnswer === quizData[questionIndex].answer;
 
     setSelectedAnswers((prev) => ({
       ...prev,
-      [`${questionIndex}-${selectedAnswer}`]: isAnswerCorrect ? "correct" : "incorrect",
+      [questionIndex]: { 
+        choice: selectedAnswer, 
+        status: isAnswerCorrect ? "correct" : "incorrect" 
+      }
     }));
 
-    if (isAnswerCorrect) {
-      setCorrectAnswers((prev) => ({ ...prev, [`${questionIndex}-${selectedAnswer}`]: true }));
-      setPopupMessage("🎉 Correct!");
-      setPopupColor("bg-green-500");
-    } else {
-      setPopupMessage("❌ Oops! Try again!");
-      setPopupColor("bg-red-500");
-    }
+    setPopupMessage(isAnswerCorrect ? "🎉 Correct!" : "❌ Oops! Try again!");
+    setPopupColor(isAnswerCorrect ? "bg-green-500" : "bg-red-500");
 
     setShowPopup(true);
     setTimeout(() => {
@@ -62,41 +64,26 @@ useEffect(() => {
     }, 2000);
   };
 
-  useEffect(() => {
-    // Check if all answers are correct
-    if (Object.keys(correctAnswers).length === quizData.length) {
-      setConfetti(true);
-      setTimeout(() => setConfetti(false), 10000); 
-    }
-  }, [correctAnswers]);
-
   return (
     <div className="min-h-screen bg-gradient-to-r from-blue-400 to-purple-500 flex flex-col items-center justify-center p-4 relative">
       <h1 className="text-4xl font-bold text-white mb-6">Number Match Quiz 🎲</h1>
-
       {confetti && <Confetti width={window.innerWidth} height={window.innerHeight} />}
-
+      
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {quizData.map((question, questionIndex) => (
           <div key={questionIndex} className="bg-white p-6 rounded-2xl shadow-lg text-center space-y-4">
-            <h2 className="text-2xl font-semibold text-gray-800">{`Find number: ${question.question}?`}</h2>
-
+            <h2 className="text-2xl font-semibold text-gray-800">{`Find number: ${question.question}`}</h2>
             <div className="flex justify-center gap-4">
-              {shuffledOptions[questionIndex].map((option) => {
-                const key = `${questionIndex}-${option}`;
+              {shuffledOptions[questionIndex]?.map((option) => {
+                const selected = selectedAnswers[questionIndex]?.choice === option;
+                const isCorrect = selectedAnswers[questionIndex]?.status === "correct";
                 return (
                   <button
                     key={option}
                     onClick={() => handleAnswer(option, questionIndex)}
-                    disabled={correctAnswers[key]} // Disable only correct answer
+                    disabled={isCorrect}
                     className={`w-16 h-16 text-2xl font-bold text-white rounded-full shadow-lg transition-all transform hover:scale-110 
-                      ${
-                        correctAnswers[key]
-                          ? "bg-green-400 cursor-not-allowed" // Correct answer stays green
-                          : selectedAnswers[key] === "incorrect"
-                          ? "bg-red-400"
-                          : "bg-yellow-400"
-                      }`}
+                      ${selected ? (isCorrect ? "bg-green-400" : "bg-red-400") : "bg-yellow-400"}`}
                   >
                     {option}
                   </button>
@@ -107,37 +94,56 @@ useEffect(() => {
         ))}
       </div>
 
-      {/* Popup Message (Centered) */}
       <AnimatePresence>
         {showPopup && (
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
-            className={`fixed top-[500px]  transform -translate-x-1/2 -translate-y-1/2 px-6 py-3 text-xl font-semibold text-white rounded-lg shadow-lg ${popupColor}`}
+            className={`fixed top-[500px] transform -translate-x-1/2 -translate-y-1/2 px-6 py-3 text-xl font-semibold text-white rounded-lg shadow-lg ${popupColor}`}
           >
             {popupMessage}
           </motion.div>
         )}
       </AnimatePresence>
-      <div className="w-full fixed bottom-4 left-0 flex justify-between px-4">
-  <button
-    className="py-2 px-4 bg-red-500 text-white rounded-lg shadow-lg hover:bg-red-600"
-    onClick={() => window.location.href = '/numberswarmup'}
-  >
-    Previous
-  </button>
-  <button
-  className={`py-2 px-4 text-white rounded-lg shadow-lg ${
-    gameCompleted ? "bg-red-500 hover:bg-red-600" : "bg-gray-400 cursor-not-allowed"
-  }`}
-  onClick={() => window.location.href = '/numbers3'}
-  disabled={!gameCompleted} // Disable button if game is not completed
->
-  Next
-</button>
 
-</div>
+      <AnimatePresence>
+        {showCongrats && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
+          >
+            <div className="bg-white p-8 rounded-xl shadow-2xl text-center">
+              <h2 className="text-3xl font-bold text-green-600 mb-4">
+                🎉 Congratulations!
+              </h2>
+              <p className="text-xl text-gray-700">
+                You got all answers correct!
+              </p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <div className="w-full fixed bottom-4 left-0 flex justify-between px-4">
+        <button 
+          className="py-2 px-4 bg-red-500 text-white rounded-lg shadow-lg hover:bg-red-600" 
+          onClick={() => window.location.href = '/numberswarmup'}
+        >
+          ⬅ Previous
+        </button>
+        <button
+          className={`py-2 px-4 text-white rounded-lg shadow-lg ${
+            gameCompleted ? "bg-red-500 hover:bg-red-600" : "bg-gray-400 cursor-not-allowed"
+          }`}
+          onClick={() => window.location.href = '/numbers3'}
+          disabled={!gameCompleted}
+        >
+          Next ➡
+        </button>
+      </div>
     </div>
   );
 };

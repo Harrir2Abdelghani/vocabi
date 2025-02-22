@@ -152,7 +152,7 @@ const DayGame = () => {
               animate={{ opacity: 1 }}
               className="text-3xl font-bold mb-4 text-green-600"
             >
-              Congratulations! You completed all games!
+              Congratulations! 🎉🎉
             </motion.p>
           </div>
         )}
@@ -189,14 +189,14 @@ const DayGame = () => {
     className="py-2 px-4 bg-red-500 text-white rounded-lg shadow-lg hover:bg-red-600"
     onClick={() => window.location.href = '/'}
   >
-    Previous
+    ⬅ Previous
   </button>
   <button
   disabled={availableDays.length > 0}
   className={`py-2 px-4 bg-red-500 text-white rounded-lg shadow-lg ${availableDays.length > 0 ? "opacity-50 cursor-not-allowed" : "hover:bg-red-600"}`}
     onClick={() => window.location.href = '/days2'}
   >
-    Next
+    ➡ Next
   </button>
 </div>
     </div>
