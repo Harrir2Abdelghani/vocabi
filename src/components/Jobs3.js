@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Confetti from 'react-confetti';
-
+import backgroundImage from '../Assets/quizpic.jpg';
 const JobQuizGame = () => {
   const jobsQuiz = [
     {
@@ -10,21 +10,21 @@ const JobQuizGame = () => {
       image: "https://example.com/doctor-image.jpg"
     },
     {
-      question: "I fix cars!",
+      question: "I repair cars!",
       options: ["Artist", "Builder", "Pilot", "Mechanic"],
       answer: "Mechanic",
       image: "https://example.com/builder-image.jpg"
     },
     {
-      question: "I bake bread!",
+      question: "I cook delicious food!",
       options: ["Baker", "Chef", "Driver", "Writer"],
-      answer: "Baker",
+      answer: "Chef",
       image: "https://example.com/veterinarian-image.jpg"
     },
     {
-      question: "I cut hair!",
-      options: ["Teacher", "Nurse", "Artist", "Barber"],
-      answer: "Barber",
+      question: "I catch criminals!",
+      options: ["Teacher", "Nurse", "Artist", "Policeman"],
+      answer: "Policeman",
       image: "https://example.com/teacher-image.jpg"
     },
     {
@@ -40,9 +40,9 @@ const JobQuizGame = () => {
       image: "https://example.com/baker-image.jpg"
     },
     {
-      question: "I serve food at restaurent!",
+      question: "I give homeworks!",
       options: ["Teacher", "Doctor", "Waiter", "Engineer"],
-      answer: "Waiter",
+      answer: "Teacher",
       image: "https://example.com/doctor-image.jpg"
     },
   ];
@@ -73,25 +73,26 @@ const JobQuizGame = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-yellow-400"
-      style={{ backgroundImage: 'url(https://img.freepik.com/premium-vector/diverse-professional-presenting-empty-vertical-banner_74102-199.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+    <div className="flex flex-col items-center justify-center h-screen bg-transparent"
+      style={{ backgroundImage: `url(${backgroundImage})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
       {gameFinished && <Confetti />}
-      <div className="bg-yellow-100 p-6 rounded-lg shadow-md w-80">
+      <div className="bg-transparent p-6 rounded-lg  w-80">
         <h1 className="text-2xl font-bold text-center text-blue-700 mb-4">Job Quiz Game</h1>
         <div className="text-center mb-4">
-          <p className="text-lg font-medium text-gray-600">{jobsQuiz[currentQuestion].question}</p>
+          <p className="text-xl font-bold text-black">{jobsQuiz[currentQuestion].question}</p>
         </div>
         <div className="space-y-3">
           {jobsQuiz[currentQuestion].options.map((option, index) => (
             <button
-              key={index}
-              className={`w-full p-3 rounded-lg border text-gray-800 font-semibold transition-colors ${
-                selectedAnswer === option ? (option === jobsQuiz[currentQuestion].answer ? "bg-green-400" : "bg-red-400") : "bg-purple-400 hover:bg-gray-400"
-              }`}
-              onClick={() => handleAnswer(option)}
-            >
-              {option}
-            </button>
+            key={index}
+            className={`w-44 p-3 rounded-lg border text-gray-800 font-semibold transition-colors mx-auto block ${
+              selectedAnswer === option ? (option === jobsQuiz[currentQuestion].answer ? "bg-green-400" : "bg-red-400") : "bg-white hover:bg-gray-400"
+            }`}
+            onClick={() => handleAnswer(option)}
+          >
+            {option}
+          </button>
+          
           ))}
         </div>
         <div className="mt-4 text-center">
@@ -107,7 +108,7 @@ const JobQuizGame = () => {
           className="py-2 px-4 bg-red-500 text-white rounded-lg shadow-lg hover:bg-red-600"
           onClick={() => window.location.href = '/jobswarmup'}
         >
-          Previous
+          ⬅ Previous
         </button>
         <button
   className={`py-2 px-4 text-white rounded-lg shadow-lg ${
@@ -116,7 +117,7 @@ const JobQuizGame = () => {
   onClick={() => window.location.href = '/jobs3'}
   disabled={!gameFinished} // Disable button if game is not finished
 >
-  Next
+  Next ➡
 </button>
 
       </div>

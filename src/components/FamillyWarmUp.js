@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import Confetti from "react-confetti";
-import familyTreeBg from "../Assets/tree.jpeg"; // Ensure this exists in your project
+import familyTreeBg from "../Assets/tree.jpeg"; 
 import "tailwindcss/tailwind.css";
 import grandfatherImg from "../Assets/grandfather.jpg";
 import grandmotherImg from "../Assets/grandmother.jpg";
@@ -37,7 +37,6 @@ const familyImages = {
   Baby: babyImg,
 };
 
-// Draggable Component
 const DraggableItem = ({ name }) => {
   const [{ isDragging }, drag] = useDrag(() => ({
     type: "familyMember",
@@ -59,7 +58,6 @@ const DraggableItem = ({ name }) => {
   );
 };
 
-// Drop Target Component
 const DropTarget = ({ familyMember, onDrop, isPlaced }) => {
   const [{ isOver }, drop] = useDrop(() => ({
     accept: "familyMember",
@@ -95,13 +93,11 @@ const DropTarget = ({ familyMember, onDrop, isPlaced }) => {
   );
 };
 
-// Main Component
 const FamilyTreeGame = () => {
   const [availableMembers, setAvailableMembers] = useState(initialFamilyMembers);
   const [placedMembers, setPlacedMembers] = useState([]);
   const [showConfetti, setShowConfetti] = useState(false);
 
-  // Handle Drop
   const handleDrop = (item, target) => {
     if (item.name === target.name) {
       setPlacedMembers((prev) => [...prev, target]);
@@ -109,14 +105,12 @@ const FamilyTreeGame = () => {
     }
   };
 
-  // Show Confetti When All Members Are Placed
   useEffect(() => {
     if (placedMembers.length === initialFamilyMembers.length) {
       setShowConfetti(true);
     }
   }, [placedMembers]);
 
-  // Disable "Next" button if not all members are placed
   const isNextButtonDisabled = placedMembers.length !== initialFamilyMembers.length;
 
   return (
@@ -162,14 +156,14 @@ const FamilyTreeGame = () => {
             className="py-2 px-4 bg-red-500 text-white rounded-lg shadow-lg hover:bg-red-600"
             onClick={() => window.location.href = '/'}
           >
-            Previous
+            ⬅ Previous
           </button>
           <button
             className={`py-2 px-4 rounded-lg shadow-lg ${isNextButtonDisabled ? 'bg-gray-400' : 'bg-red-500 hover:bg-red-600'} text-white`}
             onClick={() => !isNextButtonDisabled && (window.location.href = '/familly2')}
             disabled={isNextButtonDisabled}
           >
-            Next
+            Next ➡
           </button>
         </div>
       </div>

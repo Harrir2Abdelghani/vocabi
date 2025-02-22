@@ -159,7 +159,7 @@ const DaysOfWeekGame = () => {
             onClick={handlePrevious}
             className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
           >
-            Previous
+            ⬅ Previous
           </button>
         </div>
         <div className="absolute right-0 bottom-0 mr-4 mb-16">
@@ -170,7 +170,7 @@ const DaysOfWeekGame = () => {
             }`}
             disabled={!isComplete}
           >
-            Next
+            Next ➡
           </button>
         </div>
       </div>

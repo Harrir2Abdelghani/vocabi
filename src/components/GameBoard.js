@@ -130,7 +130,7 @@ function GameBoard() {
     className="py-2 px-4 bg-red-500 text-white rounded-lg shadow-lg hover:bg-red-600"
     onClick={() => window.location.href = '/'}
   >
-    Previous
+    ⬅ Previous
   </button>
   <button
     className={`py-2 px-4 text-white rounded-lg shadow-lg ${
@@ -139,7 +139,7 @@ function GameBoard() {
     onClick={() => window.location.href = '/jobs2'}
     disabled={!gameFinished} // Disable button if game is not finished
   >
-    Next
+    Next ➡
   </button>
 </div>
 

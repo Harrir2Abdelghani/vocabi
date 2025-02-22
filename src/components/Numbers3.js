@@ -4,9 +4,9 @@ import arrow from '../Assets/Arrow.png';
 const mathEquations = [
   { equation: '15 + 24 =', answer: 'THIRTYNINE' },
   { equation: '10 + 10 =', answer: 'TWENTY' },
-  { equation: '44 + 6 =', answer: 'FIFTY' },
-  { equation: '5 + 3 =', answer: 'EIGHT' },
-  { equation: '99 + 1 =', answer: 'ONEHUNDRED' },
+  { equation: '44 + 06 =', answer: 'FIFTY' },
+  { equation: '05 + 03 =', answer: 'EIGHT' },
+  { equation: '99 + 01 =', answer: 'ONEHUNDRED' },
 ];
 
 const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
@@ -132,7 +132,7 @@ const MathGame = () => {
     className="py-2 px-4 bg-red-500 text-white rounded-lg shadow-lg hover:bg-red-600"
     onClick={() => window.location.href = '/numbers2'}
   >
-    Previous
+    ⬅ Previous
   </button>
   
 </div>

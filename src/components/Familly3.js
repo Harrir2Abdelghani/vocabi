@@ -42,7 +42,7 @@ const FamilySpellingGame = () => {
             <img
               src={member.img}
               alt={member.solution}
-              className="w-24 h-24 mb-3 rounded-2xl "
+              className="w-28 h-24 mb-3 rounded-2xl "
             />
             <div className="flex items-center justify-center space-x-1 mb-4">
               {member.word.split("").map((char, i) => (
@@ -89,7 +89,7 @@ const FamilySpellingGame = () => {
     className="py-2 px-4 bg-red-500 text-white rounded-lg shadow-lg hover:bg-red-600"
     onClick={() => window.location.href = '/familly2'}
   >
-    Previous
+    ⬅ Previous
   </button>
   
 </div>

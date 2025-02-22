@@ -1,24 +1,30 @@
 import React, { useState } from "react";
 import Confetti from "react-confetti";
+import chef from '../Assets/chefcross.jpg'
+import teacher from '../Assets/teachercross.jpg'
+import nurse from '../Assets/nursecross.jpg'
+import vet from '../Assets/vetcross.jpg'
+import farmer from '../Assets/farmercross.jpg'
+import lawyer from '../Assets/lawyercross.jpg'
 
 const jobs = [
-  { name: "chef", image: "https://cdn3d.iconscout.com/3d/premium/thumb/chef-avatar-10106016-8179556.png?f=webp", color: "bg-red-200" },
-  { name: "pilot", image: "https://cdn-icons-png.flaticon.com/512/5715/5715807.png", color: "bg-blue-200" },
-  { name: "nurse", image: "https://png.pngtree.com/png-clipart/20230512/original/pngtree-free-vector-nurse-avatar-with-transparent-background-png-image_9159263.png", color: "bg-green-200" },
-  { name: "teacher", image: "https://static.vecteezy.com/system/resources/previews/025/003/244/non_2x/3d-cute-cartoon-female-teacher-character-on-transparent-background-generative-ai-png.png", color: "bg-yellow-200" },
-  { name: "artist", image: "https://cdn0.iconfinder.com/data/icons/people-jobs-set-2/128/jobs-10-512.png", color: "bg-purple-200" },
-  { name: "driver", image: "https://cdn0.iconfinder.com/data/icons/taxi-12/500/SingleCartoonTaxiYulia_10-512.png", color: "bg-orange-200" },
+  { name: "chef", image: chef, color: "bg-green-500" },
+  { name: "farmer", image: farmer, color: "bg-green-500" },
+  { name: "nurse", image: nurse, color: "bg-green-500" },
+  { name: "teacher", image: teacher, color: "bg-green-500" },
+  { name: "lawyer", image: lawyer, color: "bg-green-500" },
+  { name: "vet", image: vet, color: "bg-green-500" },
 ];
 
 const grid = [
   ["C", "H", "E", "F", "A", "B", "C", "D"],
-  ["A", "P", "I", "L", "O", "T", "E", "R"],
-  ["N", "R", "A", "N", "D", "O", "M", "I"],
-  ["T", "E", "A", "C", "H", "E", "R", "V"],
-  ["A", "R", "T", "I", "S", "T", "I", "E"],
-  ["K", "L", "M", "N", "O", "D", "R", "R"],
+  ["A", "F", "A", "R", "M", "E", "R", "Q"],
+  ["N", "R", "A", "N", "D", "O", "M", "Y"],
+  ["T", "E", "A", "C", "H", "E", "R", "W"],
+  ["L", "A", "W", "Y", "E", "R", "I", "E"],
+  ["K", "L", "M", "N", "O", "D", "X", "T"],
   ["N", "U", "R", "S", "E", "I", "V", "E"],
-  ["L", "M", "N", "O", "P", "Q", "R", "S"],
+  ["L", "M", "V", "E", "T", "Q", "R", "S"],
 ];
 
 const CrosswordGame = () => {
@@ -27,28 +33,49 @@ const CrosswordGame = () => {
   const [foundLetters, setFoundLetters] = useState([]);
   const [gameComplete, setGameComplete] = useState(false);
   const [popupMessage, setPopupMessage] = useState("");
+  const [wrongLetters, setWrongLetters] = useState([]);
 
   const handleLetterClick = (letter, row, col) => {
     if (gameComplete) return;
     if (foundLetters.some((pos) => pos.row === row && pos.col === col)) return;
 
-    const newSelection = [...selectedWord, { letter, row, col }];
+    const newPosition = { letter, row, col };
+    const newSelection = [...selectedWord, newPosition];
     setSelectedWord(newSelection);
 
     const formedWord = newSelection.map((item) => item.letter).join("").toLowerCase();
     const matchingJob = jobs.find((job) => job.name === formedWord);
 
     if (matchingJob && !foundWords.includes(formedWord)) {
+      // Correct word found
       const updatedFoundWords = [...foundWords, formedWord];
       setFoundWords(updatedFoundWords);
       setFoundLetters([...foundLetters, ...newSelection]);
       setPopupMessage(`🎉 Great! You found: ${formedWord}`);
-      setTimeout(() => setPopupMessage(""), 3000);
+      setWrongLetters([]);
       setSelectedWord([]);
+      
+      setTimeout(() => setPopupMessage(""), 3000);
 
       if (updatedFoundWords.length === jobs.length) {
         setGameComplete(true);
         setTimeout(() => setPopupMessage("🎉 Congratulations! You found all the jobs!"), 500);
+      }
+    } else if (newSelection.length > 1) {
+      // Check if the current selection is part of any job word
+      const isValidContinuation = jobs.some(job => 
+        job.name.startsWith(formedWord) && 
+        job.name.length >= formedWord.length
+      );
+      
+      if (!isValidContinuation) {
+        setWrongLetters(newSelection.slice(-1)); // Mark the last selected letter as wrong
+        setPopupMessage("❌ Oops! That's not part of a job!");
+        setTimeout(() => {
+          setPopupMessage("");
+          setWrongLetters([]);
+          setSelectedWord([]);
+        }, 1000);
       }
     }
   };
@@ -69,22 +96,26 @@ const CrosswordGame = () => {
 
         <div className="grid grid-cols-8 gap-1">
           {grid.map((row, rowIndex) =>
-            row.map((letter, colIndex) => (
-              <button
-                key={`${rowIndex}-${colIndex}`}
-                onClick={() => handleLetterClick(letter, rowIndex, colIndex)}
-                disabled={gameComplete || foundLetters.some(pos => pos.row === rowIndex && pos.col === colIndex)}
-                className={`w-10 h-10 border text-xl font-bold ${
-                  foundLetters.some(pos => pos.row === rowIndex && pos.col === colIndex)
-                    ? jobs.find(job => job.name.includes(letter))?.color || "bg-green-300"
-                    : selectedWord.some(item => item.row === rowIndex && item.col === colIndex)
-                    ? "bg-blue-300"
-                    : "bg-white"
-                }`}
-              >
-                {letter}
-              </button>
-            ))
+            row.map((letter, colIndex) => {
+              const isFound = foundLetters.some(pos => pos.row === rowIndex && pos.col === colIndex);
+              const isSelected = selectedWord.some(item => item.row === rowIndex && item.col === colIndex);
+              const isWrong = wrongLetters.some(pos => pos.row === rowIndex && pos.col === colIndex);
+
+              return (
+                <button
+                  key={`${rowIndex}-${colIndex}`}
+                  onClick={() => handleLetterClick(letter, rowIndex, colIndex)}
+                  disabled={gameComplete || isFound}
+                  className={`w-10 h-10 border text-xl font-bold flex items-center justify-center
+                    ${isFound ? (jobs.find(job => job.name.includes(letter.toLowerCase()))?.color || "bg-green-300") : 
+                      isWrong ? "bg-red-400 text-white" : 
+                      isSelected ? "bg-blue-300" : 
+                      "bg-white"}`}
+                >
+                  {letter}
+                </button>
+              );
+            })
           )}
         </div>
 
@@ -103,25 +134,23 @@ const CrosswordGame = () => {
         </div>
       )}
 
-<div className="w-full fixed bottom-4 left-0 flex justify-between px-4">
-  <button
-    className="py-2 px-4 bg-red-500 text-white rounded-lg shadow-lg hover:bg-red-600"
-    onClick={() => window.location.href = '/jobs2'}
-  >
-    Previous
-  </button>
-</div>
+      <div className="w-full fixed bottom-4 left-0 flex justify-between px-4">
+        <button
+          className="py-2 px-4 bg-red-500 text-white rounded-lg shadow-lg hover:bg-red-600"
+          onClick={() => window.location.href = '/jobs2'}
+        >
+          ⬅ Previous
+        </button>
+      </div>
 
-<div className="flex justify-center -mt-4">
-  <button
-    className="py-2 px-4 bg-blue-500 text-white rounded-lg shadow-lg hover:bg-blue-600 flex items-center"
-    onClick={() => window.location.reload()}
-  >
-    🔄 Restart Game
-  </button>
-</div>
-
-
+      <div className="flex justify-center -mt-4">
+        <button
+          className="py-2 px-4 bg-blue-500 text-white rounded-lg shadow-lg hover:bg-blue-600 flex items-center"
+          onClick={() => window.location.reload()}
+        >
+          🔄 Restart Game
+        </button>
+      </div>
     </div>
   );
 };
