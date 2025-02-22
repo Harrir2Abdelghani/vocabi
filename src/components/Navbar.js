@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import logo from '../Assets/logo.jpg';
 import button from '../Assets/button.png';
+import { Link } from 'react-router-dom';
 
 const Navbar = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -16,11 +17,11 @@ const Navbar = () => {
         {/* Logo Section with Animation from Left */}
         <a
           href="/"
-          className={`flex items-center space-x-1 rtl:space-x-reverse transform transition-transform duration-1000 ${
+          className={`flex items-center -space-x-3 rtl:space-x-reverse transform transition-transform duration-1000 ${
             isVisible ? 'translate-x-0' : '-translate-x-full'
           }`}
         >
-          <img src={logo} className="h-12 w-12" alt="Logo" />
+          <img src={logo} className="h-16 w-18" alt="Logo" />
           <span className="self-center text-3xl font-mono font-semibold whitespace-nowrap">
             <span className="text-red-400">V</span>
             <span className="text-orange-400">O</span>
@@ -50,7 +51,7 @@ const Navbar = () => {
             </li>
             <li>
               <a
-                href="#days-games"
+                href="/"
                 className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
               >
                 Days
@@ -58,7 +59,7 @@ const Navbar = () => {
             </li>
             <li>
               <a
-                href="#numbers-games"
+                href="/"
                 className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
               >
                 Numbers
@@ -66,7 +67,7 @@ const Navbar = () => {
             </li>
             <li>
               <a
-                href="#jobs-games"
+                href="/"
                 className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
               >
                 Jobs
@@ -74,7 +75,7 @@ const Navbar = () => {
             </li>
             <li>
               <a
-                href="#familly-games"
+                href="/"
                 className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
               >
                 Familly

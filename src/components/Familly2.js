@@ -7,7 +7,6 @@ import father from '../Assets/fatherquizz.jpg';
 import grandfather from '../Assets/grandpaquizz.jpg';
 import grandmother from '../Assets/grandmaquizz.jpg';
 
-
 const FamilyMemberQuiz = () => {
   const questions = [
     { question: "Who is the father's father?", options: ["Mother", "Grandfather", "Sister", "Brother"], answer: "Grandfather", image: grandfather },
@@ -24,6 +23,7 @@ const FamilyMemberQuiz = () => {
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [isAnswerCorrect, setIsAnswerCorrect] = useState(null);
   const [showConfetti, setShowConfetti] = useState(false);
+  const [quizComplete, setQuizComplete] = useState(false);
 
   const handleAnswerClick = (choice) => {
     setSelectedAnswer(choice);
@@ -31,8 +31,12 @@ const FamilyMemberQuiz = () => {
       setScore(score + 1);
       setFeedbackMessage("Correct! Great job!");
       setIsAnswerCorrect(true);
+
       if (currentQuestion + 1 === questions.length) {
         setShowConfetti(true);
+        setTimeout(() => {
+          setQuizComplete(true); // Enable the Next button after confetti
+        }, 3000); // Confetti lasts 3 seconds before enabling the button
       } else {
         setTimeout(() => {
           setFeedbackMessage("");
@@ -47,15 +51,12 @@ const FamilyMemberQuiz = () => {
     }
   };
 
-  const isQuizComplete = currentQuestion === questions.length;
-  const isNextButtonDisabled = !isQuizComplete;
-
   return (
-    <div className="flex flex-col items-center  justify-center min-h-screen bg-gradient-to-r from-blue-100 to-blue-300 p-6">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-blue-100 to-blue-300 p-6">
       {showConfetti && <Confetti width={window.innerWidth} height={window.innerHeight - 50} />}
       <div className="flex flex-col items-center bg-white p-10 rounded-2xl shadow-xl max-w-lg w-full mx-4 text-center">
         <h1 className="text-3xl font-bold mb-6 text-blue-700">Guess the family member!</h1>
-        {!isQuizComplete ? (
+        {!quizComplete ? (
           <div className="w-full text-center">
             <img src={questions[currentQuestion].image} alt="Family Member" className="w-40 h-40 object-contain mx-auto mb-4 border-4 border-blue-300 rounded-full" />
             <div className="grid grid-cols-2 gap-4">
@@ -81,7 +82,7 @@ const FamilyMemberQuiz = () => {
           </div>
         ) : (
           <div className="text-center">
-            <p className="text-xl text-green-600 font-bold">Congratulations! You completed the quiz!</p>
+            <p className="text-xl text-green-600 font-bold">🎉 Congratulations! You completed the quiz!</p>
           </div>
         )}
       </div>
@@ -93,9 +94,9 @@ const FamilyMemberQuiz = () => {
           ⬅ Previous
         </button>
         <button
-          className={`py-3 px-6 rounded-lg shadow-lg ${isNextButtonDisabled ? 'bg-gray-400' : 'bg-red-500 hover:bg-red-600'} text-white`}
+          className={`py-3 px-6 rounded-lg shadow-lg ${quizComplete ? 'bg-red-500 hover:bg-red-600' : 'bg-gray-400 cursor-not-allowed'} text-white`}
           onClick={() => window.location.href = '/familly3'}
-          disabled={isNextButtonDisabled}
+          disabled={!quizComplete}
         >
           Next ➡
         </button>

@@ -38,46 +38,49 @@ const CrosswordGame = () => {
   const handleLetterClick = (letter, row, col) => {
     if (gameComplete) return;
     if (foundLetters.some((pos) => pos.row === row && pos.col === col)) return;
-
+  
     const newPosition = { letter, row, col };
-    const newSelection = [...selectedWord, newPosition];
-    setSelectedWord(newSelection);
-
-    const formedWord = newSelection.map((item) => item.letter).join("").toLowerCase();
-    const matchingJob = jobs.find((job) => job.name === formedWord);
-
-    if (matchingJob && !foundWords.includes(formedWord)) {
-      // Correct word found
-      const updatedFoundWords = [...foundWords, formedWord];
-      setFoundWords(updatedFoundWords);
-      setFoundLetters([...foundLetters, ...newSelection]);
-      setPopupMessage(`🎉 Great! You found: ${formedWord}`);
-      setWrongLetters([]);
-      setSelectedWord([]);
-      
-      setTimeout(() => setPopupMessage(""), 3000);
-
-      if (updatedFoundWords.length === jobs.length) {
-        setGameComplete(true);
-        setTimeout(() => setPopupMessage("🎉 Congratulations! You found all the jobs!"), 500);
+    
+    // Check if this is the first letter or if it's adjacent to the last selected letter
+    if (selectedWord.length === 0 || isAdjacent(selectedWord[selectedWord.length - 1], newPosition)) {
+      const newSelection = [...selectedWord, newPosition];
+      setSelectedWord(newSelection);
+  
+      const formedWord = newSelection.map((item) => item.letter).join("").toLowerCase();
+      const matchingJob = jobs.find((job) => job.name === formedWord);
+  
+      if (matchingJob && !foundWords.includes(formedWord)) {
+        // Correct word found
+        const updatedFoundWords = [...foundWords, formedWord];
+        setFoundWords(updatedFoundWords);
+        setFoundLetters([...foundLetters, ...newSelection]);
+        setPopupMessage(`🎉 Great! You found: ${formedWord}`);
+        setWrongLetters([]);
+        setSelectedWord([]);
+        setTimeout(() => setPopupMessage(""), 3000);
+  
+        if (updatedFoundWords.length === jobs.length) {
+          setGameComplete(true);
+          setTimeout(() => setPopupMessage("🎉 Congratulations! You found all the jobs!"), 500);
+        }
       }
-    } else if (newSelection.length > 1) {
-      // Check if the current selection is part of any job word
-      const isValidContinuation = jobs.some(job => 
-        job.name.startsWith(formedWord) && 
-        job.name.length >= formedWord.length
-      );
-      
-      if (!isValidContinuation) {
-        setWrongLetters(newSelection.slice(-1)); // Mark the last selected letter as wrong
-        setPopupMessage("❌ Oops! That's not part of a job!");
-        setTimeout(() => {
-          setPopupMessage("");
-          setWrongLetters([]);
-          setSelectedWord([]);
-        }, 1000);
-      }
+    } else {
+      // Invalid selection - not adjacent
+      setWrongLetters([newPosition]);
+      setPopupMessage("❌ Select letters that are next to each other!");
+      setTimeout(() => {
+        setPopupMessage("");
+        setWrongLetters([]);
+        setSelectedWord([]);
+      }, 1000);
     }
+  };
+  
+  // Helper function to check if two positions are adjacent
+  const isAdjacent = (pos1, pos2) => {
+    const rowDiff = Math.abs(pos1.row - pos2.row);
+    const colDiff = Math.abs(pos1.col - pos2.col);
+    return (rowDiff <= 1 && colDiff <= 1) && !(rowDiff === 0 && colDiff === 0);
   };
 
   return (
@@ -89,7 +92,7 @@ const CrosswordGame = () => {
         <div className="flex flex-col items-center space-y-7">
           {jobs.slice(0, 3).map((job, index) => (
             <div key={index} className="flex flex-col items-center ml-10">
-              <img src={job.image} alt={job.name} className="w-24 h-24 object-cover mb-2" />
+              <img src={job.image} alt={job.name} className="w-32 h-28 object-cover mb-0" />
             </div>
           ))}
         </div>
@@ -122,7 +125,7 @@ const CrosswordGame = () => {
         <div className="flex flex-col items-center space-y-7">
           {jobs.slice(3).map((job, index) => (
             <div key={index + 3} className="flex flex-col items-center mr-10">
-              <img src={job.image} alt={job.name} className="w-24 h-24 object-cover mb-2" />
+              <img src={job.image} alt={job.name} className="w-32 h-28 object-cover " />
             </div>
           ))}
         </div>

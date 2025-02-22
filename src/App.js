@@ -17,8 +17,8 @@ import Jobs3 from './components/Jobs3';
 function App() {
   return (
     <div className="App">
-      <Navbar />
       <BrowserRouter>
+      <Navbar />
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/days2' element={<Days />} />

@@ -55,7 +55,7 @@ const Hero = () => {
   
     <img
       src={hero}
-      className="object-cover w-full max-w-[520px]  -mr-40  animate-pulse"
+      className="object-cover w-full max-w-[520px]  -mr-40 "
       alt="Hero Image"
     />
   </div>
