@@ -5,6 +5,7 @@ import RelaxationCorner from './../components/RelaxationCorner';
 import FamillyCards from '../components/FamillyCards'
 import NumbersCards from '../components/NumbersCards'
 import JobsCard from '../components/JobsCard'
+import DailyActivitiesCards from '../components/DailyCards'
 const Home = () => {
   return (
     <div>
@@ -13,6 +14,7 @@ const Home = () => {
         <FamillyCards />
         <NumbersCards />
         <JobsCard />
+        <DailyActivitiesCards />
         <RelaxationCorner />
     </div>
   )
