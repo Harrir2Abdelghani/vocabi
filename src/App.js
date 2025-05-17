@@ -14,6 +14,7 @@ import Numbers3 from './components/Numbers3'
 import JobsWarmUp from './components/JobsWarmUp'
 import GameBoard from './components/GameBoard'
 import Jobs3 from './components/Jobs3';
+import DailyWarmUp from './components/DailyWarmUp'
 function App() {
   return (
     <div className="App">
@@ -33,6 +34,7 @@ function App() {
         <Route path='/jobswarmup' element={<GameBoard />} />
         <Route path='/jobs2' element={<Jobs3 />} />
         <Route path='/jobs3' element={<JobsWarmUp />} />
+        <Route path='/dailywarmup' element={<DailyWarmUp />} />
         
       </Routes>
       </BrowserRouter>
