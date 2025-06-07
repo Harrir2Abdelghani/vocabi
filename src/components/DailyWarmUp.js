@@ -21,6 +21,9 @@ export default function DailyRoutineGame() {
   const [gameCompleted, setGameCompleted] = useState(false);
   const [shuffledActivities, setShuffledActivities] = useState([]);
   
+  // Add the isNextButtonDisabled variable
+  const isNextButtonDisabled = !gameCompleted;
+  
   useEffect(() => {
     const shuffled = [...activities.filter(a => a.id !== 6)].sort(() => Math.random() - 0.5);
     setShuffledActivities(shuffled);
@@ -150,6 +153,21 @@ export default function DailyRoutineGame() {
               })}
             </div>
           </div> 
+          <div className="w-full fixed bottom-4 left-0 flex justify-between px-4">
+          <button
+            className="py-2 px-4 bg-red-500 text-white rounded-lg shadow-lg hover:bg-red-600"
+            onClick={() => window.location.href = '/'}
+          >
+            ⬅ Previous
+          </button>
+          <button
+            className={`py-2 px-4 rounded-lg shadow-lg ${isNextButtonDisabled ? 'bg-gray-400' : 'bg-red-500 hover:bg-red-600'} text-white`}
+            onClick={() => !isNextButtonDisabled && (window.location.href = '/daily2')}
+            disabled={isNextButtonDisabled}
+          >
+            Next ➡
+          </button>
+        </div>
         </div>
       )}
     </div>
