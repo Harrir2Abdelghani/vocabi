@@ -51,7 +51,7 @@ const MathGame = () => {
   return (
     <div className="flex flex-col lg:flex-row justify-between items-center h-screen p-4 lg:p-8">
       <div className="w-full lg:w-2/3">
-        <h1 className="text-xl lg:text-2xl font-bold mb-4 text-black text-center lg:text-left">Math Game</h1>
+        <h1 className="text-xl lg:text-1xl font-bold mb-8 text-blue-700 text-center lg:text-left">Solve the math problem and write the answer using the alphabet table</h1>
         <div className="grid grid-cols-1 gap-4">
           {mathEquations.map((equation, idx) => {
             const answer = equation.answer;

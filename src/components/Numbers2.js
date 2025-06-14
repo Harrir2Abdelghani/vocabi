@@ -66,7 +66,7 @@ const NumberMatchQuiz = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-r from-blue-400 to-purple-500 flex flex-col items-center justify-center p-4 relative">
-      <h1 className="text-4xl font-bold text-white mb-6">Number Match Quiz 🎲</h1>
+      <h1 className="text-4xl font-bold text-white mb-6">Choose the right number</h1>
       {confetti && <Confetti width={window.innerWidth} height={window.innerHeight} />}
       
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

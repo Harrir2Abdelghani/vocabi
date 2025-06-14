@@ -86,7 +86,12 @@ const CrosswordGame = () => {
   return (
     <div className="flex flex-col items-center bg-blue-100 min-h-screen p-6">
       {gameComplete && <Confetti />}
-      <h1 className="text-3xl font-bold text-blue-600 mb-6">Wordle Jobs Game</h1>
+      <div className="flex items-center justify-center">
+  <h1 className="text-2xl font-bold text-blue-600 mt-14 mb-4">
+    What job is it? Use the letters to write the correct word
+  </h1>
+</div>
+
 
       <div className="flex flex-row w-full justify-between mb-8">
         <div className="flex flex-col items-center space-y-7">
@@ -146,7 +151,7 @@ const CrosswordGame = () => {
         </button>
       </div>
 
-      <div className="flex justify-center -mt-4">
+      <div className="flex justify-center -mt-8">
         <button
           className="py-2 px-4 bg-blue-500 text-white rounded-lg shadow-lg hover:bg-blue-600 flex items-center"
           onClick={() => window.location.reload()}

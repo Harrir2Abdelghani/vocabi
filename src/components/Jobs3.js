@@ -76,8 +76,8 @@ const JobQuizGame = () => {
     <div className="flex flex-col items-center justify-center h-screen bg-transparent"
       style={{ backgroundImage: `url(${backgroundImage})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
       {gameFinished && <Confetti />}
-      <div className="bg-transparent p-6 rounded-lg  w-80">
-        <h1 className="text-2xl font-bold text-center text-blue-700 mb-4">Job Quiz Game</h1>
+      <div className="bg-transparent p-6 rounded-lg  w-120">
+        <h1 className="text-2xl font-bold text-center text-blue-700 mb-4">Choose the right answer</h1>
         <div className="text-center mb-4">
           <p className="text-xl font-bold text-black">{jobsQuiz[currentQuestion].question}</p>
         </div>

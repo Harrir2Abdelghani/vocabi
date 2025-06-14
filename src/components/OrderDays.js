@@ -92,7 +92,7 @@ const KidsDaysGame = () => {
       {showConfetti && <Confetti width={window.innerWidth} height={window.innerHeight} />}
 
       <div className="w-full py-6 text-center bg-transparent -mt-10">
-        <h1 className="text-4xl font-extrabold text-black">Days Scramble Game</h1>
+        <h1 className="text-4xl font-extrabold text-black">Can you fix the mixed-up letters? Find the day of the week!</h1>
       </div>
 
 

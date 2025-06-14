@@ -102,7 +102,7 @@ const DayGame = () => {
 
       <div className="bg-white rounded-xl shadow-2xl p-8 max-w-md w-full z-10 mt-12">
         <h1 className="text-4xl font-extrabold text-center mb-6 text-gray-800">
-          Day Matching Game
+          Find the match !
         </h1>
         {availableDays.length > 0 ? (
           <>
