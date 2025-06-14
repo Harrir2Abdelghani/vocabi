@@ -1,140 +1,121 @@
-import React, { useRef, useState, useEffect } from 'react';
-import image from '../Assets/cloud.png'
+import React, { useRef, useState, useEffect } from "react";
+import image from "../Assets/cloud.png"; // You can use this image as background or decoration
 
 const RelaxationCorner = () => {
   const canvasRef = useRef(null);
   const [isDrawing, setIsDrawing] = useState(false);
-  const [color, setColor] = useState('black');
+  const [color, setColor] = useState("#ff6b81");
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    const context = canvas.getContext('2d');
-
-    // Set canvas dimensions
-    canvas.width = window.innerWidth < 640 ? window.innerWidth : 640; // Responsive width
-    canvas.height = 360; // Fixed height
-
-    // Set initial background color
-    context.fillStyle = '#ffffff'; // Background color
+    const context = canvas.getContext("2d");
+    canvas.width = window.innerWidth < 640 ? window.innerWidth - 40 : 640;
+    canvas.height = 360;
+    context.fillStyle = "#fdf6e3";
     context.fillRect(0, 0, canvas.width, canvas.height);
   }, []);
 
-  const startDrawing = (event) => {
-    const canvas = canvasRef.current;
-    const context = canvas.getContext('2d');
-
-    setIsDrawing(true);
-    context.beginPath();
-    const { offsetX, offsetY } = getMouseOrTouch(event);
-    context.moveTo(offsetX, offsetY);
+  const getMouseOrTouch = (event) => {
+    const isTouch = event.touches && event.touches.length > 0;
+    const rect = canvasRef.current.getBoundingClientRect();
+    const offsetX = isTouch
+      ? event.touches[0].clientX - rect.left
+      : event.nativeEvent.offsetX;
+    const offsetY = isTouch
+      ? event.touches[0].clientY - rect.top
+      : event.nativeEvent.offsetY;
+    return { offsetX, offsetY };
   };
 
-  const draw = (event) => {
+  const startDrawing = (e) => {
+    const ctx = canvasRef.current.getContext("2d");
+    setIsDrawing(true);
+    ctx.beginPath();
+    const { offsetX, offsetY } = getMouseOrTouch(e);
+    ctx.moveTo(offsetX, offsetY);
+  };
+
+  const draw = (e) => {
     if (!isDrawing) return;
-
-    const canvas = canvasRef.current;
-    const context = canvas.getContext('2d');
-    context.strokeStyle = color;
-    context.lineWidth = 5;
-    context.lineCap = 'round';
-
-    const { offsetX, offsetY } = getMouseOrTouch(event);
-    context.lineTo(offsetX, offsetY);
-    context.stroke();
-    context.beginPath();
-    context.moveTo(offsetX, offsetY);
+    const ctx = canvasRef.current.getContext("2d");
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 6;
+    ctx.lineCap = "round";
+    const { offsetX, offsetY } = getMouseOrTouch(e);
+    ctx.lineTo(offsetX, offsetY);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(offsetX, offsetY);
   };
 
   const stopDrawing = () => {
     setIsDrawing(false);
-    const canvas = canvasRef.current;
-    const context = canvas.getContext('2d');
-    context.closePath();
   };
 
   const clearCanvas = () => {
     const canvas = canvasRef.current;
-    const context = canvas.getContext('2d');
-    context.clearRect(0, 0, canvas.width, canvas.height);
-    context.fillStyle = '#ffffff'; // Reset background color
-    context.fillRect(0, 0, canvas.width, canvas.height);
+    const ctx = canvas.getContext("2d");
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "#fdf6e3";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
   };
 
-  const getMouseOrTouch = (event) => {
-    const isTouch = event.touches && event.touches.length > 0;
-    const offsetX = isTouch ? event.touches[0].clientX - canvasRef.current.getBoundingClientRect().left : event.nativeEvent.offsetX;
-    const offsetY = isTouch ? event.touches[0].clientY - canvasRef.current.getBoundingClientRect().top : event.nativeEvent.offsetY;
-    return { offsetX, offsetY };
-  };
-
-
+  // Tic Tac Toe
   const [board, setBoard] = useState(Array(9).fill(null));
   const [isPlayerTurn, setIsPlayerTurn] = useState(true);
   const [winner, setWinner] = useState(null);
-  const [difficulty, setDifficulty] = useState("Easy"); // Easy or Hard
+  const [difficulty, setDifficulty] = useState("Easy");
 
-  const checkWinner = (board) => {
-    const winningCombinations = [
-      [0, 1, 2],
-      [3, 4, 5],
-      [6, 7, 8],
-      [0, 3, 6],
-      [1, 4, 7],
-      [2, 5, 8],
-      [0, 4, 8],
-      [2, 4, 6],
+  const checkWinner = (b) => {
+    const winCombos = [
+      [0, 1, 2], [3, 4, 5], [6, 7, 8],
+      [0, 3, 6], [1, 4, 7], [2, 5, 8],
+      [0, 4, 8], [2, 4, 6],
     ];
-
-    for (const combo of winningCombinations) {
-      const [a, b, c] = combo;
-      if (board[a] && board[a] === board[b] && board[a] === board[c]) {
-        return board[a];
-      }
+    for (let [a, bIdx, c] of winCombos) {
+      if (b[a] && b[a] === b[bIdx] && b[a] === b[c]) return b[a];
     }
-
-    return board.includes(null) ? null : "Tie";
+    return b.includes(null) ? null : "Tie";
   };
 
-  const handleCellClick = (index) => {
-    if (!board[index] && isPlayerTurn && !winner) {
+  const handleCellClick = (i) => {
+    if (!board[i] && isPlayerTurn && !winner) {
       const newBoard = [...board];
-      newBoard[index] = "X";
+      newBoard[i] = "🌟";
       setBoard(newBoard);
       setIsPlayerTurn(false);
     }
   };
 
   const cpuMove = () => {
-    const emptyCells = board.map((val, idx) => (val === null ? idx : null)).filter((val) => val !== null);
-
+    const emptyCells = board
+      .map((v, i) => (v === null ? i : null))
+      .filter((v) => v !== null);
     let move;
     if (difficulty === "Hard") {
-      // Simple AI: If a winning move exists, take it
-      move = emptyCells.find((index) => {
-        const testBoard = [...board];
-        testBoard[index] = "O";
-        return checkWinner(testBoard) === "O";
+      move = emptyCells.find((i) => {
+        const test = [...board];
+        test[i] = "💫";
+        return checkWinner(test) === "💫";
       });
     }
-
     if (move === undefined) {
-      // Random move for Easy or fallback for Hard
       move = emptyCells[Math.floor(Math.random() * emptyCells.length)];
     }
-
-    const newBoard = [...board];
-    newBoard[move] = "O";
-    setBoard(newBoard);
-    setIsPlayerTurn(true);
+    if (move !== undefined) {
+      const newBoard = [...board];
+      newBoard[move] = "💫";
+      setBoard(newBoard);
+      setIsPlayerTurn(true);
+    }
   };
 
   useEffect(() => {
     if (!isPlayerTurn && !winner) {
-      setTimeout(cpuMove, 1000);
+      setTimeout(cpuMove, 700);
     }
-
-    const winnerCheck = checkWinner(board);
-    if (winnerCheck) setWinner(winnerCheck);
+    const result = checkWinner(board);
+    if (result) setWinner(result);
   }, [board, isPlayerTurn, winner]);
 
   const resetGame = () => {
@@ -142,17 +123,18 @@ const RelaxationCorner = () => {
     setIsPlayerTurn(true);
     setWinner(null);
   };
-  
+
   return (
-    <div className="p-4 text-center space-x-10 bg-gray-200 ">
-      <h2 className="text-3xl font-bold mb-4 mt-4">Relaxation Corner</h2>
-      <p className="text-lg2xl mb-4">Take a break! Draw or play!</p>
-      <div className="flex flex-col md:flex-row items-center md:items-start space-x-4">
-        {/* Left Column - Drawing Section */}
-        <div className="flex flex-col items-center md:w-1/2 p-4">
+    <div className="p-6 bg-gradient-to-br from-pink-100 via-yellow-100 to-blue-100 min-h-screen flex flex-col items-center">
+      <h2 className="text-4xl font-extrabold text-pink-600 mb-2">🎨 Relaxation Corner 🎨</h2>
+      <p className="text-lg font-medium text-gray-700 mb-6">Draw or play a fun game!</p>
+
+      <div className="flex flex-col md:flex-row gap-6 w-full max-w-5xl">
+        {/* Drawing area */}
+        <div className="bg-white rounded-2xl shadow-lg p-4 flex flex-col items-center">
           <canvas
             ref={canvasRef}
-            className="border-2 mb-4 border-red-500"
+            className="rounded-lg border-4 border-black"
             onMouseDown={startDrawing}
             onMouseMove={draw}
             onMouseUp={stopDrawing}
@@ -161,64 +143,71 @@ const RelaxationCorner = () => {
             onTouchMove={draw}
             onTouchEnd={stopDrawing}
           />
-          <div className="mb-4">
-            <button onClick={clearCanvas} className="bg-teal-500 text-white p-2 rounded-full">Clear Canvas</button>
+          <div className="flex space-x-2 mt-4">
+            {["#ff6b81", "#6bc5ff", "#6bff95", "#f3ff6b"].map((c) => (
+              <button
+                key={c}
+                onClick={() => setColor(c)}
+                className="w-8 h-8 rounded-full border-2 border-white"
+                style={{ backgroundColor: c }}
+              ></button>
+            ))}
           </div>
-        </div>
-        {/* Right Column - Tic Tac Tao */}
-        <div className="border-2 border-red-500 w-1/2 mt-4  flex flex-col items-center justify-center  space-y-6 p-4">
-      {/* Difficulty Selector */}
-      <div className="flex justify-center space-x-4">
-  <button
-    className={`px-4 font-bold py-2 rounded-lg ${difficulty === "Easy" ? "bg-yellow-300" : "bg-yellow-100"} hover:bg-yellow-300 transition`}
-    onClick={() => setDifficulty("Easy")}
-  >
-    Easy
-  </button>
-  <button
-    className={`px-4 font-bold py-2 rounded-lg ${difficulty === "Hard" ? "bg-red-400" : "bg-red-200"} hover:bg-red-300 transition`}
-    onClick={() => setDifficulty("Hard")}
-  >
-    Hard
-  </button>
-</div>
-
-
-      {/* Game Board */}
-      <div className="grid grid-cols-3 gap-1 mr-20">
-        {board.map((cell, index) => (
-          <div
-            key={index}
-            className={`w-16 h-16 md:w-16 md:h-16 ml-24 bg-white border-2 border-purple-400 flex items-center justify-center cursor-pointer hover:scale-105 transition-transform duration-300 ${
-              cell === "X" ? "text-blue-500" : "text-red-500"
-            }`}
-            onClick={() => handleCellClick(index)}
+          <button
+            onClick={clearCanvas}
+            className="mt-3 px-4 py-2 bg-pink-400 hover:bg-pink-500 text-white rounded-full shadow-md transition"
           >
-            <span className="text-4xl md:text-6xl font-fun">{cell}</span>
-          </div>
-        ))}
-      </div>
-
-      {/* Winner Modal */}
-      {winner && (
-        <div className="bg-transparent -p-2 ml-24  rounded-lg  text-center  animate-bounce">
-          <h2 className="text-xl font-bold text-center mr-24">
-  {winner === "Tie" ? "It's a Tie!" : `${winner} Wins! 🎉`}
-</h2>
-
-          
+            Clear
+          </button>
         </div>
-      )}
 
-      {/* Restart Button */}
-      <button
-  className="mt-4 px-6 py-3 mx-auto  bg-teal-500 text-white rounded-full shadow-md hover:bg-purple-700 transition-all"
-  onClick={resetGame}
->
-  Restart Game
-</button>
-
-    </div>
+        {/* Game area */}
+        <div className="bg-white rounded-2xl shadow-lg p-4 flex flex-col items-center w-full md:w-1/2">
+          <div className="flex space-x-2 mb-4">
+            <button
+              onClick={() => setDifficulty("Easy")}
+              className={`px-3 py-1 rounded-full ${
+                difficulty === "Easy"
+                  ? "bg-yellow-300 text-yellow-800"
+                  : "bg-yellow-100 text-yellow-600"
+              }`}
+            >
+              Easy
+            </button>
+            <button
+              onClick={() => setDifficulty("Hard")}
+              className={`px-3 py-1 rounded-full ${
+                difficulty === "Hard"
+                  ? "bg-red-300 text-red-800"
+                  : "bg-red-100 text-red-600"
+              }`}
+            >
+              Hard
+            </button>
+          </div>
+          <div className="grid grid-cols-3 gap-2">
+            {board.map((cell, i) => (
+              <div
+                key={i}
+                onClick={() => handleCellClick(i)}
+                className="w-20 h-20 bg-gradient-to-br from-yellow-50 to-pink-50 border-2 border-purple-300 flex items-center justify-center text-3xl md:text-4xl cursor-pointer rounded-lg hover:scale-110 transition"
+              >
+                {cell}
+              </div>
+            ))}
+          </div>
+          {winner && (
+            <div className="mt-4 text-xl font-bold text-purple-600 animate-bounce">
+              {winner === "Tie" ? "🤝 It's a Tie!" : `${winner} Wins! 🎉`}
+            </div>
+          )}
+          <button
+            onClick={resetGame}
+            className="mt-4 px-4 py-2 bg-blue-400 hover:bg-blue-500 text-white rounded-full shadow-md transition"
+          >
+            Restart
+          </button>
+        </div>
       </div>
     </div>
   );

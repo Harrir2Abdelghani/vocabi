@@ -107,7 +107,6 @@ export default function DailyRoutineGame() {
         <div className="flex flex-col space-y-2">
           {/* Source area - drag from here */}
           <div className="bg-white p-6 rounded-xl shadow-md">
-            <h2 className="text-xl font-bold text-gray-700 mb-2 -mt-4">Morning Activities:</h2>
             <div className="grid grid-cols-5 gap-3 -mb-4">
               {shuffledActivities.map((activity) => (
                 activity.order === null && (
