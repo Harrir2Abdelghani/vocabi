@@ -99,9 +99,13 @@ function GameBoard() {
   return ( 
     <div className="bg-gray-300 min-h-screen flex flex-col justify-center items-center"> 
       {gameFinished && <Confetti />} 
+<div className="flex items-center justify-center">
+  <h1 className="text-2xl font-bold text-blue-600 mt-20 -mb-4">
+    Click on the cards to find and match the job with its correct workplace
+  </h1>
+</div>
 
-
-      <div className="grid grid-cols-4 gap-10 mb-4 mt-10"> 
+      <div className="grid grid-cols-4 gap-10 mb-4 mt-6"> 
         { 
           cardsArray.map((item) => ( 
             <Card 
@@ -143,7 +147,7 @@ function GameBoard() {
   </button>
 </div>
 
-<div className="flex justify-center mt-4">
+<div className="flex justify-center mt-1">
   <button
     className="py-2 px-4 bg-blue-500 text-white rounded-lg shadow-lg hover:bg-blue-600 flex items-center"
     onClick={() => window.location.reload()}

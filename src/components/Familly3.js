@@ -44,7 +44,7 @@ const FamilySpellingGame = () => {
 
   return (
     <div className="min-h-screen flex flex-col items-center bg-pink-100 p-2">
-      <h1 className="text-3xl font-bold text-pink-600 mb-6">Family Members Spelling Game</h1>
+      <h1 className="text-xl font-bold text-pink-600 mt-20 mb-1">Can you guess the missing letters ?</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
         {familyMembers.map((member, memberIndex) => {
           const isWordComplete = answers[memberIndex] === member.solution;
@@ -55,8 +55,8 @@ const FamilySpellingGame = () => {
                 isWordComplete ? "bg-green-300" : "bg-yellow-200"
               }`}
             >
-              <img src={member.img} alt={member.solution} className="w-28 h-24 mb-3 rounded-2xl" />
-              <div className="flex items-center justify-center space-x-1 mb-4">
+              <img src={member.img} alt={member.solution} className="w-28 h-24 mb-1 rounded-2xl" />
+              <div className="flex items-center justify-center space-x-1 mb-2">
                 {member.word.split("").map((char, i) => {
                   const isCorrect = correctLetters[memberIndex]?.includes(i) || char !== "_";
                   return (
@@ -88,7 +88,7 @@ const FamilySpellingGame = () => {
           );
         })}
       </div>
-      <div className="flex flex-wrap justify-center mt-4">
+      <div className="flex flex-wrap justify-center mt-2">
         {"abcdefghijklmnopqrstuvwxyz".split("").map((char) => (
           <div
             key={char}
