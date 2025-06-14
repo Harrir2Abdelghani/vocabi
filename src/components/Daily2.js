@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Volume2, RotateCcw, Star, Trophy } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import Confetti from "react-confetti";
+import { useWindowSize } from "react-use";
 
-// Import existing images
+// Import images
 import brushTeethImg from "../Assets/brush-teeth.jpeg";
 import lunchImg from "../Assets/lunch.jpeg";
 import washFace from "../Assets/WashFace.jpeg";
@@ -21,10 +24,16 @@ const DailyRoutineQuiz = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [showResult, setShowResult] = useState(false);
+  const navigate = useNavigate();
+  const { width, height } = useWindowSize();
+
+  const goToNextPage = () => {
+    navigate('/daily3');
+  };
 
   const questions = [
     {
-      text: "Get up",
+      text: "I get up",
       correctAnswer: 0,
       choices: [
         { image: wakeUpImg, alt: "Child waking up in bed" },
@@ -33,7 +42,7 @@ const DailyRoutineQuiz = () => {
       ],
     },
     {
-      text: "Wash Face",
+      text: "I wash my face",
       correctAnswer: 0,
       choices: [
         { image: washFace, alt: "Child washing face" },
@@ -42,16 +51,16 @@ const DailyRoutineQuiz = () => {
       ],
     },
     {
-      text: "Brush teeth",
+      text: "I brush my teeth",
       correctAnswer: 1,
       choices: [
-        { image: candyImg, alt: "Candy and sweets" },
+        { image: sleepImg, alt: "Candy and sweets" },
         { image: brushTeethImg, alt: "Child brushing teeth" },
         { image: TvImg, alt: "Child watching television" },
       ],
     },
     {
-      text: "Eat lunch",
+      text: "I have lunch",
       correctAnswer: 0,
       choices: [
         { image: lunchImg, alt: "Child eating healthy lunch" },
@@ -60,7 +69,7 @@ const DailyRoutineQuiz = () => {
       ],
     },
     {
-      text: "Go to school",
+      text: "I go to school",
       correctAnswer: 2,
       choices: [
         { image: stayHomeImg, alt: "Child staying at home" },
@@ -70,7 +79,6 @@ const DailyRoutineQuiz = () => {
     },
   ];
 
-  // Define isNextButtonDisabled based on game completion
   const isNextButtonDisabled = !gameComplete;
 
   const playQuestion = () => {
@@ -79,7 +87,7 @@ const DailyRoutineQuiz = () => {
       const utterance = new SpeechSynthesisUtterance(
         questions[currentQuestion].text
       );
-      utterance.lang = "en-GB"; // British accent
+      utterance.lang = "en-GB";
       utterance.rate = 0.8;
       utterance.pitch = 1.2;
       utterance.volume = 1;
@@ -131,21 +139,18 @@ const DailyRoutineQuiz = () => {
   if (gameComplete) {
     return (
       <div className="max-w-2xl mt-20 mx-auto p-6 bg-gradient-to-br from-purple-400 via-pink-400 to-yellow-400 rounded-3xl shadow-2xl">
+        {score === questions.length && <Confetti width={width} height={height} />}
         <div className="bg-white rounded-2xl p-8 text-center">
           <Trophy className="w-20 h-20 text-yellow-500 mx-auto mb-4" />
           <h2 className="text-3xl font-bold text-gray-800 mb-4">
-            Quiz Complete!
+            {score === questions.length ? "Congratulations! 🎉" : "Quiz Complete!"}
           </h2>
           <div className="text-6xl mb-4">
-            {score === questions.length ? "🎉" : score >= 3 ? "🌟" : "👍"}
+            {score === questions.length ? "🏆" : score >= 3 ? "🌟" : "👍"}
           </div>
           <p className="text-xl text-gray-700 mb-4">
-            You got <span className="font-bold text-purple-600">{score}</span>{" "}
-            out of{" "}
-            <span className="font-bold text-purple-600">
-              {questions.length}
-            </span>{" "}
-            correct!
+            You got <span className="font-bold text-purple-600">{score}</span> out of{" "}
+            <span className="font-bold text-purple-600">{questions.length}</span> correct!
           </p>
           <button
             onClick={resetGame}
@@ -155,8 +160,6 @@ const DailyRoutineQuiz = () => {
             Play Again
           </button>
         </div>
-        
-        {/* Navigation buttons - only show when game is complete */}
         <div className="w-full fixed bottom-4 left-0 flex justify-between px-4">
           <button
             className="py-2 px-4 bg-red-500 text-white rounded-lg shadow-lg hover:bg-red-600"
@@ -166,7 +169,7 @@ const DailyRoutineQuiz = () => {
           </button>
           <button
             className="py-2 px-4 bg-red-500 hover:bg-red-600 text-white rounded-lg shadow-lg"
-            onClick={() => window.location.href = '/daily2'}
+            onClick={goToNextPage}
           >
             Next ➡
           </button>
@@ -185,7 +188,7 @@ const DailyRoutineQuiz = () => {
             </div>
             <div>
               <h1 className="text-2xl font-bold text-gray-800">
-                Daily Routine Quiz
+                Listen and choose the right picture
               </h1>
             </div>
           </div>
@@ -242,8 +245,6 @@ const DailyRoutineQuiz = () => {
           ))}
         </div>
       </div>
-      
-      {/* Navigation buttons - only show Previous during game, Next is disabled */}
       <div className="w-full fixed bottom-4 left-0 flex justify-between px-4">
         <button
           className="py-2 px-4 bg-red-500 text-white rounded-lg shadow-lg hover:bg-red-600"
@@ -252,8 +253,10 @@ const DailyRoutineQuiz = () => {
           ⬅ Previous
         </button>
         <button
-          className={`py-2 px-4 rounded-lg shadow-lg ${isNextButtonDisabled ? 'bg-gray-400 cursor-not-allowed' : 'bg-red-500 hover:bg-red-600'} text-white`}
-          onClick={() => !isNextButtonDisabled && (window.location.href = '/daily3')}
+          className={`py-2 px-4 rounded-lg shadow-lg ${
+            isNextButtonDisabled ? 'bg-gray-400 cursor-not-allowed' : 'bg-red-500 hover:bg-red-600'
+          } text-white`}
+          onClick={() => !isNextButtonDisabled && goToNextPage()}
           disabled={isNextButtonDisabled}
         >
           Next ➡

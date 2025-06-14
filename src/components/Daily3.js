@@ -23,9 +23,9 @@ const DailyRoutineQuiz = () => {
     image: wakeup,
     question: "What do I do when I wake up in the morning?",
     options: [
-      "Wake up and get out of bed",
-      "Wayk up and get out of bed",  
-      "Waik up and get out of bed"
+      "I wake up ",
+      "I wayk up ",  
+      "I waik up "
     ],
     correct: 0
   },
@@ -34,9 +34,9 @@ const DailyRoutineQuiz = () => {
     image: teeth,
     question: "What do I do to keep my teeth clean?",
     options: [
-      "Bruch my teeth",
-      "Brush my teeth",
-      "Brushe my teeth"
+      "I bruch my teeth",
+      "I brush my teeth",
+      "I brushe my teeth"
     ],
     correct: 1
   },
@@ -45,20 +45,20 @@ const DailyRoutineQuiz = () => {
     image: breakfest,
     question: "What do I do in the morning to get energy?",
     options: [
-      "Eet breakfast",
-      "Eate breakfast", 
-      "Eat breakfast"
+      "I have breakfast",
+      "I hav breakfast", 
+      "I have breakfest"
     ],
-    correct: 2
+    correct: 0
   },
   {
     id: 4,
     image: clothes,
     question: "What do I do to get ready for the day?",
     options: [
-      "Put my clothes on",
-      "Putt my clothes on",
-      "Pute my clothes on"
+      "I put my clothes on",
+      "I putt my clathes on",
+      "I pute my clothos on"
     ],
     correct: 0
   },
@@ -67,9 +67,9 @@ const DailyRoutineQuiz = () => {
     image: school,
     question: "Where do I go to learn new things?",
     options: [
-      "Go to scool",
-      "Go to skool",
-      "Go to school"
+      "I go to scool",
+      "I go to skool",
+      "I go to school"
     ],
     correct: 2
   },
@@ -277,7 +277,7 @@ const DailyRoutineQuiz = () => {
         {/* Header */}
         <div className="text-center mb-6">
           <h1 className="text-3xl font-bold text-gray-800 mb-3">
-            Daily Routine Quiz
+            Choose the right answer
           </h1>
         </div>
 
