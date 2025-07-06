@@ -21,19 +21,32 @@ import Daily2 from './components/Daily2';
 import Daily3 from './components/Daily3';
 
 const AppContent = () => {
-  const { isProfileComplete, updateProfile } = useUserProfile();
+  const { isProfileComplete, loading, updateProfile } = useUserProfile();
   const [showAvatarModal, setShowAvatarModal] = useState(false);
 
   useEffect(() => {
-    if (!isProfileComplete) {
+    // Only show modal if loading is complete and profile is not complete
+    if (!loading && !isProfileComplete) {
       setShowAvatarModal(true);
     }
-  }, [isProfileComplete]);
+  }, [isProfileComplete, loading]);
 
   const handleProfileComplete = (profile) => {
     updateProfile(profile);
     setShowAvatarModal(false);
   };
+
+  // Show loading screen while checking profile
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-6xl mb-4">🌟</div>
+          <h2 className="text-2xl font-bold text-white">Loading VOCABI...</h2>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="App">
