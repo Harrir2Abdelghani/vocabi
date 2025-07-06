@@ -39,7 +39,7 @@ const Navbar = () => {
     <nav className="bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 fixed w-full z-20 top-0 shadow-2xl border-b-4 border-white">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between p-3 mx-2">
         
-        {/* Logo Section with Animation */}
+        {/* Logo Section */}
         <motion.a
           href="/"
           className={`flex items-center space-x-3 transform transition-transform duration-1000 ${

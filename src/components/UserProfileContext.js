@@ -37,22 +37,30 @@ export const UserProfileProvider = ({ children }) => {
       // First check localStorage for immediate loading
       const localProfile = localStorage.getItem('vocabiUserProfile');
       if (localProfile) {
-        const profile = JSON.parse(localProfile);
-        if (profile && profile.name && profile.avatar) {
-          setUserProfile(profile);
-          setIsProfileComplete(true);
-          setLoading(false);
-          return; // Exit early if we have a valid local profile
+        try {
+          const profile = JSON.parse(localProfile);
+          if (profile && profile.name && profile.avatar) {
+            setUserProfile(profile);
+            setIsProfileComplete(true);
+            setLoading(false);
+            
+            // Sync with Supabase in background
+            syncWithSupabase(profile);
+            return;
+          }
+        } catch (e) {
+          console.error('Error parsing local profile:', e);
+          localStorage.removeItem('vocabiUserProfile');
         }
       }
 
-      // Then try to load from Supabase
+      // Try to load from Supabase
       const deviceId = getDeviceId();
       const { data, error } = await supabase
         .from('user_profiles')
         .select('*')
         .eq('device_id', deviceId)
-        .single();
+        .maybeSingle();
 
       if (data && !error) {
         // Convert database format to app format
@@ -81,6 +89,28 @@ export const UserProfileProvider = ({ children }) => {
     }
   };
 
+  const syncWithSupabase = async (profile) => {
+    try {
+      const deviceId = getDeviceId();
+      await supabase
+        .from('user_profiles')
+        .upsert({
+          device_id: deviceId,
+          name: profile.name,
+          gender: profile.gender,
+          avatar: profile.avatar,
+          score: profile.score || 0,
+          level: profile.level || 1,
+          games_completed: profile.gamesCompleted || 0,
+          updated_at: new Date().toISOString()
+        }, { 
+          onConflict: 'device_id'
+        });
+    } catch (error) {
+      console.error('Background sync failed:', error);
+    }
+  };
+
   const updateProfile = async (newProfile) => {
     try {
       const deviceId = getDeviceId();
@@ -100,23 +130,31 @@ export const UserProfileProvider = ({ children }) => {
       const { data, error } = await supabase
         .from('user_profiles')
         .upsert(completeProfile, { 
-          onConflict: 'device_id',
-          returning: 'representation'
+          onConflict: 'device_id'
         })
+        .select()
         .single();
 
-      if (error) throw error;
-
-      // Convert to app format
-      const profileData = {
-        name: data.name,
-        gender: data.gender,
-        avatar: data.avatar,
-        score: data.score || 0,
-        level: data.level || 1,
-        gamesCompleted: data.games_completed || 0,
-        device_id: data.device_id
-      };
+      let profileData;
+      if (data && !error) {
+        // Convert to app format
+        profileData = {
+          name: data.name,
+          gender: data.gender,
+          avatar: data.avatar,
+          score: data.score || 0,
+          level: data.level || 1,
+          gamesCompleted: data.games_completed || 0,
+          device_id: data.device_id
+        };
+      } else {
+        // Fallback to local data
+        profileData = { 
+          ...newProfile, 
+          gamesCompleted: newProfile.gamesCompleted || 0,
+          device_id: deviceId
+        };
+      }
 
       // Update local state
       setUserProfile(profileData);
