@@ -15,42 +15,32 @@ const GameCard = ({ route, index, title, description, emoji, color }) => (
     className="group"
   >
     <Link to={route}>
-      <div className={`relative rounded-2xl overflow-hidden h-[300px] w-72 shadow-lg border-2 border-white ${color} transition-all duration-300`}>
+      <div className={`relative rounded-3xl overflow-hidden h-80 w-64 shadow-xl ${color} transition-all duration-300`}>
         
-        {/* Level indicator */}
-        <div className="absolute top-3 left-3 bg-white rounded-full px-2 py-1 shadow-md z-30">
-          <span className="text-xs font-bold text-gray-700">{index + 1}</span>
+        {/* Game number */}
+        <div className="absolute top-4 left-4 bg-white/90 rounded-full w-8 h-8 flex items-center justify-center shadow-lg z-30">
+          <span className="text-sm font-black text-gray-700">{index + 1}</span>
         </div>
 
-        {/* Main emoji */}
-        <motion.div
-          className="absolute top-3 right-3 text-2xl z-30"
-          animate={{
-            rotate: [0, 20, -20, 0],
-          }}
-          transition={{
-            duration: 2,
-            repeat: Infinity,
-            delay: index * 0.3
-          }}
-        >
+        {/* Emoji */}
+        <div className="absolute top-4 right-4 text-3xl z-30">
           {emoji}
-        </motion.div>
+        </div>
 
-        {/* Inner Image */}
-        <div className="relative flex items-center justify-center h-full p-4">
+        {/* Image */}
+        <div className="flex items-center justify-center h-full p-6">
           <motion.img
             src={innerImage}
             alt="Numbers Game"
-            className="w-40 h-48 object-contain z-20 rounded-xl shadow-md"
+            className="w-48 h-56 object-cover rounded-2xl shadow-lg"
             whileHover={{ scale: 1.1 }}
             transition={{ duration: 0.3 }}
           />
         </div>
 
-        {/* Game Info Overlay */}
-        <div className="absolute bottom-0 left-0 right-0 bg-white/95 backdrop-blur-sm p-3 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-          <h3 className="font-bold text-lg text-gray-800 mb-1">{title}</h3>
+        {/* Info overlay */}
+        <div className="absolute bottom-0 left-0 right-0 bg-white/95 backdrop-blur-sm p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+          <h3 className="font-black text-xl text-gray-800 mb-2">{title}</h3>
           <p className="text-gray-600 text-sm">{description}</p>
         </div>
       </div>
@@ -63,55 +53,45 @@ const NumbersGames = () => {
     {
       route: "/numberswarmup",
       title: "Count & Match",
-      description: "Count objects and match numbers!",
+      description: "Count objects and match!",
       emoji: "🔢",
-      color: "bg-gradient-to-br from-blue-300 to-cyan-400"
+      color: "bg-gradient-to-br from-blue-400 to-cyan-500"
     },
     {
       route: "/numbers2",
       title: "Number Quiz",
-      description: "Find the right numbers quickly!",
+      description: "Find the right numbers!",
       emoji: "🧮",
-      color: "bg-gradient-to-br from-purple-300 to-indigo-400"
+      color: "bg-gradient-to-br from-purple-400 to-indigo-500"
     },
     {
       route: "/numbers3",
       title: "Math Magic",
-      description: "Solve math problems like a wizard!",
+      description: "Solve math problems!",
       emoji: "🪄",
-      color: "bg-gradient-to-br from-orange-300 to-red-400"
+      color: "bg-gradient-to-br from-orange-400 to-red-500"
     }
   ];
 
   return (
-    <div id="numbers-games" className="min-h-screen bg-gradient-to-br from-purple-100 via-blue-100 to-cyan-100 flex flex-col items-center p-6 relative overflow-hidden">
+    <div id="numbers-games" className="min-h-screen bg-gradient-to-br from-blue-50 to-cyan-50 flex flex-col items-center justify-center p-8">
       
-      {/* Header Section */}
+      {/* Simple Header */}
       <motion.div
         initial={{ opacity: 0, y: -30 }}
         animate={{ opacity: 1, y: 0 }}
-        className="text-center mb-8 mt-8 relative z-10"
+        className="text-center mb-12"
       >
-        <motion.div
-          className="inline-block bg-white rounded-full px-6 py-3 shadow-lg border-2 border-blue-300 mb-4"
-          whileHover={{ scale: 1.05 }}
-        >
-          <h2 className="text-2xl font-black text-blue-600">
-            🔢 Numbers World
-          </h2>
-        </motion.div>
-        <motion.p
-          className="text-lg font-semibold text-purple-700 bg-white/80 rounded-full px-4 py-2 inline-block"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.3 }}
-        >
-          Ready to learn? Pick a game! 🎮
-        </motion.p>
+        <h2 className="text-4xl font-black text-blue-700 mb-4">
+          🔢 Numbers World
+        </h2>
+        <p className="text-xl text-gray-600">
+          Pick a game to start learning! 🎯
+        </p>
       </motion.div>
 
       {/* Games Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl relative z-10">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {games.map((game, index) => (
           <GameCard
             key={index}

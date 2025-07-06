@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { supabase } from '../lib/supabase';
 
 const UserProfileContext = createContext();
 
@@ -13,95 +14,183 @@ export const useUserProfile = () => {
 export const UserProfileProvider = ({ children }) => {
   const [userProfile, setUserProfile] = useState(null);
   const [isProfileComplete, setIsProfileComplete] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  // Load profile from localStorage on mount
+  // Load profile from Supabase on mount
   useEffect(() => {
-    const savedProfile = localStorage.getItem('vocabiUserProfile');
-    if (savedProfile) {
-      try {
-        const profile = JSON.parse(savedProfile);
-        // Validate that the profile has required fields
+    loadUserProfile();
+  }, []);
+
+  const loadUserProfile = async () => {
+    try {
+      // First try localStorage for immediate loading
+      const localProfile = localStorage.getItem('vocabiUserProfile');
+      if (localProfile) {
+        const profile = JSON.parse(localProfile);
         if (profile && profile.name && profile.avatar) {
           setUserProfile(profile);
           setIsProfileComplete(true);
-        } else {
-          // Clear invalid profile
-          localStorage.removeItem('vocabiUserProfile');
         }
-      } catch (error) {
-        console.error('Error parsing saved profile:', error);
-        localStorage.removeItem('vocabiUserProfile');
       }
-    }
-  }, []);
 
-  // Save profile to localStorage whenever it changes
-  useEffect(() => {
-    if (userProfile && userProfile.name && userProfile.avatar) {
-      try {
-        localStorage.setItem('vocabiUserProfile', JSON.stringify(userProfile));
-      } catch (error) {
-        console.error('Error saving profile to localStorage:', error);
+      // Then sync with Supabase
+      const deviceId = getDeviceId();
+      const { data, error } = await supabase
+        .from('user_profiles')
+        .select('*')
+        .eq('device_id', deviceId)
+        .single();
+
+      if (data && !error) {
+        setUserProfile(data);
+        setIsProfileComplete(true);
+        // Update localStorage
+        localStorage.setItem('vocabiUserProfile', JSON.stringify(data));
       }
-    }
-  }, [userProfile]);
-
-  const updateProfile = (newProfile) => {
-    // Ensure the profile has all required fields
-    const completeProfile = {
-      name: newProfile.name || '',
-      gender: newProfile.gender || '',
-      avatar: newProfile.avatar || {},
-      score: newProfile.score || 0,
-      level: newProfile.level || 1,
-      gamesCompleted: newProfile.gamesCompleted || 0,
-      ...newProfile
-    };
-    
-    setUserProfile(completeProfile);
-    setIsProfileComplete(true);
-  };
-
-  const updateScore = (points) => {
-    if (userProfile) {
-      setUserProfile(prev => ({
-        ...prev,
-        score: prev.score + points
-      }));
+    } catch (error) {
+      console.error('Error loading profile:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const updateLevel = (newLevel) => {
-    if (userProfile) {
-      setUserProfile(prev => ({
-        ...prev,
-        level: Math.max(prev.level, newLevel)
-      }));
+  const getDeviceId = () => {
+    let deviceId = localStorage.getItem('vocabiDeviceId');
+    if (!deviceId) {
+      deviceId = 'device_' + Math.random().toString(36).substr(2, 9) + Date.now();
+      localStorage.setItem('vocabiDeviceId', deviceId);
     }
+    return deviceId;
   };
 
-  const completeGame = () => {
-    if (userProfile) {
-      setUserProfile(prev => ({
-        ...prev,
-        gamesCompleted: prev.gamesCompleted + 1
-      }));
-    }
-  };
-
-  const resetProfile = () => {
+  const updateProfile = async (newProfile) => {
     try {
+      const deviceId = getDeviceId();
+      const completeProfile = {
+        device_id: deviceId,
+        name: newProfile.name || '',
+        gender: newProfile.gender || '',
+        avatar: newProfile.avatar || {},
+        score: newProfile.score || 0,
+        level: newProfile.level || 1,
+        games_completed: newProfile.gamesCompleted || 0,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      };
+
+      // Save to Supabase
+      const { data, error } = await supabase
+        .from('user_profiles')
+        .upsert(completeProfile, { 
+          onConflict: 'device_id',
+          returning: 'representation'
+        })
+        .single();
+
+      if (error) throw error;
+
+      // Update local state
+      setUserProfile(data);
+      setIsProfileComplete(true);
+      
+      // Update localStorage
+      localStorage.setItem('vocabiUserProfile', JSON.stringify(data));
+    } catch (error) {
+      console.error('Error saving profile:', error);
+      // Fallback to localStorage only
+      const fallbackProfile = { ...newProfile, gamesCompleted: newProfile.gamesCompleted || 0 };
+      setUserProfile(fallbackProfile);
+      setIsProfileComplete(true);
+      localStorage.setItem('vocabiUserProfile', JSON.stringify(fallbackProfile));
+    }
+  };
+
+  const updateScore = async (points) => {
+    if (!userProfile) return;
+    
+    const updatedProfile = {
+      ...userProfile,
+      score: userProfile.score + points,
+      updated_at: new Date().toISOString()
+    };
+
+    try {
+      await supabase
+        .from('user_profiles')
+        .update({ score: updatedProfile.score, updated_at: updatedProfile.updated_at })
+        .eq('device_id', getDeviceId());
+    } catch (error) {
+      console.error('Error updating score:', error);
+    }
+
+    setUserProfile(updatedProfile);
+    localStorage.setItem('vocabiUserProfile', JSON.stringify(updatedProfile));
+  };
+
+  const updateLevel = async (newLevel) => {
+    if (!userProfile) return;
+    
+    const updatedProfile = {
+      ...userProfile,
+      level: Math.max(userProfile.level, newLevel),
+      updated_at: new Date().toISOString()
+    };
+
+    try {
+      await supabase
+        .from('user_profiles')
+        .update({ level: updatedProfile.level, updated_at: updatedProfile.updated_at })
+        .eq('device_id', getDeviceId());
+    } catch (error) {
+      console.error('Error updating level:', error);
+    }
+
+    setUserProfile(updatedProfile);
+    localStorage.setItem('vocabiUserProfile', JSON.stringify(updatedProfile));
+  };
+
+  const completeGame = async () => {
+    if (!userProfile) return;
+    
+    const updatedProfile = {
+      ...userProfile,
+      games_completed: userProfile.games_completed + 1,
+      updated_at: new Date().toISOString()
+    };
+
+    try {
+      await supabase
+        .from('user_profiles')
+        .update({ games_completed: updatedProfile.games_completed, updated_at: updatedProfile.updated_at })
+        .eq('device_id', getDeviceId());
+    } catch (error) {
+      console.error('Error updating games completed:', error);
+    }
+
+    setUserProfile(updatedProfile);
+    localStorage.setItem('vocabiUserProfile', JSON.stringify(updatedProfile));
+  };
+
+  const resetProfile = async () => {
+    try {
+      const deviceId = getDeviceId();
+      await supabase
+        .from('user_profiles')
+        .delete()
+        .eq('device_id', deviceId);
+      
       localStorage.removeItem('vocabiUserProfile');
       setUserProfile(null);
       setIsProfileComplete(false);
     } catch (error) {
-      console.error('Error removing profile from localStorage:', error);
+      console.error('Error resetting profile:', error);
     }
   };
 
   const value = {
     userProfile,
     isProfileComplete,
+    loading,
     updateProfile,
     updateScore,
     updateLevel,
