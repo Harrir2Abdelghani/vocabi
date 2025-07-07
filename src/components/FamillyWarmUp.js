@@ -12,6 +12,7 @@ import brotherImg from "../Assets/brother.png";
 import sisterImg from "../Assets/sister.png";
 import meImg from "../Assets/mee.png";
 import babyImg from "../Assets/baby.jpg";
+import GameWrapper from './GameSystem';
 
 // Family Members Data
 const initialFamilyMembers = [
@@ -84,10 +85,10 @@ const DropTarget = ({ familyMember, onDrop, isPlaced }) => {
         <img
           src={familyImages[familyMember.name]}
           alt={familyMember.name}
-          className="w-full h-full p-0 rounded-full object-cover  "
+          className="w-full h-full p-0 rounded-full object-cover"
         />
       ) : (
-        <div className="w-16 h-16 bg-transparent rounded-full"></div> // Placeholder circle
+        <div className="w-16 h-16 bg-transparent rounded-full"></div>
       )}
     </div>
   );
@@ -98,10 +99,17 @@ const FamilyTreeGame = () => {
   const [placedMembers, setPlacedMembers] = useState([]);
   const [showConfetti, setShowConfetti] = useState(false);
 
-  const handleDrop = (item, target) => {
+  const handleDrop = (item, target, gameProps) => {
     if (item.name === target.name) {
       setPlacedMembers((prev) => [...prev, target]);
       setAvailableMembers((prev) => prev.filter((member) => member.name !== item.name));
+      gameProps.addPoints(12); // Award points for correct placement
+    } else {
+      // Wrong placement - lose a heart
+      const canContinue = gameProps.loseHeart();
+      if (!canContinue) {
+        return; // Game over
+      }
     }
   };
 
@@ -111,63 +119,97 @@ const FamilyTreeGame = () => {
     }
   }, [placedMembers]);
 
-  const isNextButtonDisabled = placedMembers.length !== initialFamilyMembers.length;
+  const isComplete = placedMembers.length === initialFamilyMembers.length;
+
+  const GameContent = (gameProps) => {
+    // Check if game is complete
+    useEffect(() => {
+      if (isComplete && !gameProps.gameEnded) {
+        gameProps.gameComplete();
+      }
+    }, [isComplete, gameProps]);
+
+    if (gameProps.gameEnded) {
+      return null; // GameWrapper handles the end screen
+    }
+
+    return (
+      <DndProvider backend={HTML5Backend}>
+        <div className="relative w-screen h-screen overflow-hidden flex items-center justify-center bg-pink-200">
+          {showConfetti && <Confetti width={window.innerWidth} height={window.innerHeight - 50} />}
+
+          {/* Left Side Draggable Items */}
+          <div className="absolute left-5 top-1/2 transform -translate-y-1/2 flex flex-col gap-4 p-4">
+            {availableMembers
+              .filter((member) => member.position.left)
+              .map((member) => (
+                <DraggableItem key={member.id} name={member.name} />
+              ))}
+          </div>
+
+          {/* Family Tree Background */}
+          <div className="relative mt-20 flex items-center justify-center">
+            <img src={familyTreeBg} alt="Family Tree" className="w-[600px] h-[550px]" />
+
+            {/* Drop Targets */}
+            {initialFamilyMembers.map((member) => (
+              <DropTarget
+                key={member.id}
+                familyMember={member}
+                onDrop={(item, target) => handleDrop(item, target, gameProps)}
+                isPlaced={placedMembers.some((placed) => placed.id === member.id)}
+              />
+            ))}
+          </div>
+
+          {/* Right Side Draggable Items */}
+          <div className="absolute right-5 top-1/2 transform -translate-y-1/2 flex flex-col gap-4 p-4">
+            {availableMembers
+              .filter((member) => member.position.right)
+              .map((member) => (
+                <DraggableItem key={member.id} name={member.name} />
+              ))}
+          </div>
+
+          <div className="w-full fixed bottom-4 left-0 flex justify-between px-4">
+            <button
+              className="py-2 px-4 bg-red-500/80 backdrop-blur-sm text-white rounded-lg shadow-lg hover:bg-red-600/80 border border-white/20"
+              onClick={() => window.location.href = '/'}
+            >
+              ⬅ Previous
+            </button>
+            <button
+              className={`py-2 px-4 rounded-lg shadow-lg border border-white/20 backdrop-blur-sm ${
+                isComplete ? 'bg-red-500/80 hover:bg-red-600/80 text-white' : 'bg-gray-400/50 cursor-not-allowed text-gray-300'
+              }`}
+              onClick={() => !isComplete || (window.location.href = '/familly2')}
+              disabled={!isComplete}
+            >
+              Next ➡
+            </button>
+          </div>
+        </div>
+      </DndProvider>
+    );
+  };
 
   return (
-    <DndProvider backend={HTML5Backend}>
-      <div className="relative w-screen h-screen overflow-hidden flex items-center justify-center bg-pink-200">
-        {showConfetti && <Confetti width={window.innerWidth} height={window.innerHeight - 50} />}
-
-        {/* Left Side Draggable Items */}
-        <div className="absolute left-5 top-1/2 transform -translate-y-1/2 flex flex-col gap-4 p-4">
-          {availableMembers
-            .filter((member) => member.position.left)
-            .map((member) => (
-              <DraggableItem key={member.id} name={member.name} />
-            ))}
-        </div>
-
-        {/* Family Tree Background */}
-        <div className="relative mt-20 flex items-center justify-center">
-          <img src={familyTreeBg} alt="Family Tree" className="w-[600px] h-[550px]" />
-
-          {/* Drop Targets */}
-          {initialFamilyMembers.map((member) => (
-            <DropTarget
-              key={member.id}
-              familyMember={member}
-              onDrop={handleDrop}
-              isPlaced={placedMembers.some((placed) => placed.id === member.id)}
-            />
-          ))}
-        </div>
-
-        {/* Right Side Draggable Items */}
-        <div className="absolute right-5 top-1/2 transform -translate-y-1/2 flex flex-col gap-4 p-4">
-          {availableMembers
-            .filter((member) => member.position.right)
-            .map((member) => (
-              <DraggableItem key={member.id} name={member.name} />
-            ))}
-        </div>
-
-        <div className="w-full fixed bottom-4 left-0 flex justify-between px-4">
-          <button
-            className="py-2 px-4 bg-red-500 text-white rounded-lg shadow-lg hover:bg-red-600"
-            onClick={() => window.location.href = '/'}
-          >
-            ⬅ Previous
-          </button>
-          <button
-            className={`py-2 px-4 rounded-lg shadow-lg ${isNextButtonDisabled ? 'bg-gray-400' : 'bg-red-500 hover:bg-red-600'} text-white`}
-            onClick={() => !isNextButtonDisabled && (window.location.href = '/familly2')}
-            disabled={isNextButtonDisabled}
-          >
-            Next ➡
-          </button>
-        </div>
-      </div>
-    </DndProvider>
+    <GameWrapper
+      gameName="Family Tree"
+      maxTime={240} // 4 minutes
+      maxHearts={3}
+      onGameComplete={(result) => {
+        console.log('Game completed!', result);
+        setTimeout(() => {
+          window.location.href = '/familly2';
+        }, 3000);
+      }}
+      onGameFail={(result) => {
+        console.log('Game failed!', result);
+      }}
+    >
+      <GameContent />
+    </GameWrapper>
   );
 };
 

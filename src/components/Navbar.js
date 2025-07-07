@@ -243,18 +243,43 @@ const Navbar = () => {
                   </motion.div>
                 </motion.button>
 
-                {/* Games Dropdown Menu */}
+                {/* Games Dropdown Menu - Enhanced Background */}
                 <AnimatePresence>
                   {showGamesMenu && (
                     <motion.div
                       initial={{ opacity: 0, scale: 0.95, y: 10 }}
                       animate={{ opacity: 1, scale: 1, y: 0 }}
                       exit={{ opacity: 0, scale: 0.95, y: 10 }}
-                      className="absolute top-full mt-2 left-0 w-80 bg-white/10 backdrop-blur-2xl rounded-2xl shadow-2xl border border-white/20 overflow-hidden"
+                      className="absolute top-full mt-2 left-0 w-80 bg-gradient-to-br from-slate-900/95 via-purple-900/95 to-blue-900/95 backdrop-blur-2xl rounded-2xl shadow-2xl border border-white/20 overflow-hidden"
                       onMouseLeave={() => setShowGamesMenu(false)}
                     >
-                      <div className="p-4">
-                        <div className="text-white/80 text-xs font-bold uppercase tracking-wider mb-3">
+                      {/* Animated background pattern */}
+                      <div className="absolute inset-0 bg-gradient-to-br from-purple-600/10 via-pink-600/10 to-blue-600/10"></div>
+                      <div className="absolute inset-0 overflow-hidden">
+                        {[...Array(15)].map((_, i) => (
+                          <motion.div
+                            key={i}
+                            className="absolute w-1 h-1 bg-white/20 rounded-full"
+                            style={{
+                              left: `${Math.random() * 100}%`,
+                              top: `${Math.random() * 100}%`,
+                            }}
+                            animate={{
+                              scale: [0, 1, 0],
+                              opacity: [0, 0.8, 0],
+                            }}
+                            transition={{
+                              duration: 3,
+                              repeat: Infinity,
+                              delay: i * 0.2,
+                            }}
+                          />
+                        ))}
+                      </div>
+                      
+                      <div className="relative p-4">
+                        <div className="text-white/90 text-xs font-bold uppercase tracking-wider mb-3 flex items-center">
+                          <Sparkles className="w-3 h-3 mr-2" />
                           Choose Your Adventure
                         </div>
                         <div className="space-y-2">
@@ -269,7 +294,7 @@ const Navbar = () => {
                               whileHover={{ scale: 1.02 }}
                               onClick={() => setShowGamesMenu(false)}
                             >
-                              <div className="flex items-center space-x-3 p-3 rounded-xl hover:bg-white/10 transition-all duration-300">
+                              <div className="flex items-center space-x-3 p-3 rounded-xl hover:bg-white/10 transition-all duration-300 border border-transparent hover:border-white/20">
                                 <div className={`w-10 h-10 bg-gradient-to-br ${game.color} rounded-lg flex items-center justify-center shadow-lg`}>
                                   <span className="text-lg">{game.emoji}</span>
                                 </div>
@@ -294,21 +319,24 @@ const Navbar = () => {
               </div>
             </div>
 
-            {/* User Profile & Stats */}
+            {/* User Profile & Stats - Real-time Updates */}
             <div className="flex items-center space-x-3">
               
-              {/* Stats Display */}
+              {/* Stats Display - Enhanced with Real-time Updates */}
               {userProfile && (
                 <motion.div
                   initial={{ opacity: 0, x: 50 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.8, delay: 0.3 }}
                   className="hidden md:flex items-center space-x-2"
+                  key={`${userProfile.score}-${userProfile.level}-${userProfile.gamesCompleted}`} // Force re-render on updates
                 >
                   {/* Score */}
                   <motion.div
                     className="flex items-center space-x-1 bg-white/10 backdrop-blur-sm rounded-full px-3 py-1 border border-white/20"
                     whileHover={{ scale: 1.05, y: -2 }}
+                    animate={{ scale: [1, 1.1, 1] }}
+                    transition={{ duration: 0.5 }}
                   >
                     <motion.div
                       animate={{ rotate: [0, 360] }}
@@ -316,9 +344,14 @@ const Navbar = () => {
                     >
                       <Trophy className="w-3 h-3 text-yellow-400" />
                     </motion.div>
-                    <span className="font-black text-white text-xs">
+                    <motion.span 
+                      className="font-black text-white text-xs"
+                      key={userProfile.score}
+                      animate={{ scale: [1, 1.2, 1] }}
+                      transition={{ duration: 0.3 }}
+                    >
                       {userProfile.score}
-                    </span>
+                    </motion.span>
                   </motion.div>
 
                   {/* Level */}
@@ -327,9 +360,14 @@ const Navbar = () => {
                     whileHover={{ scale: 1.05, y: -2 }}
                   >
                     <Star className="w-3 h-3 text-blue-400" />
-                    <span className="font-black text-white text-xs">
+                    <motion.span 
+                      className="font-black text-white text-xs"
+                      key={userProfile.level}
+                      animate={{ scale: [1, 1.2, 1] }}
+                      transition={{ duration: 0.3 }}
+                    >
                       {userProfile.level}
-                    </span>
+                    </motion.span>
                   </motion.div>
 
                   {/* Games Completed */}
@@ -338,9 +376,14 @@ const Navbar = () => {
                     whileHover={{ scale: 1.05, y: -2 }}
                   >
                     <Award className="w-3 h-3 text-green-400" />
-                    <span className="font-black text-white text-xs">
+                    <motion.span 
+                      className="font-black text-white text-xs"
+                      key={userProfile.gamesCompleted}
+                      animate={{ scale: [1, 1.2, 1] }}
+                      transition={{ duration: 0.3 }}
+                    >
                       {userProfile.gamesCompleted}
-                    </span>
+                    </motion.span>
                   </motion.div>
                 </motion.div>
               )}
@@ -381,14 +424,14 @@ const Navbar = () => {
                     />
                   </motion.button>
 
-                  {/* Profile Dropdown */}
+                  {/* Profile Dropdown - Enhanced Background */}
                   <AnimatePresence>
                     {showProfileMenu && (
                       <motion.div
                         initial={{ opacity: 0, scale: 0.95, y: 10 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.95, y: 10 }}
-                        className="absolute right-0 mt-4 w-72 bg-white/10 backdrop-blur-2xl rounded-2xl shadow-2xl border border-white/20 overflow-hidden"
+                        className="absolute right-0 mt-4 w-72 bg-gradient-to-br from-slate-900/95 via-purple-900/95 to-blue-900/95 backdrop-blur-2xl rounded-2xl shadow-2xl border border-white/20 overflow-hidden"
                       >
                         {/* Profile Header */}
                         <div className="relative p-4 bg-gradient-to-br from-purple-600/30 via-pink-600/30 to-blue-600/30 text-white overflow-hidden">
@@ -413,12 +456,15 @@ const Navbar = () => {
                           </div>
                         </div>
 
-                        {/* Stats Section */}
+                        {/* Stats Section - Real-time Updates */}
                         <div className="p-4 space-y-3">
                           <div className="grid grid-cols-3 gap-2">
                             <motion.div
                               className="bg-gradient-to-br from-yellow-500/20 to-orange-500/20 rounded-xl p-3 text-center border border-white/10"
                               whileHover={{ scale: 1.05 }}
+                              key={userProfile.score}
+                              animate={{ scale: [1, 1.02, 1] }}
+                              transition={{ duration: 0.5 }}
                             >
                               <div className="text-lg mb-1">🏆</div>
                               <div className={`font-black text-sm ${getScoreColor(userProfile.score)}`}>
@@ -430,6 +476,9 @@ const Navbar = () => {
                             <motion.div
                               className="bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-xl p-3 text-center border border-white/10"
                               whileHover={{ scale: 1.05 }}
+                              key={userProfile.level}
+                              animate={{ scale: [1, 1.02, 1] }}
+                              transition={{ duration: 0.5 }}
                             >
                               <div className="text-lg mb-1">⭐</div>
                               <div className="font-black text-sm text-blue-400">
@@ -441,6 +490,9 @@ const Navbar = () => {
                             <motion.div
                               className="bg-gradient-to-br from-green-500/20 to-teal-500/20 rounded-xl p-3 text-center border border-white/10"
                               whileHover={{ scale: 1.05 }}
+                              key={userProfile.gamesCompleted}
+                              animate={{ scale: [1, 1.02, 1] }}
+                              transition={{ duration: 0.5 }}
                             >
                               <div className="text-lg mb-1">🎮</div>
                               <div className="font-black text-sm text-green-400">
@@ -493,7 +545,7 @@ const Navbar = () => {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              className="lg:hidden bg-white/10 backdrop-blur-2xl border-t border-white/20"
+              className="lg:hidden bg-gradient-to-br from-slate-900/95 via-purple-900/95 to-blue-900/95 backdrop-blur-2xl border-t border-white/20"
             >
               <div className="px-4 py-4 space-y-2">
                 <motion.a
