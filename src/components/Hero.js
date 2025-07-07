@@ -13,7 +13,7 @@ const Hero = () => {
   }, []);
 
   return (
-    <section className={`min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 flex items-center justify-center relative overflow-hidden transition-opacity duration-1000 ease-in-out ${
+    <section className={`min-h-screen -mt-10 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 flex items-center justify-center relative overflow-hidden transition-opacity duration-1000 ease-in-out ${
       isLoaded ? 'opacity-100' : 'opacity-0'
     }`}>
       
