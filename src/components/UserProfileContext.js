@@ -71,6 +71,10 @@ export const UserProfileProvider = ({ children }) => {
           score: data.score || 0,
           level: data.level || 1,
           gamesCompleted: data.games_completed || 0,
+          totalPlaytime: data.total_playtime || 0,
+          favoriteGame: data.favorite_game || '',
+          streakDays: data.streak_days || 0,
+          achievements: data.achievements || [],
           device_id: data.device_id
         };
         
@@ -102,6 +106,10 @@ export const UserProfileProvider = ({ children }) => {
           score: profile.score || 0,
           level: profile.level || 1,
           games_completed: profile.gamesCompleted || 0,
+          total_playtime: profile.totalPlaytime || 0,
+          favorite_game: profile.favoriteGame || '',
+          streak_days: profile.streakDays || 0,
+          achievements: profile.achievements || [],
           updated_at: new Date().toISOString()
         }, { 
           onConflict: 'device_id'
@@ -122,6 +130,10 @@ export const UserProfileProvider = ({ children }) => {
         score: newProfile.score || 0,
         level: newProfile.level || 1,
         games_completed: newProfile.gamesCompleted || 0,
+        total_playtime: newProfile.totalPlaytime || 0,
+        favorite_game: newProfile.favoriteGame || '',
+        streak_days: newProfile.streakDays || 0,
+        achievements: newProfile.achievements || [],
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString()
       };
@@ -145,6 +157,10 @@ export const UserProfileProvider = ({ children }) => {
           score: data.score || 0,
           level: data.level || 1,
           gamesCompleted: data.games_completed || 0,
+          totalPlaytime: data.total_playtime || 0,
+          favoriteGame: data.favorite_game || '',
+          streakDays: data.streak_days || 0,
+          achievements: data.achievements || [],
           device_id: data.device_id
         };
       } else {
@@ -152,6 +168,10 @@ export const UserProfileProvider = ({ children }) => {
         profileData = { 
           ...newProfile, 
           gamesCompleted: newProfile.gamesCompleted || 0,
+          totalPlaytime: newProfile.totalPlaytime || 0,
+          favoriteGame: newProfile.favoriteGame || '',
+          streakDays: newProfile.streakDays || 0,
+          achievements: newProfile.achievements || [],
           device_id: deviceId
         };
       }
@@ -168,6 +188,10 @@ export const UserProfileProvider = ({ children }) => {
       const fallbackProfile = { 
         ...newProfile, 
         gamesCompleted: newProfile.gamesCompleted || 0,
+        totalPlaytime: newProfile.totalPlaytime || 0,
+        favoriteGame: newProfile.favoriteGame || '',
+        streakDays: newProfile.streakDays || 0,
+        achievements: newProfile.achievements || [],
         device_id: getDeviceId()
       };
       setUserProfile(fallbackProfile);
@@ -248,11 +272,73 @@ export const UserProfileProvider = ({ children }) => {
     localStorage.setItem('vocabiUserProfile', JSON.stringify(updatedProfile));
   };
 
+  const updatePlaytime = async (minutes) => {
+    if (!userProfile) return;
+    
+    const updatedProfile = {
+      ...userProfile,
+      totalPlaytime: userProfile.totalPlaytime + minutes
+    };
+
+    try {
+      await supabase
+        .from('user_profiles')
+        .update({ 
+          total_playtime: updatedProfile.totalPlaytime, 
+          updated_at: new Date().toISOString() 
+        })
+        .eq('device_id', getDeviceId());
+    } catch (error) {
+      console.error('Error updating playtime:', error);
+    }
+
+    setUserProfile(updatedProfile);
+    localStorage.setItem('vocabiUserProfile', JSON.stringify(updatedProfile));
+  };
+
+  const addAchievement = async (achievement) => {
+    if (!userProfile) return;
+    
+    const achievements = userProfile.achievements || [];
+    if (achievements.includes(achievement)) return; // Already has this achievement
+    
+    const updatedProfile = {
+      ...userProfile,
+      achievements: [...achievements, achievement]
+    };
+
+    try {
+      await supabase
+        .from('user_profiles')
+        .update({ 
+          achievements: updatedProfile.achievements, 
+          updated_at: new Date().toISOString() 
+        })
+        .eq('device_id', getDeviceId());
+    } catch (error) {
+      console.error('Error adding achievement:', error);
+    }
+
+    setUserProfile(updatedProfile);
+    localStorage.setItem('vocabiUserProfile', JSON.stringify(updatedProfile));
+  };
+
   const resetProfile = async () => {
     try {
       const deviceId = getDeviceId();
       await supabase
         .from('user_profiles')
+        .delete()
+        .eq('device_id', deviceId);
+      
+      // Also clean up game sessions and stats
+      await supabase
+        .from('game_sessions')
+        .delete()
+        .eq('device_id', deviceId);
+        
+      await supabase
+        .from('game_stats')
         .delete()
         .eq('device_id', deviceId);
       
@@ -278,6 +364,8 @@ export const UserProfileProvider = ({ children }) => {
     updateScore,
     updateLevel,
     completeGame,
+    updatePlaytime,
+    addAchievement,
     resetProfile
   };
 

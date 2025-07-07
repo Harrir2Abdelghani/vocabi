@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Trophy, Star, Sparkles, Home, Calendar, Hash, Briefcase, Users, Sun, Menu, X } from 'lucide-react';
+import { Trophy, Star, Sparkles, Home, Calendar, Hash, Briefcase, Users, Sun, Menu, X, ChevronDown, Gamepad2, Award, Clock, Heart } from 'lucide-react';
 
 import logo from '../Assets/logo.jpg';
 import { useUserProfile } from './UserProfileContext';
@@ -8,6 +8,7 @@ import { useUserProfile } from './UserProfileContext';
 const Navbar = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
+  const [showGamesMenu, setShowGamesMenu] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const { userProfile, resetProfile } = useUserProfile();
@@ -45,34 +46,68 @@ const Navbar = () => {
     return 'BEGINNER! 🌱';
   };
 
-  const navigationItems = [
-    { name: 'Home', href: '/', icon: Home, emoji: '🏠', color: 'from-blue-500 to-purple-500' },
-    { name: 'Days', href: '#days-games', icon: Calendar, emoji: '📅', color: 'from-green-500 to-teal-500' },
-    { name: 'Numbers', href: '#numbers-games', icon: Hash, emoji: '🔢', color: 'from-orange-500 to-red-500' },
-    { name: 'Jobs', href: '#jobs-games', icon: Briefcase, emoji: '👷‍♂️', color: 'from-yellow-500 to-orange-500' },
-    { name: 'Family', href: '#familly-games', icon: Users, emoji: '👨‍👩‍👧‍👦', color: 'from-pink-500 to-purple-500' },
-    { name: 'Daily', href: '#daily-games', icon: Sun, emoji: '🌅', color: 'from-indigo-500 to-blue-500' }
+  const gameCategories = [
+    {
+      name: 'Days of Week',
+      href: '#days-games',
+      icon: Calendar,
+      emoji: '📅',
+      color: 'from-blue-500 to-cyan-500',
+      description: 'Learn weekdays with fun activities'
+    },
+    {
+      name: 'Numbers',
+      href: '#numbers-games',
+      icon: Hash,
+      emoji: '🔢',
+      color: 'from-purple-500 to-pink-500',
+      description: 'Count and solve number puzzles'
+    },
+    {
+      name: 'Jobs & Careers',
+      href: '#jobs-games',
+      icon: Briefcase,
+      emoji: '👷‍♂️',
+      color: 'from-green-500 to-emerald-500',
+      description: 'Discover different professions'
+    },
+    {
+      name: 'Family',
+      href: '#familly-games',
+      icon: Users,
+      emoji: '👨‍👩‍👧‍👦',
+      color: 'from-orange-500 to-red-500',
+      description: 'Learn about family members'
+    },
+    {
+      name: 'Daily Activities',
+      href: '#daily-games',
+      icon: Sun,
+      emoji: '🌅',
+      color: 'from-yellow-500 to-orange-500',
+      description: 'Practice daily routine words'
+    }
   ];
 
   return (
     <>
-      {/* Glassmorphism Navbar */}
+      {/* Ultra Modern Glassmorphism Navbar */}
       <motion.nav
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.8, ease: [0.6, -0.05, 0.01, 0.99] }}
         className={`fixed w-full z-50 top-0 transition-all duration-700 ${
           scrolled 
-            ? 'bg-white/10 backdrop-blur-xl border-b border-white/20 shadow-2xl' 
-            : 'bg-gradient-to-r from-purple-600/80 via-pink-600/80 to-blue-600/80 backdrop-blur-lg'
+            ? 'bg-white/5 backdrop-blur-2xl border-b border-white/10 shadow-2xl' 
+            : 'bg-gradient-to-r from-indigo-600/20 via-purple-600/20 to-pink-600/20 backdrop-blur-xl'
         }`}
       >
-        {/* Animated Background Elements */}
-        <div className="absolute inset-0 overflow-hidden">
-          {[...Array(20)].map((_, i) => (
+        {/* Animated Particles Background */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          {[...Array(30)].map((_, i) => (
             <motion.div
               key={i}
-              className="absolute w-2 h-2 bg-white/20 rounded-full"
+              className="absolute w-1 h-1 bg-white/30 rounded-full"
               style={{
                 left: `${Math.random() * 100}%`,
                 top: `${Math.random() * 100}%`,
@@ -80,9 +115,10 @@ const Navbar = () => {
               animate={{
                 scale: [0, 1, 0],
                 opacity: [0, 1, 0],
+                y: [0, -20, 0],
               }}
               transition={{
-                duration: 3,
+                duration: 4,
                 repeat: Infinity,
                 delay: i * 0.1,
               }}
@@ -91,11 +127,11 @@ const Navbar = () => {
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-20">
+          <div className="flex items-center justify-between h-16">
             
-            {/* Logo Section */}
+            {/* Logo Section - Enhanced */}
             <motion.div
-              className="flex items-center space-x-4"
+              className="flex items-center space-x-3"
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
@@ -106,7 +142,7 @@ const Navbar = () => {
                 whileTap={{ scale: 0.95 }}
               >
                 <motion.div
-                  className="w-14 h-14 bg-gradient-to-br from-yellow-400 via-orange-500 to-red-500 rounded-2xl flex items-center justify-center shadow-xl border-2 border-white/30"
+                  className="w-10 h-10 bg-gradient-to-br from-yellow-400 via-orange-500 to-red-500 rounded-xl flex items-center justify-center shadow-lg border border-white/20"
                   animate={{
                     rotate: [0, 360],
                     scale: [1, 1.05, 1],
@@ -116,20 +152,20 @@ const Navbar = () => {
                     scale: { duration: 2, repeat: Infinity }
                   }}
                 >
-                  <span className="text-2xl font-bold text-white">V</span>
+                  <span className="text-lg font-bold text-white">V</span>
                 </motion.div>
                 
                 {/* Floating sparkles */}
                 {[...Array(3)].map((_, i) => (
                   <motion.div
                     key={i}
-                    className="absolute text-yellow-300 text-lg"
+                    className="absolute text-yellow-300 text-sm"
                     style={{
-                      left: `${-10 + i * 30}%`,
-                      top: `${-20 + (i % 2) * 40}%`,
+                      left: `${-10 + i * 25}%`,
+                      top: `${-15 + (i % 2) * 30}%`,
                     }}
                     animate={{
-                      y: [0, -20, 0],
+                      y: [0, -15, 0],
                       opacity: [0, 1, 0],
                       rotate: [0, 180, 360]
                     }}
@@ -154,11 +190,11 @@ const Navbar = () => {
                   repeat: Infinity
                 }}
               >
-                <h1 className="text-3xl font-black bg-gradient-to-r from-white via-yellow-200 to-white bg-clip-text text-transparent">
+                <h1 className="text-2xl font-black bg-gradient-to-r from-white via-yellow-200 to-white bg-clip-text text-transparent">
                   VOCABI
                 </h1>
                 <motion.div
-                  className="h-1 bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 rounded-full"
+                  className="h-0.5 bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 rounded-full"
                   animate={{
                     scaleX: [0, 1, 0],
                   }}
@@ -170,94 +206,140 @@ const Navbar = () => {
               </motion.div>
             </motion.div>
 
-            {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center space-x-1">
-              {navigationItems.map((item, index) => (
-                <motion.a
-                  key={item.name}
-                  href={item.href}
-                  className="relative group"
-                  initial={{ opacity: 0, y: -20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.1 * index }}
+            {/* Desktop Navigation - Modern Dropdown */}
+            <div className="hidden lg:flex items-center space-x-2">
+              
+              {/* Home Button */}
+              <motion.a
+                href="/"
+                className="relative group"
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <div className="flex items-center space-x-2 px-4 py-2 rounded-xl text-white/90 hover:text-white transition-all duration-300 hover:bg-white/10 backdrop-blur-sm">
+                  <Home className="w-4 h-4" />
+                  <span className="font-bold text-sm">Home</span>
+                </div>
+              </motion.a>
+
+              {/* Games Dropdown */}
+              <div className="relative">
+                <motion.button
+                  onClick={() => setShowGamesMenu(!showGamesMenu)}
+                  className="flex items-center space-x-2 px-4 py-2 rounded-xl text-white/90 hover:text-white transition-all duration-300 hover:bg-white/10 backdrop-blur-sm"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  <div className="flex items-center space-x-2 px-4 py-2 rounded-xl text-white/90 hover:text-white transition-all duration-300 hover:bg-white/10 backdrop-blur-sm">
-                    <motion.div
-                      className="text-xl"
-                      animate={{
-                        rotate: [0, 10, -10, 0],
-                      }}
-                      transition={{
-                        duration: 4,
-                        repeat: Infinity,
-                        delay: index * 0.5
-                      }}
-                    >
-                      {item.emoji}
-                    </motion.div>
-                    <span className="font-bold text-sm">{item.name}</span>
-                  </div>
-                  
-                  {/* Hover effect */}
+                  <Gamepad2 className="w-4 h-4" />
+                  <span className="font-bold text-sm">Games</span>
                   <motion.div
-                    className={`absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r ${item.color} rounded-full`}
-                    initial={{ scaleX: 0 }}
-                    whileHover={{ scaleX: 1 }}
+                    animate={{ rotate: showGamesMenu ? 180 : 0 }}
                     transition={{ duration: 0.3 }}
-                  />
-                </motion.a>
-              ))}
+                  >
+                    <ChevronDown className="w-4 h-4" />
+                  </motion.div>
+                </motion.button>
+
+                {/* Games Dropdown Menu */}
+                <AnimatePresence>
+                  {showGamesMenu && (
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.95, y: 10 }}
+                      animate={{ opacity: 1, scale: 1, y: 0 }}
+                      exit={{ opacity: 0, scale: 0.95, y: 10 }}
+                      className="absolute top-full mt-2 left-0 w-80 bg-white/10 backdrop-blur-2xl rounded-2xl shadow-2xl border border-white/20 overflow-hidden"
+                      onMouseLeave={() => setShowGamesMenu(false)}
+                    >
+                      <div className="p-4">
+                        <div className="text-white/80 text-xs font-bold uppercase tracking-wider mb-3">
+                          Choose Your Adventure
+                        </div>
+                        <div className="space-y-2">
+                          {gameCategories.map((game, index) => (
+                            <motion.a
+                              key={game.name}
+                              href={game.href}
+                              className="group block"
+                              initial={{ opacity: 0, x: -20 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ duration: 0.3, delay: index * 0.1 }}
+                              whileHover={{ scale: 1.02 }}
+                              onClick={() => setShowGamesMenu(false)}
+                            >
+                              <div className="flex items-center space-x-3 p-3 rounded-xl hover:bg-white/10 transition-all duration-300">
+                                <div className={`w-10 h-10 bg-gradient-to-br ${game.color} rounded-lg flex items-center justify-center shadow-lg`}>
+                                  <span className="text-lg">{game.emoji}</span>
+                                </div>
+                                <div className="flex-1">
+                                  <div className="text-white font-bold text-sm">{game.name}</div>
+                                  <div className="text-white/60 text-xs">{game.description}</div>
+                                </div>
+                                <motion.div
+                                  className="text-white/40 group-hover:text-white/80 transition-colors"
+                                  whileHover={{ x: 5 }}
+                                >
+                                  →
+                                </motion.div>
+                              </div>
+                            </motion.a>
+                          ))}
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
             </div>
 
-            {/* User Profile & Mobile Menu */}
-            <div className="flex items-center space-x-4">
+            {/* User Profile & Stats */}
+            <div className="flex items-center space-x-3">
               
-              {/* User Profile */}
+              {/* Stats Display */}
               {userProfile && (
                 <motion.div
                   initial={{ opacity: 0, x: 50 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.8, delay: 0.3 }}
-                  className="hidden md:flex items-center space-x-3"
+                  className="hidden md:flex items-center space-x-2"
                 >
-                  {/* Score Display */}
+                  {/* Score */}
                   <motion.div
-                    className="flex items-center space-x-2 bg-white/20 backdrop-blur-sm rounded-full px-4 py-2 border border-white/30"
+                    className="flex items-center space-x-1 bg-white/10 backdrop-blur-sm rounded-full px-3 py-1 border border-white/20"
                     whileHover={{ scale: 1.05, y: -2 }}
                   >
                     <motion.div
                       animate={{ rotate: [0, 360] }}
                       transition={{ duration: 3, repeat: Infinity }}
                     >
-                      <Trophy className="w-4 h-4 text-yellow-400" />
+                      <Trophy className="w-3 h-3 text-yellow-400" />
                     </motion.div>
-                    <span className="font-black text-white text-sm">
+                    <span className="font-black text-white text-xs">
                       {userProfile.score}
                     </span>
-                    <motion.span
-                      className="text-lg"
-                      animate={{ scale: [1, 1.2, 1] }}
-                      transition={{ duration: 2, repeat: Infinity }}
-                    >
-                      {getScoreIcon(userProfile.score)}
-                    </motion.span>
                   </motion.div>
 
-                  {/* Level Display */}
+                  {/* Level */}
                   <motion.div
-                    className="flex items-center space-x-2 bg-white/20 backdrop-blur-sm rounded-full px-4 py-2 border border-white/30"
+                    className="flex items-center space-x-1 bg-white/10 backdrop-blur-sm rounded-full px-3 py-1 border border-white/20"
                     whileHover={{ scale: 1.05, y: -2 }}
                   >
-                    <motion.div
-                      animate={{ rotate: [0, 360], scale: [1, 1.1, 1] }}
-                      transition={{ duration: 2, repeat: Infinity }}
-                    >
-                      <Star className="w-4 h-4 text-blue-400" />
-                    </motion.div>
-                    <span className="font-black text-white text-sm">
-                      Lv.{userProfile.level}
+                    <Star className="w-3 h-3 text-blue-400" />
+                    <span className="font-black text-white text-xs">
+                      {userProfile.level}
+                    </span>
+                  </motion.div>
+
+                  {/* Games Completed */}
+                  <motion.div
+                    className="flex items-center space-x-1 bg-white/10 backdrop-blur-sm rounded-full px-3 py-1 border border-white/20"
+                    whileHover={{ scale: 1.05, y: -2 }}
+                  >
+                    <Award className="w-3 h-3 text-green-400" />
+                    <span className="font-black text-white text-xs">
+                      {userProfile.gamesCompleted}
                     </span>
                   </motion.div>
                 </motion.div>
@@ -273,7 +355,7 @@ const Navbar = () => {
                     whileTap={{ scale: 0.95 }}
                   >
                     <motion.div
-                      className={`w-12 h-12 ${userProfile.avatar?.color} rounded-full flex items-center justify-center border-2 border-white/50 shadow-xl`}
+                      className={`w-10 h-10 ${userProfile.avatar?.color} rounded-full flex items-center justify-center border-2 border-white/30 shadow-lg`}
                       animate={{
                         rotate: [0, 10, -10, 0],
                         scale: [1, 1.05, 1],
@@ -283,12 +365,12 @@ const Navbar = () => {
                         repeat: Infinity
                       }}
                     >
-                      <span className="text-xl">{userProfile.avatar?.emoji}</span>
+                      <span className="text-lg">{userProfile.avatar?.emoji}</span>
                     </motion.div>
                     
                     {/* Status indicator */}
                     <motion.div
-                      className="absolute -top-1 -right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-white"
+                      className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full border-2 border-white"
                       animate={{
                         scale: [1, 1.2, 1],
                       }}
@@ -306,45 +388,22 @@ const Navbar = () => {
                         initial={{ opacity: 0, scale: 0.95, y: 10 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.95, y: 10 }}
-                        className="absolute right-0 mt-4 w-80 bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 overflow-hidden"
+                        className="absolute right-0 mt-4 w-72 bg-white/10 backdrop-blur-2xl rounded-2xl shadow-2xl border border-white/20 overflow-hidden"
                       >
                         {/* Profile Header */}
-                        <div className="relative p-6 bg-gradient-to-br from-purple-600 via-pink-600 to-blue-600 text-white overflow-hidden">
-                          {/* Animated background */}
-                          <div className="absolute inset-0">
-                            {[...Array(15)].map((_, i) => (
-                              <motion.div
-                                key={i}
-                                className="absolute w-1 h-1 bg-white/30 rounded-full"
-                                style={{
-                                  left: `${Math.random() * 100}%`,
-                                  top: `${Math.random() * 100}%`,
-                                }}
-                                animate={{
-                                  scale: [0, 1, 0],
-                                  opacity: [0, 1, 0],
-                                }}
-                                transition={{
-                                  duration: 3,
-                                  repeat: Infinity,
-                                  delay: i * 0.2,
-                                }}
-                              />
-                            ))}
-                          </div>
-                          
-                          <div className="relative flex items-center space-x-4">
+                        <div className="relative p-4 bg-gradient-to-br from-purple-600/30 via-pink-600/30 to-blue-600/30 text-white overflow-hidden">
+                          <div className="relative flex items-center space-x-3">
                             <motion.div
-                              className={`w-16 h-16 ${userProfile.avatar?.color} rounded-full flex items-center justify-center border-3 border-white/50 shadow-xl`}
+                              className={`w-12 h-12 ${userProfile.avatar?.color} rounded-full flex items-center justify-center border-2 border-white/30 shadow-lg`}
                               animate={{ rotate: [0, 360] }}
                               transition={{ duration: 10, repeat: Infinity }}
                             >
-                              <span className="text-2xl">{userProfile.avatar?.emoji}</span>
+                              <span className="text-xl">{userProfile.avatar?.emoji}</span>
                             </motion.div>
                             <div>
-                              <h3 className="font-black text-xl">{userProfile.name}</h3>
+                              <h3 className="font-black text-lg">{userProfile.name}</h3>
                               <motion.p
-                                className="text-white/90 font-bold"
+                                className="text-white/80 font-bold text-sm"
                                 animate={{ scale: [1, 1.02, 1] }}
                                 transition={{ duration: 3, repeat: Infinity }}
                               >
@@ -355,48 +414,48 @@ const Navbar = () => {
                         </div>
 
                         {/* Stats Section */}
-                        <div className="p-6 space-y-4">
-                          <div className="grid grid-cols-2 gap-4">
+                        <div className="p-4 space-y-3">
+                          <div className="grid grid-cols-3 gap-2">
                             <motion.div
-                              className="bg-gradient-to-br from-yellow-100 to-orange-100 rounded-2xl p-4 text-center"
+                              className="bg-gradient-to-br from-yellow-500/20 to-orange-500/20 rounded-xl p-3 text-center border border-white/10"
                               whileHover={{ scale: 1.05 }}
                             >
-                              <div className="text-2xl mb-2">🏆</div>
-                              <div className={`font-black text-lg ${getScoreColor(userProfile.score)}`}>
+                              <div className="text-lg mb-1">🏆</div>
+                              <div className={`font-black text-sm ${getScoreColor(userProfile.score)}`}>
                                 {userProfile.score}
                               </div>
-                              <div className="text-xs text-gray-600 font-bold">POINTS</div>
+                              <div className="text-xs text-white/60 font-bold">POINTS</div>
                             </motion.div>
                             
                             <motion.div
-                              className="bg-gradient-to-br from-blue-100 to-purple-100 rounded-2xl p-4 text-center"
+                              className="bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-xl p-3 text-center border border-white/10"
                               whileHover={{ scale: 1.05 }}
                             >
-                              <div className="text-2xl mb-2">⭐</div>
-                              <div className="font-black text-lg text-blue-600">
+                              <div className="text-lg mb-1">⭐</div>
+                              <div className="font-black text-sm text-blue-400">
                                 {userProfile.level}
                               </div>
-                              <div className="text-xs text-gray-600 font-bold">LEVEL</div>
+                              <div className="text-xs text-white/60 font-bold">LEVEL</div>
+                            </motion.div>
+
+                            <motion.div
+                              className="bg-gradient-to-br from-green-500/20 to-teal-500/20 rounded-xl p-3 text-center border border-white/10"
+                              whileHover={{ scale: 1.05 }}
+                            >
+                              <div className="text-lg mb-1">🎮</div>
+                              <div className="font-black text-sm text-green-400">
+                                {userProfile.gamesCompleted}
+                              </div>
+                              <div className="text-xs text-white/60 font-bold">GAMES</div>
                             </motion.div>
                           </div>
-                          
-                          <motion.div
-                            className="bg-gradient-to-br from-green-100 to-teal-100 rounded-2xl p-4 text-center"
-                            whileHover={{ scale: 1.05 }}
-                          >
-                            <div className="text-2xl mb-2">🎮</div>
-                            <div className="font-black text-lg text-green-600">
-                              {userProfile.gamesCompleted}
-                            </div>
-                            <div className="text-xs text-gray-600 font-bold">GAMES COMPLETED</div>
-                          </motion.div>
                           
                           <motion.button
                             onClick={() => {
                               resetProfile();
                               setShowProfileMenu(false);
                             }}
-                            className="w-full py-3 bg-gradient-to-r from-red-500 to-pink-500 text-white rounded-2xl font-black hover:from-red-600 hover:to-pink-600 transition-all shadow-lg"
+                            className="w-full py-2 bg-gradient-to-r from-red-500/80 to-pink-500/80 text-white rounded-xl font-black hover:from-red-600/80 hover:to-pink-600/80 transition-all shadow-lg text-sm"
                             whileHover={{ scale: 1.02 }}
                             whileTap={{ scale: 0.98 }}
                           >
@@ -412,7 +471,7 @@ const Navbar = () => {
               {/* Mobile Menu Button */}
               <motion.button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="lg:hidden p-2 rounded-xl bg-white/20 backdrop-blur-sm border border-white/30 text-white"
+                className="lg:hidden p-2 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 text-white"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -420,7 +479,7 @@ const Navbar = () => {
                   animate={{ rotate: mobileMenuOpen ? 180 : 0 }}
                   transition={{ duration: 0.3 }}
                 >
-                  {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+                  {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
                 </motion.div>
               </motion.button>
             </div>
@@ -434,43 +493,52 @@ const Navbar = () => {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              className="lg:hidden bg-white/95 backdrop-blur-xl border-t border-white/20"
+              className="lg:hidden bg-white/10 backdrop-blur-2xl border-t border-white/20"
             >
               <div className="px-4 py-4 space-y-2">
-                {navigationItems.map((item, index) => (
+                <motion.a
+                  href="/"
+                  className="flex items-center space-x-3 px-4 py-3 rounded-xl hover:bg-white/10 transition-all group"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  <Home className="w-5 h-5 text-white/80" />
+                  <span className="font-bold text-white group-hover:text-white">Home</span>
+                </motion.a>
+                
+                {gameCategories.map((game, index) => (
                   <motion.a
-                    key={item.name}
-                    href={item.href}
-                    className="flex items-center space-x-3 px-4 py-3 rounded-xl hover:bg-purple-100 transition-all group"
+                    key={game.name}
+                    href={game.href}
+                    className="flex items-center space-x-3 px-4 py-3 rounded-xl hover:bg-white/10 transition-all group"
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.3, delay: index * 0.1 }}
                     onClick={() => setMobileMenuOpen(false)}
                   >
-                    <span className="text-xl">{item.emoji}</span>
-                    <span className="font-bold text-gray-800 group-hover:text-purple-600">
-                      {item.name}
+                    <span className="text-xl">{game.emoji}</span>
+                    <span className="font-bold text-white group-hover:text-white">
+                      {game.name}
                     </span>
                   </motion.a>
                 ))}
                 
                 {/* Mobile Stats */}
                 {userProfile && (
-                  <div className="pt-4 border-t border-gray-200">
+                  <div className="pt-4 border-t border-white/20">
                     <div className="flex justify-between items-center px-4 py-2">
                       <div className="flex items-center space-x-2">
-                        <Trophy className="w-4 h-4 text-yellow-500" />
-                        <span className="font-bold text-sm text-gray-700">
-                          {userProfile.score} {getScoreIcon(userProfile.score)}
+                        <Trophy className="w-4 h-4 text-yellow-400" />
+                        <span className="font-bold text-sm text-white">
+                          {userProfile.score}
                         </span>
                       </div>
                       <div className="flex items-center space-x-2">
-                        <Star className="w-4 h-4 text-blue-500" />
-                        <span className="font-bold text-sm text-gray-700">
+                        <Star className="w-4 h-4 text-blue-400" />
+                        <span className="font-bold text-sm text-white">
                           Level {userProfile.level}
                         </span>
                       </div>
-                      <div className="text-sm text-gray-600 font-bold">
+                      <div className="text-sm text-white/60 font-bold">
                         🎮 {userProfile.gamesCompleted}
                       </div>
                     </div>
@@ -483,7 +551,7 @@ const Navbar = () => {
       </motion.nav>
 
       {/* Spacer */}
-      <div className="h-20"></div>
+      <div className="h-16"></div>
     </>
   );
 };
