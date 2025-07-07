@@ -256,11 +256,18 @@ export const UserProfileProvider = ({ children }) => {
       gamesCompleted: userProfile.gamesCompleted + 1
     };
 
+    // Auto-level up based on games completed (every 3 games = 1 level)
+    const newLevel = Math.floor(updatedProfile.gamesCompleted / 3) + 1;
+    if (newLevel > updatedProfile.level) {
+      updatedProfile.level = newLevel;
+    }
+
     try {
       await supabase
         .from('user_profiles')
         .update({ 
-          games_completed: updatedProfile.gamesCompleted, 
+          games_completed: updatedProfile.gamesCompleted,
+          level: updatedProfile.level,
           updated_at: new Date().toISOString() 
         })
         .eq('device_id', getDeviceId());

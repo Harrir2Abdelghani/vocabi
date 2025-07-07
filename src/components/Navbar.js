@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Trophy, Star, Sparkles, Home, Calendar, Hash, Briefcase, Users, Sun, Menu, X, ChevronDown, Gamepad2, Award, Clock, Heart } from 'lucide-react';
+import { Trophy, Star, Sparkles, Home, Calendar, Hash, Briefcase, Users, Sun, Menu, X, ChevronDown, Gamepad2, Award, Clock, Heart, Crown } from 'lucide-react';
 
 import logo from '../Assets/logo.jpg';
 import { useUserProfile } from './UserProfileContext';
+import Leaderboard from './Leaderboard';
 
 const Navbar = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showGamesMenu, setShowGamesMenu] = useState(false);
+  const [showLeaderboard, setShowLeaderboard] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const { userProfile, resetProfile } = useUserProfile();
@@ -23,6 +25,22 @@ const Navbar = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Calculate level based on games completed (auto-level progression)
+  const calculateLevel = (gamesCompleted) => {
+    return Math.floor(gamesCompleted / 3) + 1; // Level up every 3 games
+  };
+
+  // Update level automatically based on games completed
+  useEffect(() => {
+    if (userProfile) {
+      const expectedLevel = calculateLevel(userProfile.gamesCompleted);
+      if (expectedLevel > userProfile.level) {
+        // Auto level up!
+        userProfile.level = expectedLevel;
+      }
+    }
+  }, [userProfile?.gamesCompleted]);
 
   const getScoreColor = (score) => {
     if (score >= 1000) return 'text-purple-600';
@@ -317,6 +335,17 @@ const Navbar = () => {
                   )}
                 </AnimatePresence>
               </div>
+
+              {/* Leaderboard Button */}
+              <motion.button
+                onClick={() => setShowLeaderboard(true)}
+                className="flex items-center space-x-2 px-4 py-2 rounded-xl text-white/90 hover:text-white transition-all duration-300 hover:bg-white/10 backdrop-blur-sm"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Crown className="w-4 h-4" />
+                <span className="font-bold text-sm">Leaderboard</span>
+              </motion.button>
             </div>
 
             {/* User Profile & Stats - Real-time Updates */}
@@ -329,7 +358,7 @@ const Navbar = () => {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.8, delay: 0.3 }}
                   className="hidden md:flex items-center space-x-2"
-                  key={`${userProfile.score}-${userProfile.level}-${userProfile.gamesCompleted}`} // Force re-render on updates
+                  key={`${userProfile.score}-${calculateLevel(userProfile.gamesCompleted)}-${userProfile.gamesCompleted}`} // Force re-render on updates
                 >
                   {/* Score */}
                   <motion.div
@@ -354,7 +383,7 @@ const Navbar = () => {
                     </motion.span>
                   </motion.div>
 
-                  {/* Level */}
+                  {/* Level - Auto-calculated */}
                   <motion.div
                     className="flex items-center space-x-1 bg-white/10 backdrop-blur-sm rounded-full px-3 py-1 border border-white/20"
                     whileHover={{ scale: 1.05, y: -2 }}
@@ -362,11 +391,11 @@ const Navbar = () => {
                     <Star className="w-3 h-3 text-blue-400" />
                     <motion.span 
                       className="font-black text-white text-xs"
-                      key={userProfile.level}
+                      key={calculateLevel(userProfile.gamesCompleted)}
                       animate={{ scale: [1, 1.2, 1] }}
                       transition={{ duration: 0.3 }}
                     >
-                      {userProfile.level}
+                      {calculateLevel(userProfile.gamesCompleted)}
                     </motion.span>
                   </motion.div>
 
@@ -450,7 +479,7 @@ const Navbar = () => {
                                 animate={{ scale: [1, 1.02, 1] }}
                                 transition={{ duration: 3, repeat: Infinity }}
                               >
-                                {getLevelTitle(userProfile.level)}
+                                {getLevelTitle(calculateLevel(userProfile.gamesCompleted))}
                               </motion.p>
                             </div>
                           </div>
@@ -476,13 +505,13 @@ const Navbar = () => {
                             <motion.div
                               className="bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-xl p-3 text-center border border-white/10"
                               whileHover={{ scale: 1.05 }}
-                              key={userProfile.level}
+                              key={calculateLevel(userProfile.gamesCompleted)}
                               animate={{ scale: [1, 1.02, 1] }}
                               transition={{ duration: 0.5 }}
                             >
                               <div className="text-lg mb-1">⭐</div>
                               <div className="font-black text-sm text-blue-400">
-                                {userProfile.level}
+                                {calculateLevel(userProfile.gamesCompleted)}
                               </div>
                               <div className="text-xs text-white/60 font-bold">LEVEL</div>
                             </motion.div>
@@ -573,6 +602,18 @@ const Navbar = () => {
                     </span>
                   </motion.a>
                 ))}
+
+                {/* Mobile Leaderboard */}
+                <motion.button
+                  onClick={() => {
+                    setShowLeaderboard(true);
+                    setMobileMenuOpen(false);
+                  }}
+                  className="flex items-center space-x-3 px-4 py-3 rounded-xl hover:bg-white/10 transition-all group w-full text-left"
+                >
+                  <Crown className="w-5 h-5 text-white/80" />
+                  <span className="font-bold text-white group-hover:text-white">Leaderboard</span>
+                </motion.button>
                 
                 {/* Mobile Stats */}
                 {userProfile && (
@@ -587,7 +628,7 @@ const Navbar = () => {
                       <div className="flex items-center space-x-2">
                         <Star className="w-4 h-4 text-blue-400" />
                         <span className="font-bold text-sm text-white">
-                          Level {userProfile.level}
+                          Level {calculateLevel(userProfile.gamesCompleted)}
                         </span>
                       </div>
                       <div className="text-sm text-white/60 font-bold">
@@ -601,6 +642,12 @@ const Navbar = () => {
           )}
         </AnimatePresence>
       </motion.nav>
+
+      {/* Leaderboard Modal */}
+      <Leaderboard 
+        isOpen={showLeaderboard} 
+        onClose={() => setShowLeaderboard(false)} 
+      />
 
       {/* Spacer */}
       <div className="h-16"></div>
