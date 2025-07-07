@@ -100,29 +100,6 @@ const Hero = () => {
                 Learn More
               </motion.button>
             </motion.div>
-
-            {/* Simple Stats (if user logged in) */}
-            {userProfile && (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.4 }}
-                className="flex gap-8 justify-center lg:justify-start text-center"
-              >
-                <div>
-                  <div className="text-2xl font-bold text-gray-900">{userProfile.score}</div>
-                  <div className="text-sm text-gray-500">Points Earned</div>
-                </div>
-                <div>
-                  <div className="text-2xl font-bold text-gray-900">{userProfile.level}</div>
-                  <div className="text-sm text-gray-500">Current Level</div>
-                </div>
-                <div>
-                  <div className="text-2xl font-bold text-gray-900">{userProfile.gamesCompleted}</div>
-                  <div className="text-sm text-gray-500">Games Completed</div>
-                </div>
-              </motion.div>
-            )}
           </div>
 
           {/* Hero Image Section */}
@@ -139,18 +116,6 @@ const Hero = () => {
                 alt="Learning Experience"
               />
               
-              {/* Subtle floating card */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.6 }}
-                className="absolute -bottom-6 -left-6 bg-white rounded-2xl p-4 shadow-xl border border-gray-100"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
-                  <span className="text-sm font-medium text-gray-700">1,200+ students learning</span>
-                </div>
-              </motion.div>
             </div>
           </motion.div>
         </div>
