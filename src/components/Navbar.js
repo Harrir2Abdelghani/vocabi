@@ -2,35 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Trophy, Star, Sparkles, Home, Calendar, Hash, Briefcase, Users, Sun, Menu, X } from 'lucide-react';
 
-// Mock components for demo
-const UserProfileContext = React.createContext();
-const useUserProfile = () => {
-  const [userProfile, setUserProfile] = useState({
-    name: 'Alex Johnson',
-    score: 1250,
-    level: 8,
-    gamesCompleted: 42,
-    avatar: {
-      emoji: '🎯',
-      color: 'bg-gradient-to-br from-purple-500 to-pink-500'
-    }
-  });
-  
-  const resetProfile = () => {
-    setUserProfile({
-      name: 'New Player',
-      score: 0,
-      level: 1,
-      gamesCompleted: 0,
-      avatar: {
-        emoji: '😊',
-        color: 'bg-gradient-to-br from-blue-500 to-purple-500'
-      }
-    });
-  };
-  
-  return { userProfile, resetProfile };
-};
+import logo from '../Assets/logo.jpg';
+import { useUserProfile } from './UserProfileContext';
 
 const Navbar = () => {
   const [isVisible, setIsVisible] = useState(false);
