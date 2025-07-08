@@ -2,6 +2,7 @@ import React from "react";
 import Data from "./Data"; 
 import Card from "./Card"; 
 import Confetti from 'react-confetti';
+import GameWrapper from './GameSystem';
 
 function GameBoard() { 
   const [cardsArray, setCardsArray] = React.useState([]); 
@@ -11,10 +12,8 @@ function GameBoard() {
   const [stopFlip, setStopFlip] = React.useState(false); 
   const [won, setWon] = React.useState(0); 
   const [gameFinished, setGameFinished] = React.useState(false); 
-  const [currentRound, setCurrentRound] = React.useState(0); 
   
   const totalRounds = 6; 
-  
   
   function NewGame() { 
     setTimeout(() => { 
@@ -28,8 +27,7 @@ function GameBoard() {
     }, 1200); 
   } 
 
-  
-  function handleSelectedCards(item) { 
+  function handleSelectedCards(item, gameProps) { 
     if (firstCard !== null && firstCard.id !== item.id) { 
       setSecondCard(item); 
     } else { 
@@ -37,7 +35,6 @@ function GameBoard() {
     } 
   } 
 
-  
   React.useEffect(() => { 
     if (firstCard && secondCard) { 
       setStopFlip(true); 
@@ -61,7 +58,6 @@ function GameBoard() {
     } 
   }, [firstCard, secondCard]); 
 
-  
   function removeSelection() { 
     setFirstCard(null); 
     setSecondCard(null); 
@@ -69,94 +65,122 @@ function GameBoard() {
     setMoves((prevValue) => prevValue + 1); 
   } 
 
-  
   React.useEffect(() => { 
     NewGame(); 
   }, []); 
 
-  
   React.useEffect(() => {
     if (won === totalRounds) {
       setGameFinished(true);
     }
   }, [won]);
 
-  
-  function handleNext() {
-    if (gameFinished && currentRound < totalRounds - 1) {
-      setCurrentRound(currentRound + 1);
-      NewGame();
+  const GameContent = (gameProps) => {
+    // Check if game is complete
+    React.useEffect(() => {
+      if (gameFinished && !gameProps.gameEnded) {
+        gameProps.gameComplete();
+      }
+    }, [gameFinished, gameProps]);
+
+    // Award points for matches
+    React.useEffect(() => {
+      if (firstCard && secondCard && firstCard.name === secondCard.name) {
+        gameProps.addPoints(20); // Award points for correct match
+      } else if (firstCard && secondCard && firstCard.name !== secondCard.name) {
+        // Wrong match - lose a heart
+        const canContinue = gameProps.loseHeart();
+        if (!canContinue) {
+          return; // Game over
+        }
+      }
+    }, [won]);
+
+    if (gameProps.gameEnded) {
+      return null; // GameWrapper handles the end screen
     }
-  }
 
-  function handlePrevious() {
-    if (currentRound > 0) {
-      setCurrentRound(currentRound - 1);
-      NewGame();
-    }
-  }
+    return (
+      <div className="bg-gray-300 min-h-screen flex flex-col justify-center items-center"> 
+        {gameFinished && <Confetti />} 
+        <div className="flex items-center justify-center">
+          <h1 className="text-2xl font-bold text-blue-600 mt-20 -mb-4">
+            Click on the cards to find and match the job with its correct workplace
+          </h1>
+        </div>
 
-  return ( 
-    <div className="bg-gray-300 min-h-screen flex flex-col justify-center items-center"> 
-      {gameFinished && <Confetti />} 
-<div className="flex items-center justify-center">
-  <h1 className="text-2xl font-bold text-blue-600 mt-20 -mb-4">
-    Click on the cards to find and match the job with its correct workplace
-  </h1>
-</div>
+        <div className="grid grid-cols-4 gap-10 mb-4 mt-6"> 
+          { 
+            cardsArray.map((item) => ( 
+              <Card 
+                item={item} 
+                key={item.id} 
+                handleSelectedCards={(item) => handleSelectedCards(item, gameProps)}
+                toggled={ 
+                  item === firstCard || 
+                  item === secondCard || 
+                  item.matched === true
+                } 
+                stopflip={stopFlip} 
+              /> 
+            )) 
+          } 
+        </div> 
 
-      <div className="grid grid-cols-4 gap-10 mb-4 mt-6"> 
-        { 
-          cardsArray.map((item) => ( 
-            <Card 
-              item={item} 
-              key={item.id} 
-              handleSelectedCards={handleSelectedCards} 
-              toggled={ 
-                item === firstCard || 
-                item === secondCard || 
-                item.matched === true
-              } 
-              stopflip={stopFlip} 
-            /> 
-          )) 
-        } 
+        {won !== totalRounds ? ( 
+          <div className="text-xl text-gray-700"></div> 
+        ) : ( 
+          <div className="text-2xl text-green-500 font-semibold">You Won! 🎉</div> 
+        )}
+
+        <div className="w-full fixed bottom-4 left-0 flex justify-between px-4">
+          <button
+            className="py-2 px-4 bg-red-500/80 backdrop-blur-sm text-white rounded-lg shadow-lg hover:bg-red-600/80 border border-white/20"
+            onClick={() => window.location.href = '/'}
+          >
+            ⬅ Previous
+          </button>
+          <button
+            className={`py-2 px-4 text-white rounded-lg shadow-lg border border-white/20 backdrop-blur-sm ${
+              gameFinished ? "bg-red-500/80 hover:bg-red-600/80" : "bg-gray-400/50 cursor-not-allowed"
+            }`}
+            onClick={() => window.location.href = '/jobs2'}
+            disabled={!gameFinished}
+          >
+            Next ➡
+          </button>
+        </div>
+
+        <div className="flex justify-center mt-1">
+          <button
+            className="py-2 px-4 bg-blue-500/80 backdrop-blur-sm text-white rounded-lg shadow-lg hover:bg-blue-600/80 flex items-center border border-white/20"
+            onClick={() => window.location.reload()}
+          >
+            🔄 Restart Game
+          </button>
+        </div>
       </div> 
+    );
+  };
 
-      {won !== totalRounds ? ( 
-        <div className="text-xl text-gray-700"></div> 
-      ) : ( 
-        <div className="text-2xl text-green-500 font-semibold">You Won! 🎉</div> 
-      )}
-
-<div className="w-full fixed bottom-4 left-0 flex justify-between px-4">
-  <button
-    className="py-2 px-4 bg-red-500 text-white rounded-lg shadow-lg hover:bg-red-600"
-    onClick={() => window.location.href = '/'}
-  >
-    ⬅ Previous
-  </button>
-  <button
-    className={`py-2 px-4 text-white rounded-lg shadow-lg ${
-      gameFinished ? "bg-red-500 hover:bg-red-600" : "bg-gray-400 cursor-not-allowed"
-    }`}
-    onClick={() => window.location.href = '/jobs2'}
-    disabled={!gameFinished} // Disable button if game is not finished
-  >
-    Next ➡
-  </button>
-</div>
-
-<div className="flex justify-center mt-1">
-  <button
-    className="py-2 px-4 bg-blue-500 text-white rounded-lg shadow-lg hover:bg-blue-600 flex items-center"
-    onClick={() => window.location.reload()}
-  >
-    🔄 Restart Game
-  </button>
-</div>
-    </div> 
-  ); 
+  return (
+    <GameWrapper
+      gameName="Job Match"
+      maxTime={300} // 5 minutes
+      maxHearts={3}
+      onGameComplete={(result) => {
+        console.log('Game completed!', result);
+        setTimeout(() => {
+          window.location.href = '/jobs2';
+        }, 3000);
+      }}
+      onGameFail={(result) => {
+        console.log('Game failed!', result);
+      }}
+    >
+      <GameContent />
+    </GameWrapper>
+  );
 } 
 
 export default GameBoard;
