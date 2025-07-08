@@ -176,7 +176,7 @@ export const UserProfileProvider = ({ children }) => {
         };
       }
 
-      // Update local state
+      // Update local state IMMEDIATELY
       setUserProfile(profileData);
       setIsProfileComplete(true);
       
@@ -200,31 +200,40 @@ export const UserProfileProvider = ({ children }) => {
     }
   };
 
-  const updateScore = async (points) => {
+  // INSTANT SCORE UPDATE - This is the key fix!
+  const updateScore = (points) => {
     if (!userProfile) return;
     
+    // IMMEDIATE local state update for instant UI response
     const updatedProfile = {
       ...userProfile,
       score: userProfile.score + points
     };
 
+    // Update state IMMEDIATELY
+    setUserProfile(updatedProfile);
+    localStorage.setItem('vocabiUserProfile', JSON.stringify(updatedProfile));
+
+    // Background database sync (don't wait for it)
+    syncScoreToDatabase(updatedProfile.score);
+  };
+
+  const syncScoreToDatabase = async (newScore) => {
     try {
       await supabase
         .from('user_profiles')
         .update({ 
-          score: updatedProfile.score, 
+          score: newScore, 
           updated_at: new Date().toISOString() 
         })
         .eq('device_id', getDeviceId());
     } catch (error) {
-      console.error('Error updating score:', error);
+      console.error('Error syncing score to database:', error);
     }
-
-    setUserProfile(updatedProfile);
-    localStorage.setItem('vocabiUserProfile', JSON.stringify(updatedProfile));
   };
 
-  const updateLevel = async (newLevel) => {
+  // INSTANT LEVEL UPDATE
+  const updateLevel = (newLevel) => {
     if (!userProfile) return;
     
     const updatedProfile = {
@@ -232,23 +241,30 @@ export const UserProfileProvider = ({ children }) => {
       level: Math.max(userProfile.level, newLevel)
     };
 
+    // Update state IMMEDIATELY
+    setUserProfile(updatedProfile);
+    localStorage.setItem('vocabiUserProfile', JSON.stringify(updatedProfile));
+
+    // Background database sync
+    syncLevelToDatabase(updatedProfile.level);
+  };
+
+  const syncLevelToDatabase = async (newLevel) => {
     try {
       await supabase
         .from('user_profiles')
         .update({ 
-          level: updatedProfile.level, 
+          level: newLevel, 
           updated_at: new Date().toISOString() 
         })
         .eq('device_id', getDeviceId());
     } catch (error) {
-      console.error('Error updating level:', error);
+      console.error('Error syncing level to database:', error);
     }
-
-    setUserProfile(updatedProfile);
-    localStorage.setItem('vocabiUserProfile', JSON.stringify(updatedProfile));
   };
 
-  const completeGame = async () => {
+  // INSTANT GAME COMPLETION UPDATE
+  const completeGame = () => {
     if (!userProfile) return;
     
     const updatedProfile = {
@@ -262,24 +278,30 @@ export const UserProfileProvider = ({ children }) => {
       updatedProfile.level = newLevel;
     }
 
+    // Update state IMMEDIATELY
+    setUserProfile(updatedProfile);
+    localStorage.setItem('vocabiUserProfile', JSON.stringify(updatedProfile));
+
+    // Background database sync
+    syncGameCompletionToDatabase(updatedProfile.gamesCompleted, updatedProfile.level);
+  };
+
+  const syncGameCompletionToDatabase = async (gamesCompleted, level) => {
     try {
       await supabase
         .from('user_profiles')
         .update({ 
-          games_completed: updatedProfile.gamesCompleted,
-          level: updatedProfile.level,
+          games_completed: gamesCompleted,
+          level: level,
           updated_at: new Date().toISOString() 
         })
         .eq('device_id', getDeviceId());
     } catch (error) {
-      console.error('Error updating games completed:', error);
+      console.error('Error syncing game completion to database:', error);
     }
-
-    setUserProfile(updatedProfile);
-    localStorage.setItem('vocabiUserProfile', JSON.stringify(updatedProfile));
   };
 
-  const updatePlaytime = async (minutes) => {
+  const updatePlaytime = (minutes) => {
     if (!userProfile) return;
     
     const updatedProfile = {
@@ -287,23 +309,28 @@ export const UserProfileProvider = ({ children }) => {
       totalPlaytime: userProfile.totalPlaytime + minutes
     };
 
+    setUserProfile(updatedProfile);
+    localStorage.setItem('vocabiUserProfile', JSON.stringify(updatedProfile));
+
+    // Background sync
+    syncPlaytimeToDatabase(updatedProfile.totalPlaytime);
+  };
+
+  const syncPlaytimeToDatabase = async (totalPlaytime) => {
     try {
       await supabase
         .from('user_profiles')
         .update({ 
-          total_playtime: updatedProfile.totalPlaytime, 
+          total_playtime: totalPlaytime, 
           updated_at: new Date().toISOString() 
         })
         .eq('device_id', getDeviceId());
     } catch (error) {
-      console.error('Error updating playtime:', error);
+      console.error('Error syncing playtime to database:', error);
     }
-
-    setUserProfile(updatedProfile);
-    localStorage.setItem('vocabiUserProfile', JSON.stringify(updatedProfile));
   };
 
-  const addAchievement = async (achievement) => {
+  const addAchievement = (achievement) => {
     if (!userProfile) return;
     
     const achievements = userProfile.achievements || [];
@@ -314,20 +341,25 @@ export const UserProfileProvider = ({ children }) => {
       achievements: [...achievements, achievement]
     };
 
+    setUserProfile(updatedProfile);
+    localStorage.setItem('vocabiUserProfile', JSON.stringify(updatedProfile));
+
+    // Background sync
+    syncAchievementsToDatabase(updatedProfile.achievements);
+  };
+
+  const syncAchievementsToDatabase = async (achievements) => {
     try {
       await supabase
         .from('user_profiles')
         .update({ 
-          achievements: updatedProfile.achievements, 
+          achievements: achievements, 
           updated_at: new Date().toISOString() 
         })
         .eq('device_id', getDeviceId());
     } catch (error) {
-      console.error('Error adding achievement:', error);
+      console.error('Error syncing achievements to database:', error);
     }
-
-    setUserProfile(updatedProfile);
-    localStorage.setItem('vocabiUserProfile', JSON.stringify(updatedProfile));
   };
 
   const resetProfile = async () => {

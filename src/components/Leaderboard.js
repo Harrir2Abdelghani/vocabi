@@ -14,6 +14,16 @@ const Leaderboard = ({ isOpen, onClose }) => {
     }
   }, [isOpen]);
 
+  // Auto-refresh leaderboard every 5 seconds when open
+  useEffect(() => {
+    if (isOpen) {
+      const interval = setInterval(() => {
+        fetchLeaderboard();
+      }, 5000);
+      return () => clearInterval(interval);
+    }
+  }, [isOpen]);
+
   const fetchLeaderboard = async () => {
     try {
       setLoading(true);

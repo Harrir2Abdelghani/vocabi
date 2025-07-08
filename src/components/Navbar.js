@@ -358,14 +358,17 @@ const Navbar = () => {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.8, delay: 0.3 }}
                   className="hidden md:flex items-center space-x-2"
-                  key={`${userProfile.score}-${calculateLevel(userProfile.gamesCompleted)}-${userProfile.gamesCompleted}`} // Force re-render on updates
                 >
                   {/* Score */}
                   <motion.div
                     className="flex items-center space-x-1 bg-white/10 backdrop-blur-sm rounded-full px-3 py-1 border border-white/20"
                     whileHover={{ scale: 1.05, y: -2 }}
-                    animate={{ scale: [1, 1.1, 1] }}
-                    transition={{ duration: 0.5 }}
+                    key={`score-${userProfile.score}`}
+                    animate={{ 
+                      scale: [1, 1.2, 1],
+                      backgroundColor: ['rgba(255,255,255,0.1)', 'rgba(34,197,94,0.3)', 'rgba(255,255,255,0.1)']
+                    }}
+                    transition={{ duration: 0.6 }}
                   >
                     <motion.div
                       animate={{ rotate: [0, 360] }}
@@ -375,11 +378,13 @@ const Navbar = () => {
                     </motion.div>
                     <motion.span 
                       className="font-black text-white text-xs"
-                      key={userProfile.score}
-                      animate={{ scale: [1, 1.2, 1] }}
-                      transition={{ duration: 0.3 }}
+                      animate={{ 
+                        scale: [1, 1.3, 1],
+                        color: ['#ffffff', '#22c55e', '#ffffff']
+                      }}
+                      transition={{ duration: 0.5 }}
                     >
-                      {userProfile.score}
+                      {userProfile.score.toLocaleString()}
                     </motion.span>
                   </motion.div>
 
@@ -387,13 +392,21 @@ const Navbar = () => {
                   <motion.div
                     className="flex items-center space-x-1 bg-white/10 backdrop-blur-sm rounded-full px-3 py-1 border border-white/20"
                     whileHover={{ scale: 1.05, y: -2 }}
+                    key={`level-${calculateLevel(userProfile.gamesCompleted)}`}
+                    animate={{ 
+                      scale: [1, 1.15, 1],
+                      backgroundColor: ['rgba(255,255,255,0.1)', 'rgba(59,130,246,0.3)', 'rgba(255,255,255,0.1)']
+                    }}
+                    transition={{ duration: 0.6, delay: 0.1 }}
                   >
                     <Star className="w-3 h-3 text-blue-400" />
                     <motion.span 
                       className="font-black text-white text-xs"
-                      key={calculateLevel(userProfile.gamesCompleted)}
-                      animate={{ scale: [1, 1.2, 1] }}
-                      transition={{ duration: 0.3 }}
+                      animate={{ 
+                        scale: [1, 1.3, 1],
+                        color: ['#ffffff', '#3b82f6', '#ffffff']
+                      }}
+                      transition={{ duration: 0.5 }}
                     >
                       {calculateLevel(userProfile.gamesCompleted)}
                     </motion.span>
@@ -403,13 +416,21 @@ const Navbar = () => {
                   <motion.div
                     className="flex items-center space-x-1 bg-white/10 backdrop-blur-sm rounded-full px-3 py-1 border border-white/20"
                     whileHover={{ scale: 1.05, y: -2 }}
+                    key={`games-${userProfile.gamesCompleted}`}
+                    animate={{ 
+                      scale: [1, 1.15, 1],
+                      backgroundColor: ['rgba(255,255,255,0.1)', 'rgba(16,185,129,0.3)', 'rgba(255,255,255,0.1)']
+                    }}
+                    transition={{ duration: 0.6, delay: 0.2 }}
                   >
                     <Award className="w-3 h-3 text-green-400" />
                     <motion.span 
                       className="font-black text-white text-xs"
-                      key={userProfile.gamesCompleted}
-                      animate={{ scale: [1, 1.2, 1] }}
-                      transition={{ duration: 0.3 }}
+                      animate={{ 
+                        scale: [1, 1.3, 1],
+                        color: ['#ffffff', '#10b981', '#ffffff']
+                      }}
+                      transition={{ duration: 0.5 }}
                     >
                       {userProfile.gamesCompleted}
                     </motion.span>
@@ -491,13 +512,16 @@ const Navbar = () => {
                             <motion.div
                               className="bg-gradient-to-br from-yellow-500/20 to-orange-500/20 rounded-xl p-3 text-center border border-white/10"
                               whileHover={{ scale: 1.05 }}
-                              key={userProfile.score}
-                              animate={{ scale: [1, 1.02, 1] }}
-                              transition={{ duration: 0.5 }}
+                              key={`profile-score-${userProfile.score}`}
+                              animate={{ 
+                                scale: [1, 1.1, 1],
+                                backgroundColor: ['rgba(234,179,8,0.2)', 'rgba(234,179,8,0.4)', 'rgba(234,179,8,0.2)']
+                              }}
+                              transition={{ duration: 0.8 }}
                             >
                               <div className="text-lg mb-1">🏆</div>
                               <div className={`font-black text-sm ${getScoreColor(userProfile.score)}`}>
-                                {userProfile.score}
+                                {userProfile.score.toLocaleString()}
                               </div>
                               <div className="text-xs text-white/60 font-bold">POINTS</div>
                             </motion.div>
@@ -505,9 +529,12 @@ const Navbar = () => {
                             <motion.div
                               className="bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-xl p-3 text-center border border-white/10"
                               whileHover={{ scale: 1.05 }}
-                              key={calculateLevel(userProfile.gamesCompleted)}
-                              animate={{ scale: [1, 1.02, 1] }}
-                              transition={{ duration: 0.5 }}
+                              key={`profile-level-${calculateLevel(userProfile.gamesCompleted)}`}
+                              animate={{ 
+                                scale: [1, 1.1, 1],
+                                backgroundColor: ['rgba(59,130,246,0.2)', 'rgba(59,130,246,0.4)', 'rgba(59,130,246,0.2)']
+                              }}
+                              transition={{ duration: 0.8, delay: 0.1 }}
                             >
                               <div className="text-lg mb-1">⭐</div>
                               <div className="font-black text-sm text-blue-400">
@@ -519,9 +546,12 @@ const Navbar = () => {
                             <motion.div
                               className="bg-gradient-to-br from-green-500/20 to-teal-500/20 rounded-xl p-3 text-center border border-white/10"
                               whileHover={{ scale: 1.05 }}
-                              key={userProfile.gamesCompleted}
-                              animate={{ scale: [1, 1.02, 1] }}
-                              transition={{ duration: 0.5 }}
+                              key={`profile-games-${userProfile.gamesCompleted}`}
+                              animate={{ 
+                                scale: [1, 1.1, 1],
+                                backgroundColor: ['rgba(16,185,129,0.2)', 'rgba(16,185,129,0.4)', 'rgba(16,185,129,0.2)']
+                              }}
+                              transition={{ duration: 0.8, delay: 0.2 }}
                             >
                               <div className="text-lg mb-1">🎮</div>
                               <div className="font-black text-sm text-green-400">
@@ -647,6 +677,7 @@ const Navbar = () => {
       <Leaderboard 
         isOpen={showLeaderboard} 
         onClose={() => setShowLeaderboard(false)} 
+        key={userProfile?.score} // Force refresh when score changes
       />
 
       {/* Spacer */}
