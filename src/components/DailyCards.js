@@ -15,7 +15,7 @@ const GameCard = ({ route, index, title, description, emoji, color }) => (
     className="group"
   >
     <Link to={route}>
-      <div className={`relative rounded-3xl overflow-hidden h-80 w-64 shadow-xl ${color} transition-all duration-300`}>
+      <div className={`relative rounded-3xl overflow-hidden h-96 w-72 shadow-xl ${color} transition-all duration-300`}>
         
         {/* Game number */}
         <div className="absolute top-4 left-4 bg-white/90 rounded-full w-8 h-8 flex items-center justify-center shadow-lg z-30">
@@ -32,7 +32,7 @@ const GameCard = ({ route, index, title, description, emoji, color }) => (
           <motion.img
             src={innerImage}
             alt="Daily Activities Game"
-            className="w-48 h-56 object-cover rounded-2xl shadow-lg"
+            className="w-60 h-78 object-cover rounded-2xl "
             whileHover={{ scale: 1.1 }}
             transition={{ duration: 0.3 }}
           />

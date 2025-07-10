@@ -116,8 +116,8 @@ const Navbar = () => {
         transition={{ duration: 0.8, ease: [0.6, -0.05, 0.01, 0.99] }}
         className={`fixed w-full z-50 top-0 transition-all duration-700 ${
           scrolled 
-            ? 'bg-white/5 backdrop-blur-2xl border-b border-white/10 shadow-2xl' 
-            : 'bg-gradient-to-r from-indigo-600/20 via-purple-600/20 to-pink-600/20 backdrop-blur-xl'
+            ? 'bg-gradient-to-r from-indigo-600/20 via-purple-600/20 to-pink-600/20 backdrop-blur-xl' 
+            : 'bg-gradient-to-r from-red-600/20 via-red-600/20 to-pink-600/20 backdrop-blur-xl'
         }`}
       >
         {/* Animated Particles Background */}
@@ -149,7 +149,7 @@ const Navbar = () => {
             
             {/* Logo Section - Enhanced */}
             <motion.div
-              className="flex items-center space-x-3"
+              className="flex items-center -space-x-2"
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
@@ -160,7 +160,7 @@ const Navbar = () => {
                 whileTap={{ scale: 0.95 }}
               >
                 <motion.div
-                  className="w-10 h-10 bg-gradient-to-br from-yellow-400 via-orange-500 to-red-500 rounded-xl flex items-center justify-center shadow-lg border border-white/20"
+                  className=" rounded-xl flex items-center justify-center"
                   animate={{
                     rotate: [0, 360],
                     scale: [1, 1.05, 1],
@@ -170,7 +170,11 @@ const Navbar = () => {
                     scale: { duration: 2, repeat: Infinity }
                   }}
                 >
-                  <span className="text-lg font-bold text-white">V</span>
+                  <img
+                    src={logo} 
+                    alt="Logo"
+                    className="w-20 h-20 object-contain"
+                  />
                 </motion.div>
                 
                 {/* Floating sparkles */}
