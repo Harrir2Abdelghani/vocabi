@@ -30,18 +30,7 @@ const Hero = () => {
           <div className="flex-1 text-center lg:text-left space-y-8">
             
             {/* Logo */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="flex justify-center lg:justify-start"
-            >
-              <img
-                src={cloud1}
-                className="h-16 w-16 object-cover rounded-2xl shadow-lg"
-                alt="Super Vocab"
-              />
-            </motion.div>
+            
 
             {/* User Welcome (if logged in) */}
             {userProfile && (
@@ -87,18 +76,11 @@ const Hero = () => {
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-full font-semibold text-lg shadow-lg hover:shadow-xl transition-shadow duration-200"
+                  className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 py-3 rounded-full font-semibold text-lg shadow-lg hover:shadow-xl transition-shadow duration-200"
                 >
                   Start Learning
                 </motion.button>
               </a>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="border-2 border-gray-300 text-gray-700 px-8 py-4 rounded-full font-semibold text-lg hover:border-gray-400 transition-colors duration-200"
-              >
-                Learn More
-              </motion.button>
             </motion.div>
           </div>
 
@@ -112,7 +94,7 @@ const Hero = () => {
             <div className="relative">
               <img
                 src={hero}
-                className="w-full h-auto rounded-3xl shadow-2xl"
+                className="w-full h-auto "
                 alt="Learning Experience"
               />
               

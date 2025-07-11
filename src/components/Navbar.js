@@ -212,7 +212,7 @@ const Navbar = () => {
                   repeat: Infinity
                 }}
               >
-                <h1 className="text-2xl font-black bg-gradient-to-r from-white via-yellow-200 to-white bg-clip-text text-transparent">
+                <h1 className="text-2xl font-black bg-gradient-to-r from-white via-purple-600 to-white bg-clip-text text-transparent">
                   VOCABI
                 </h1>
                 <motion.div
@@ -242,7 +242,7 @@ const Navbar = () => {
                 whileTap={{ scale: 0.95 }}
               >
                 <div className="flex items-center space-x-2 px-4 py-2 rounded-xl text-white/90 hover:text-white transition-all duration-300 hover:bg-white/10 backdrop-blur-sm">
-                  <Home className="w-4 h-4" />
+                  <Home className="w-4 h-4 text-black" />
                   <span className="font-bold text-sm">Home</span>
                 </div>
               </motion.a>
@@ -255,7 +255,7 @@ const Navbar = () => {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  <Gamepad2 className="w-4 h-4" />
+                  <Gamepad2 className="w-4 h-4 text-black" />
                   <span className="font-bold text-sm">Games</span>
                   <motion.div
                     animate={{ rotate: showGamesMenu ? 180 : 0 }}
@@ -347,7 +347,7 @@ const Navbar = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <Crown className="w-4 h-4" />
+                <Crown className="w-4 h-4 text-black" />
                 <span className="font-bold text-sm">Leaderboard</span>
               </motion.button>
             </div>
