@@ -320,7 +320,7 @@ const DailyRoutineQuiz = () => {
                       showResult ? 'cursor-not-allowed' : 'cursor-pointer'
                     }`}
                   >
-                    <div className="flex items-center justify-center">
+                    <div className="flex items-center justify-center text-black">
                       {option}
                       {showResult && index === selectedAnswer && index === questions[currentQuestion].correct && (
                         <CheckCircle className="w-5 h-5 ml-2 text-white" />
@@ -330,7 +330,8 @@ const DailyRoutineQuiz = () => {
                 ))}
               </div>
             </div>
-            <div className="w-full fixed bottom-4 left-0 flex justify-between px-4">
+          </div>
+          <div className="w-full fixed bottom-4 left-0 flex justify-between px-4">
               <button
                 className="py-2 px-4 bg-red-500/80 backdrop-blur-sm text-white rounded-lg shadow-lg hover:bg-red-600/80 border border-white/20"
                 onClick={() => (window.location.href = "/daily2")}
@@ -338,7 +339,6 @@ const DailyRoutineQuiz = () => {
                 ⬅ Previous
               </button>
             </div>
-          </div>
         </div>
       </div>
     );

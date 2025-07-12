@@ -359,7 +359,7 @@ export const GameWrapper = ({
             
             {/* Hearts */}
             <div className="flex items-center space-x-2">
-              <span className="text-white font-bold text-sm">Lives:</span>
+              <span className="text-white font-bold text-sm">Tries:</span>
               <div className="flex space-x-1">
                 {[...Array(maxHearts)].map((_, i) => (
                   <motion.div
