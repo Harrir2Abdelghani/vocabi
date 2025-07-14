@@ -156,7 +156,7 @@ const DayGame = () => {
     }, [gameProps.timeLeft])
 
     return (
-      <div ref={containerRef} className="-mt-4 -mb-10 flex flex-col items-center justify-center p-4 relative">
+      <div ref={containerRef} className=" flex flex-col items-center justify-center p-4 ">
         <div className="bg-white/10 backdrop-blur-xl rounded-xl shadow-2xl p-8 max-w-md w-full z-10 border border-white/20">
           {availableDays.length > 0 && !localGameEnded ? (
             <>
@@ -220,10 +220,6 @@ const DayGame = () => {
                   <span className="font-bold">{finalScore}</span>
                 </div>
                 <div className="flex justify-between items-center text-white">
-                  <span>Hearts Left:</span>
-                  <span className="font-bold">{finalHearts}</span>
-                </div>
-                <div className="flex justify-between items-center text-white">
                   <span>Time Left:</span>
                   <span className="font-bold">{formatTime(finalTime)}</span>
                 </div>
@@ -247,7 +243,7 @@ const DayGame = () => {
                 </div>
                 <div className="flex justify-between items-center text-white">
                   <span>Hearts Left:</span>
-                  <span className="font-bold">{finalHearts}</span>
+                  <span className="font-bold">0</span>
                 </div>
                 <div className="flex justify-between items-center text-white">
                   <span>Time Left:</span>
