@@ -152,7 +152,7 @@ const FamilyMemberQuiz = () => {
     if (localGameEnded) {
       // Show our own end screen
       return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-blue-100 to-blue-300 p-6">
+        <div className="flex flex-col -mt-20 items-center justify-center min-h-screen bg-gradient-to-r from-blue-100 to-blue-300 p-6">
           {playerActuallyWon && <Confetti width={window.innerWidth} height={window.innerHeight - 50} />}
           <div className="bg-white/10 backdrop-blur-xl rounded-xl shadow-2xl p-8 max-w-md w-full z-10 border border-white/20 text-center">
             {playerActuallyWon ? (
@@ -172,10 +172,6 @@ const FamilyMemberQuiz = () => {
               <div className="flex justify-between items-center text-white">
                 <span>Final Score:</span>
                 <span className="font-bold">{finalScore}</span>
-              </div>
-              <div className="flex justify-between items-center text-white">
-                <span>Hearts Left:</span>
-                <span className="font-bold">{finalHearts}</span>
               </div>
               <div className="flex justify-between items-center text-white">
                 <span>Time Left:</span>
@@ -204,9 +200,9 @@ const FamilyMemberQuiz = () => {
 
     // Game content when not ended
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-blue-100 to-blue-300 p-6">
+      <div className="flex -mt-20 flex-col items-center justify-center min-h-screen bg-gradient-to-r from-blue-100 to-blue-300 p-6">
         <div className="flex flex-col items-center bg-white/10 backdrop-blur-xl p-10 rounded-2xl shadow-xl max-w-lg w-full mx-4 text-center border border-white/20">
-          <h1 className="text-3xl font-bold mb-6 text-white">Guess the family member!</h1>
+          <h1 className="text-3xl font-bold mb-2 -mt-6 text-black">Guess the family member!</h1>
           <div className="w-full text-center">
             <img
               src={questions[currentQuestion].image || "/placeholder.svg"}

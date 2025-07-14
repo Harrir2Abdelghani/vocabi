@@ -116,7 +116,7 @@ const FamilySpellingGame = () => {
     if (localGameEnded) {
       // Show our own end screen
       return (
-        <div className="min-h-screen flex flex-col items-center justify-center bg-pink-100 p-4">
+        <div className="min-h-screen -mt-20 flex flex-col items-center justify-center bg-pink-100 p-4">
           <div className="bg-white/10 backdrop-blur-xl rounded-xl shadow-2xl p-8 max-w-md w-full z-10 border border-white/20 text-center">
             {playerActuallyWon ? (
               <>
@@ -137,10 +137,6 @@ const FamilySpellingGame = () => {
                 <span className="font-bold">{finalScore}</span>
               </div>
               <div className="flex justify-between items-center text-white">
-                <span>Hearts Left:</span>
-                <span className="font-bold">{finalHearts}</span>
-              </div>
-              <div className="flex justify-between items-center text-white">
                 <span>Time Left:</span>
                 <span className="font-bold">{formatTime(finalTime)}</span>
               </div>
@@ -159,7 +155,7 @@ const FamilySpellingGame = () => {
     }
 
     return (
-      <div className="min-h-screen flex flex-col items-center bg-pink-100 p-2">
+      <div className="min-h-screen -mt-28 flex flex-col items-center bg-pink-100 p-2">
         <h1 className="text-xl font-bold text-pink-600 mt-20 mb-1">Can you guess the missing letters ?</h1>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
           {familyMembers.map((member, memberIndex) => {

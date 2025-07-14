@@ -188,11 +188,11 @@ const FamilyTreeGame = () => {
 
     return (
       <DndProvider backend={HTML5Backend}>
-        <div className="relative w-screen h-screen overflow-hidden flex flex-col items-center justify-center bg-pink-200">
+        <div className="relative w-screen -mt-20 h-screen overflow-hidden flex flex-col items-center justify-center bg-pink-200">
           {/* Main game content or end-game modal */}
           {localGameEnded ? (
             // End-game modal, centered
-            <div className="flex flex-col items-center justify-center w-full h-full p-4">
+            <div className="flex flex-col  items-center justify-center w-full h-full p-4">
               <div className="bg-white/10 backdrop-blur-xl rounded-xl shadow-2xl p-8 max-w-md w-full z-10 border border-white/20 text-white text-center">
                 {playerActuallyWon ? (
                   <>
