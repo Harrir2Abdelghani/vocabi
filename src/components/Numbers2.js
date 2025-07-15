@@ -161,7 +161,7 @@ const NumberMatchQuiz = () => {
             <div className="w-full flex justify-between">
               <button
                 className="py-2 px-4 bg-red-500/80 backdrop-blur-sm text-white rounded-lg shadow-lg hover:bg-red-600/80 border border-white/20"
-                onClick={() => (window.location.href = "/numberswarmup")}
+                onClick={() => (window.location.href = "/")}
               >
                 Home
               </button>
