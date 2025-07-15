@@ -10,16 +10,16 @@ const AvatarSelectionModal = ({ isOpen, onClose, onComplete }) => {
 
   const avatars = {
     boy: [
-      { id: 'boy1', emoji: '👦', name: 'Alex', color: 'bg-blue-400' },
-      { id: 'boy2', emoji: '🧒', name: 'Sam', color: 'bg-green-400' },
-      { id: 'boy3', emoji: '👨‍🎓', name: 'Max', color: 'bg-purple-400' },
-      { id: 'boy4', emoji: '🧑‍🚀', name: 'Leo', color: 'bg-orange-400' }
+      { id: 'boy1', emoji: '👦', name: '', color: 'bg-blue-400' },
+      { id: 'boy2', emoji: '🧒', name: '', color: 'bg-green-400' },
+      { id: 'boy3', emoji: '👨‍🎓', name: '', color: 'bg-purple-400' },
+      { id: 'boy4', emoji: '🧑‍🚀', name: '', color: 'bg-orange-400' }
     ],
     girl: [
-      { id: 'girl1', emoji: '👧', name: 'Emma', color: 'bg-pink-400' },
-      { id: 'girl2', emoji: '👩‍🎓', name: 'Lily', color: 'bg-rose-400' },
-      { id: 'girl3', emoji: '👸', name: 'Sofia', color: 'bg-purple-400' },
-      { id: 'girl4', emoji: '🧚‍♀️', name: 'Maya', color: 'bg-yellow-400' }
+      { id: 'girl1', emoji: '👧', name: '', color: 'bg-pink-400' },
+      { id: 'girl2', emoji: '👩‍🎓', name: '', color: 'bg-rose-400' },
+      { id: 'girl3', emoji: '👸', name: '', color: 'bg-purple-400' },
+      { id: 'girl4', emoji: '🧚‍♀️', name: '', color: 'bg-yellow-400' }
     ]
   };
 
