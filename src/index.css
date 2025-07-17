@@ -2,9 +2,106 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  @apply font-sans bg-gradient-to-br from-primary-light via-accent-light to-info-light min-h-screen text-gray-800 transition-colors duration-300;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  @apply font-heading;
+}
+::selection {
+  background: #fbc2eb;
+  color: #5f2eea;
+}
+
+@layer utilities {
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  .animate-fade-in {
+    animation: fade-in 0.7s cubic-bezier(0.4, 0, 0.2, 1) both;
+  }
+  @keyframes fade-in-down {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  .animate-fade-in-down {
+    animation: fade-in-down 0.7s cubic-bezier(0.4, 0, 0.2, 1) both;
+  }
+  @keyframes fade-in-up {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  .animate-fade-in-up {
+    animation: fade-in-up 0.7s cubic-bezier(0.4, 0, 0.2, 1) both;
+  }
+  @keyframes fade-in-right {
+    from {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  .animate-fade-in-right {
+    animation: fade-in-right 0.7s cubic-bezier(0.4, 0, 0.2, 1) both;
+  }
+  @keyframes bounce-in {
+    0% {
+      transform: scale(0.8);
+      opacity: 0;
+    }
+    60% {
+      transform: scale(1.05);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  .animate-bounce-in {
+    animation: bounce-in 0.7s cubic-bezier(0.4, 0, 0.2, 1) both;
+  }
+  @keyframes gradient-border {
+    0% {
+      background-position: 0% 50%;
+    }
+    100% {
+      background-position: 100% 50%;
+    }
+  }
+  .animate-gradient-border {
+    animation: gradient-border 4s linear infinite alternate;
+    background-size: 200% 200%;
+  }
+}
 
 /* App.css */
-
 
 /* .App { 
 	height: 100vh; 
@@ -56,8 +153,6 @@
 	border: 2px solid black; 
 	cursor: pointer; 
 }  */
-
-
 
 /* .board { 
 	display: grid; 
@@ -114,113 +209,109 @@
 } */
 
 /* App.css */
-* { 
-	margin: 0; 
-	padding: 0; 
-	box-sizing: border-box; 
-} 
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-.App { 
-	font-family: cursive; 
-	background-color: rgb(255, 255, 255); 
-} 
+.App {
+  font-family: cursive;
+  background-color: rgb(255, 255, 255);
+}
 
 /* CSS for GameBoard component */
-.container { 
-	display: flex; 
-	flex-direction: column; 
-} 
+.container {
+  display: flex;
+  flex-direction: column;
+}
 
-.header { 
-	display: flex; 
-	flex-direction: row; 
-	padding: 10px; 
-	display: flex; 
-	justify-content: center; 
-	align-items: center; 
-} 
+.header {
+  display: flex;
+  flex-direction: row;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-h1 { 
-	align-self: start; 
-	font-size: 2.5rem; 
-	color: rgb(247, 247, 247); 
+h1 {
+  align-self: start;
+  font-size: 2.5rem;
+  color: rgb(247, 247, 247);
+}
 
-} 
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 0.8rem;
+  font-family: cursive;
+  width: 200px;
+  font-size: 1.2rem;
+  font-weight: bolder;
+  border-radius: 0.7rem;
+  border-style: none;
+  background-color: red;
+  color: white;
+  margin-top: 4px;
+  margin-left: 55%;
+}
 
-.button { 
-	display: flex; 
-	align-items: center; 
-	justify-content: center; 
-	padding: 0.5rem 0.8rem; 
-	font-family: cursive; 
-	width: 200px; 
-	font-size: 1.2rem; 
-	font-weight: bolder; 
-	border-radius: 0.7rem; 
-	border-style: none; 
-	background-color: red; 
-	color: white; 
-	margin-top: 4px; 
-	margin-left: 55%; 
-} 
+.button:hover {
+  border: 2px solid black;
+  cursor: pointer;
+}
 
-.button:hover { 
-	border: 2px solid black; 
-	cursor: pointer; 
-} 
+.board {
+  display: grid;
+  margin: auto;
+  margin-top: 3rem;
+  grid-template-columns: repeat(4, 9rem);
+  place-items: center;
+  row-gap: 2rem;
+}
 
-
-
-.board { 
-	display: grid; 
-	margin: auto; 
-	margin-top: 3rem; 
-	grid-template-columns: repeat(4, 9rem); 
-	place-items: center; 
-	row-gap: 2rem; 
-} 
-
-.comments { 
-	padding: 0.25rem 1rem; 
-	background-color: white; 
-	margin: auto; 
-	margin-top: 40px; 
-	text-align: center; 
-	border-radius: 2rem; 
-} 
+.comments {
+  padding: 0.25rem 1rem;
+  background-color: white;
+  margin: auto;
+  margin-top: 40px;
+  text-align: center;
+  border-radius: 2rem;
+}
 
 /* CSS for Card component */
-.face { 
-	height: 6rem; 
-} 
+.face {
+  height: 6rem;
+}
 
-.back { 
-	height: 6rem; 
-	width: 6rem; 
-	background-color: rgb(253, 218, 175); 
-	color: rgb(61, 21, 21); 
-	border: 1px solid black; 
-	border-radius: 50%; 
-} 
+.back {
+  height: 6rem;
+  width: 6rem;
+  background-color: rgb(253, 218, 175);
+  color: rgb(61, 21, 21);
+  border: 1px solid black;
+  border-radius: 50%;
+}
 
-.item .face { 
-	position: absolute; 
-	transform: rotateY(90deg); 
-	transition: all ease-in 0.25s; 
+.item .face {
+  position: absolute;
+  transform: rotateY(90deg);
+  transition: all ease-in 0.25s;
+}
 
-} 
+.toggled .face {
+  transform: rotateY(0deg);
+  transition-delay: 0.25s;
+}
 
-.toggled .face { 
-	transform: rotateY(0deg); 
-	transition-delay: 0.25s; 
-} 
+.item .back {
+  transition: all ease-in 0.25s;
+  transition-delay: 0.25s;
+}
 
-.item .back { 
-	transition: all ease-in 0.25s; 
-	transition-delay: 0.25s; 
-} 
-
-.toggled .back { 
-	transform: rotateY(90deg); 
-	transition-delay: 0s; 
+.toggled .back {
+  transform: rotateY(90deg);
+  transition-delay: 0s;
 }
