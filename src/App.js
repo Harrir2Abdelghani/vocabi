@@ -26,7 +26,7 @@ import AdminDashboard from "./Pages/AdminDashboard";
 import AdminLogin from "./Pages/AdminLogin";
 import AdminProtectedRoute from "./Pages/AdminProtectedRoute";
 import NotFound from "./components/NotFound";
-import ParentPortal from "./Pages/ParentPortal";
+import ParentPanel from "./Pages/ParentPanel";
 
 const AppContent = () => {
   const { isProfileComplete, loading, updateProfile } = useUserProfile();
@@ -92,7 +92,7 @@ const AppContent = () => {
             </AdminProtectedRoute>
           }
         />
-        <Route path="/parents" element={<ParentPortal />} />
+        <Route path="/parent" element={<ParentPanel />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       {/* Remove Footer from the layout */}
