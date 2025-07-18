@@ -25,6 +25,8 @@ import Daily3 from "./components/Daily3";
 import AdminDashboard from "./Pages/AdminDashboard";
 import AdminLogin from "./Pages/AdminLogin";
 import AdminProtectedRoute from "./Pages/AdminProtectedRoute";
+import NotFound from "./components/NotFound";
+import ParentPortal from "./Pages/ParentPortal";
 
 const AppContent = () => {
   const { isProfileComplete, loading, updateProfile } = useUserProfile();
@@ -90,6 +92,8 @@ const AppContent = () => {
             </AdminProtectedRoute>
           }
         />
+        <Route path="/parents" element={<ParentPortal />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
       {/* Remove Footer from the layout */}
     </div>

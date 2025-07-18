@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
 import AdminSidebar from "./AdminSidebar";
+import AdminNavbar from "./AdminNavbar";
 import { Bar, Pie } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -88,6 +89,13 @@ const AdminDashboard = () => {
   const [toast, setToast] = useState(null);
   const [theme, setTheme] = useState(
     localStorage.getItem("vocabiAdminTheme") || "light"
+  );
+  const [gamesPage, setGamesPage] = useState(1);
+  const gamesPerPage = 10;
+  const totalGamesPages = Math.ceil(games.length / gamesPerPage);
+  const paginatedGames = games.slice(
+    (gamesPage - 1) * gamesPerPage,
+    gamesPage * gamesPerPage
   );
 
   useEffect(() => {
@@ -248,54 +256,22 @@ const AdminDashboard = () => {
   );
 
   return (
-    <div
-      className={`flex min-h-screen bg-gradient-to-br from-purple-100 via-pink-100 to-blue-100 ${theme === "dark" ? "dark bg-gray-900" : ""}`}
-    >
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex admin-font">
       <AdminSidebar
         active={activeSection}
         setActive={setActiveSection}
-        onLogout={handleLogout}
         theme={theme}
         setTheme={setTheme}
       />
-      <div className="flex-1 flex flex-col min-h-screen">
-        <div className="flex items-center justify-between px-8 py-4 bg-white/80 dark:bg-gray-800/80 shadow rounded-b-3xl border-b border-white/30 mb-6 animate-fade-in">
-          <h1 className="text-3xl md:text-4xl font-heading font-bold text-primary-dark dark:text-primary-light drop-shadow-lg tracking-wide animate-fade-in-up">
-            Vocabi Admin Dashboard
-          </h1>
-          <div className="flex items-center gap-4">
-            <button
-              onClick={handleRefresh}
-              className="px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-xl shadow-lg hover:from-purple-500 hover:to-blue-500 font-bold transition-all duration-200 flex items-center gap-2"
-              disabled={refreshing || loading}
-            >
-              {refreshing ? "Refreshing..." : "Refresh"}
-              <span className="ml-1">🔄</span>
-            </button>
-            <button
-              onClick={handleLogout}
-              className="px-4 py-2 bg-gradient-to-r from-pink-500 to-purple-500 text-white rounded-xl font-bold shadow-lg hover:from-purple-500 hover:to-pink-500 transition-all duration-200"
-            >
-              Logout
-            </button>
-          </div>
-        </div>
-        <div className="flex-1 p-4 md:p-10 flex flex-col items-center">
+      <div className="flex-1 flex flex-col min-h-screen ml-64">
+        <AdminNavbar onLogout={handleLogout} activeSection={activeSection} />
+        <main className="flex-1 p-8 md:p-12 flex flex-col items-center bg-transparent">
           {toast && <Toast {...toast} onClose={() => setToast(null)} />}
-          <div
-            className="w-full max-w-6xl mx-auto bg-white/70 dark:bg-gray-900/70 rounded-3xl shadow-2xl border-4 border-transparent bg-clip-padding backdrop-blur-lg p-6 md:p-10 animate-fade-in-up relative overflow-hidden"
-            style={{ boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.18)" }}
-          >
-            <div
-              className="absolute -inset-1 rounded-3xl pointer-events-none z-0 animate-gradient-border"
-              style={{
-                background:
-                  "linear-gradient(120deg, #e0c3fc, #fbc2eb, #a1c4fd, #f857a6, #2193b0)",
-                filter: "blur(8px)",
-                opacity: 0.5,
-              }}
-            ></div>
+          <div className="w-full max-w-6xl mx-auto admin-card p-8 md:p-12 relative overflow-hidden">
             <div className="relative z-10">
+              <h1 className="admin-heading text-3xl md:text-4xl mb-10 text-center">
+                Vocabi Admin Dashboard
+              </h1>
               {loading ? (
                 <div className="text-center text-xl text-primary-dark dark:text-primary-light animate-pulse">
                   Loading dashboard data...
@@ -562,7 +538,7 @@ const AdminDashboard = () => {
                     </div>
                   )}
                   {activeSection === "Games" && (
-                    <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+                    <div className="admin-card p-6">
                       <div className="flex items-center justify-between mb-4">
                         <h2 className="text-xl font-semibold text-blue-600 dark:text-blue-300 flex items-center gap-2">
                           Game Sessions <span className="text-xs">🎮</span>
@@ -606,7 +582,7 @@ const AdminDashboard = () => {
                             </tr>
                           </thead>
                           <tbody>
-                            {games.map((game, idx) => (
+                            {paginatedGames.map((game, idx) => (
                               <tr
                                 key={game.id}
                                 className={
@@ -642,6 +618,32 @@ const AdminDashboard = () => {
                             ))}
                           </tbody>
                         </table>
+                      </div>
+                      {/* Pagination Controls */}
+                      <div className="flex justify-center items-center gap-2 mt-6">
+                        <button
+                          className="admin-btn px-4 py-2"
+                          onClick={() =>
+                            setGamesPage((p) => Math.max(1, p - 1))
+                          }
+                          disabled={gamesPage === 1}
+                        >
+                          Previous
+                        </button>
+                        <span className="font-semibold text-gray-700 dark:text-gray-200">
+                          Page {gamesPage} of {totalGamesPages}
+                        </span>
+                        <button
+                          className="admin-btn px-4 py-2"
+                          onClick={() =>
+                            setGamesPage((p) =>
+                              Math.min(totalGamesPages, p + 1)
+                            )
+                          }
+                          disabled={gamesPage === totalGamesPages}
+                        >
+                          Next
+                        </button>
                       </div>
                     </div>
                   )}
@@ -721,7 +723,7 @@ const AdminDashboard = () => {
               )}
             </div>
           </div>
-        </div>
+        </main>
       </div>
     </div>
   );

@@ -1,153 +1,879 @@
 .App {
-	text-align: center;
-  }
-  
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
   .App-logo {
-	height: 40vmin;
-	pointer-events: none;
+    animation: App-logo-spin infinite 20s linear;
   }
-  
-  @media (prefers-reduced-motion: no-preference) {
-	.App-logo {
-	  animation: App-logo-spin infinite 20s linear;
-	}
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
   }
-  
-  .App-header {
-	background-color: #282c34;
-	min-height: 100vh;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	font-size: calc(10px + 2vmin);
-	color: white;
+  to {
+    transform: rotate(360deg);
   }
-  
-  .App-link {
-	color: #61dafb;
+}
+
+/* App.css */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.App {
+  height: 100vh;
+  width: 100vw;
+  font-family: cursive;
+  background-color: rgb(255, 255, 255);
+}
+
+/* CSS for GameBoard component */
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+h1 {
+  align-self: start;
+  font-size: 2.5rem;
+  color: rgb(247, 247, 247);
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 0.8rem;
+  font-family: cursive;
+  width: 200px;
+  font-size: 1.2rem;
+  font-weight: bolder;
+  border-radius: 0.7rem;
+  border-style: none;
+  background-color: red;
+  color: white;
+  margin-top: 4px;
+  margin-left: 55%;
+}
+
+.button:hover {
+  border: 2px solid black;
+  cursor: pointer;
+}
+
+.board {
+  display: grid;
+  margin: auto;
+  margin-top: 3rem;
+  grid-template-columns: repeat(4, 9rem);
+  place-items: center;
+  row-gap: 2rem;
+}
+
+.comments {
+  padding: 0.25rem 1rem;
+  background-color: white;
+  margin: auto;
+  margin-top: 40px;
+  text-align: center;
+  border-radius: 2rem;
+}
+
+/* CSS for Card component */
+.face {
+  height: 6rem;
+}
+
+.back {
+  height: 6rem;
+  width: 6rem;
+  background-color: rgb(253, 218, 175);
+  color: rgb(61, 21, 21);
+  border: 1px solid black;
+  border-radius: 50%;
+}
+
+.item .face {
+  position: absolute;
+  transform: rotateY(90deg);
+  transition: all ease-in 0.25s;
+}
+
+.toggled .face {
+  transform: rotateY(0deg);
+  transition-delay: 0.25s;
+}
+
+.item .back {
+  transition: all ease-in 0.25s;
+  transition-delay: 0.25s;
+}
+
+.toggled .back {
+  transform: rotateY(90deg);
+  transition-delay: 0s;
+}
+
+/* --- NotFound 404 Page Styles --- */
+.notfound-bg {
+  min-height: 60vh;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #f0f4ff 0%, #ffe4f0 50%, #f3e8ff 100%);
+  overflow: hidden;
+}
+.no-scrollbar {
+  overflow: hidden;
+  height: 100vh;
+}
+.notfound-container,
+.notfound-container.no-bg {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem 2rem;
+  border-radius: 2rem;
+  /* background: none; */
+  background: transparent;
+  box-shadow: none;
+  animation: fadein 1s;
+}
+.spin-logo {
+  animation:
+    fadein 1.2s,
+    spin 3s linear infinite;
+}
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
   }
-  
-  @keyframes App-logo-spin {
-	from {
-	  transform: rotate(0deg);
-	}
-	to {
-	  transform: rotate(360deg);
-	}
+  100% {
+    transform: rotate(360deg);
   }
-  
-  /* App.css */
-  * { 
-	  margin: 0; 
-	  padding: 0; 
-	  box-sizing: border-box; 
-  } 
-  
-  .App { 
-	  height: 100vh; 
-	  width: 100vw; 
-	  font-family: cursive; 
-	  background-color: rgb(255, 255, 255); 
-  } 
-  
-  /* CSS for GameBoard component */
-  .container { 
-	  display: flex; 
-	  flex-direction: column; 
-  } 
-  
-  .header { 
-	  display: flex; 
-	  flex-direction: row; 
-	  padding: 10px; 
-	  display: flex; 
-	  justify-content: center; 
-	  align-items: center; 
-  } 
-  
-  h1 { 
-	  align-self: start; 
-	  font-size: 2.5rem; 
-	  color: rgb(247, 247, 247); 
-  
-  } 
-  
-  .button { 
-	  display: flex; 
-	  align-items: center; 
-	  justify-content: center; 
-	  padding: 0.5rem 0.8rem; 
-	  font-family: cursive; 
-	  width: 200px; 
-	  font-size: 1.2rem; 
-	  font-weight: bolder; 
-	  border-radius: 0.7rem; 
-	  border-style: none; 
-	  background-color: red; 
-	  color: white; 
-	  margin-top: 4px; 
-	  margin-left: 55%; 
-  } 
-  
-  .button:hover { 
-	  border: 2px solid black; 
-	  cursor: pointer; 
-  } 
-  
-  
-  
-  .board { 
-	  display: grid; 
-	  margin: auto; 
-	  margin-top: 3rem; 
-	  grid-template-columns: repeat(4, 9rem); 
-	  place-items: center; 
-	  row-gap: 2rem; 
-  } 
-  
-  .comments { 
-	  padding: 0.25rem 1rem; 
-	  background-color: white; 
-	  margin: auto; 
-	  margin-top: 40px; 
-	  text-align: center; 
-	  border-radius: 2rem; 
-  } 
-  
-  /* CSS for Card component */
-  .face { 
-	  height: 6rem; 
-  } 
-  
-  .back { 
-	  height: 6rem; 
-	  width: 6rem; 
-	  background-color: rgb(253, 218, 175); 
-	  color: rgb(61, 21, 21); 
-	  border: 1px solid black; 
-	  border-radius: 50%; 
-  } 
-  
-  .item .face { 
-	  position: absolute; 
-	  transform: rotateY(90deg); 
-	  transition: all ease-in 0.25s; 
-  
-  } 
-  
-  .toggled .face { 
-	  transform: rotateY(0deg); 
-	  transition-delay: 0.25s; 
-  } 
-  
-  .item .back { 
-	  transition: all ease-in 0.25s; 
-	  transition-delay: 0.25s; 
-  } 
-  
-  .toggled .back { 
-	  transform: rotateY(90deg); 
-	  transition-delay: 0s; 
+}
+.vocabi-logo {
+  animation: fadein 1.2s;
+}
+.notfound-404 {
+  font-size: 5rem;
+  font-weight: 900;
+  color: #e11d48;
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.1em;
+  animation: fadein 1.5s;
+}
+.notfound-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #334155;
+  margin-bottom: 1rem;
+  animation: fadein 1.8s;
+}
+.notfound-desc {
+  font-size: 1.1rem;
+  color: #64748b;
+  margin-bottom: 2rem;
+  text-align: center;
+  max-width: 350px;
+  animation: fadein 2s;
+}
+.notfound-btn {
+  padding: 0.75rem 2.5rem;
+  background: #e11d48;
+  color: white;
+  border-radius: 999px;
+  font-weight: bold;
+  font-size: 1.1rem;
+  box-shadow: 0 2px 12px #e11d4844;
+  text-decoration: none;
+  transition:
+    transform 0.2s,
+    background 0.2s;
+  animation: fadein 2.2s;
+}
+.notfound-btn:hover {
+  background: #be185d;
+  transform: scale(1.07);
+}
+@keyframes fadein {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
   }
-  
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --- Parent Portal Styles --- */
+.parent-portal-bg {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f0f4ff 0%, #ffe4f0 50%, #f3e8ff 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.parent-portal-container {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 1.5rem;
+  box-shadow: 0 8px 32px #e0e0e0cc;
+  padding: 2.5rem 2rem;
+  max-width: 420px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.parent-portal-tabs {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  width: 100%;
+  justify-content: center;
+}
+.parent-portal-tab {
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #64748b;
+  padding: 0.5rem 1.5rem;
+  border-radius: 999px;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    color 0.2s;
+}
+.parent-portal-tab.active,
+.parent-portal-tab:hover {
+  background: #e11d48;
+  color: #fff;
+}
+.parent-portal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+.parent-portal-form input {
+  padding: 0.75rem 1rem;
+  border-radius: 0.7rem;
+  border: 1px solid #cbd5e1;
+  font-size: 1rem;
+  outline: none;
+  transition: border 0.2s;
+}
+.parent-portal-form input:focus {
+  border: 1.5px solid #e11d48;
+}
+.parent-portal-btn {
+  padding: 0.75rem 2rem;
+  background: #e11d48;
+  color: white;
+  border-radius: 999px;
+  font-weight: bold;
+  font-size: 1.1rem;
+  box-shadow: 0 2px 12px #e11d4844;
+  border: none;
+  cursor: pointer;
+  transition:
+    transform 0.2s,
+    background 0.2s;
+  margin-top: 0.5rem;
+}
+.parent-portal-btn:hover {
+  background: #be185d;
+  transform: scale(1.05);
+}
+.parent-portal-error {
+  color: #e11d48;
+  background: #ffe4e6;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.98rem;
+  text-align: center;
+}
+.parent-portal-dashboard {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+.parent-portal-kids {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: 1rem;
+}
+.parent-portal-kid-card {
+  background: #f8fafc;
+  border-radius: 1rem;
+  box-shadow: 0 2px 8px #e0e0e055;
+  padding: 1.2rem 1rem;
+}
+.parent-portal-kid-card h3 {
+  margin-bottom: 0.5rem;
+  color: #e11d48;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+.parent-portal-progress-bar {
+  background: #e0e7ef;
+  border-radius: 999px;
+  height: 1.1rem;
+  width: 100%;
+  margin-bottom: 0.7rem;
+  overflow: hidden;
+}
+.parent-portal-progress {
+  background: linear-gradient(90deg, #e11d48 60%, #f472b6 100%);
+  height: 100%;
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 0.7rem;
+  border-radius: 999px;
+  transition: width 0.7s cubic-bezier(0.4, 2, 0.6, 1);
+}
+.parent-portal-activities {
+  font-size: 0.98rem;
+  color: #334155;
+}
+.parent-portal-activities ul {
+  margin: 0.3rem 0 0 0;
+  padding: 0 0 0 1.1rem;
+}
+@media (max-width: 600px) {
+  .parent-portal-container {
+    padding: 1.2rem 0.5rem;
+    max-width: 98vw;
+  }
+  .parent-portal-kid-card {
+    padding: 0.8rem 0.5rem;
+  }
+}
+
+/* --- Parent Portal Enhanced Styles --- */
+.parent-portal-auth-bg {
+  background: linear-gradient(135deg, #f0f4ff 0%, #ffe4f0 50%, #f3e8ff 100%);
+}
+.parent-portal-auth-card {
+  max-width: 430px;
+  margin: 2rem auto;
+  border-radius: 2rem;
+  box-shadow: 0 8px 32px #e0e0e0cc;
+  background: rgba(255, 255, 255, 0.98);
+  padding: 2.5rem 2rem 2rem 2rem;
+  position: relative;
+}
+.parent-portal-auth-illustration {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  animation: fadein 1.2s;
+}
+.parent-portal-form-card {
+  background: #f8fafc;
+  border-radius: 1.2rem;
+  box-shadow: 0 2px 12px #e0e0e055;
+  padding: 1.5rem 1rem 1rem 1rem;
+  margin-bottom: 1rem;
+}
+.parent-portal-input-group {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-radius: 0.7rem;
+  border: 1.5px solid #e5e7eb;
+  padding: 0.2rem 0.7rem;
+  margin-bottom: 0.7rem;
+  transition: border 0.2s;
+  position: relative;
+}
+.parent-portal-input-group:focus-within {
+  border: 1.5px solid #e11d48;
+  box-shadow: 0 0 0 2px #fbcfe8;
+}
+.parent-portal-input-icon {
+  color: #e11d48;
+  font-size: 1.2rem;
+  margin-right: 0.5rem;
+  cursor: pointer;
+}
+.parent-portal-eye {
+  margin-left: auto;
+  margin-right: 0;
+  cursor: pointer;
+  font-size: 1.1rem;
+  color: #64748b;
+  position: absolute;
+  right: 0.7rem;
+}
+.parent-portal-input-group input {
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 1rem;
+  flex: 1;
+  padding: 0.7rem 0.2rem;
+}
+.parent-portal-form input:focus {
+  background: #fdf2f8;
+}
+.parent-portal-form input::placeholder {
+  color: #b6b6b6;
+  opacity: 1;
+}
+.parent-portal-dashboard-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  justify-content: space-between;
+  margin-bottom: 1.2rem;
+}
+.parent-portal-dashboard-header h2 {
+  flex: 1;
+  font-size: 1.3rem;
+  color: #e11d48;
+  font-weight: 700;
+  margin: 0;
+}
+.parent-portal-logout {
+  background: #f3f4f6;
+  color: #e11d48;
+  font-size: 1rem;
+  box-shadow: none;
+  border: 1.5px solid #e11d48;
+  margin-left: 1rem;
+  transition:
+    background 0.2s,
+    color 0.2s;
+}
+.parent-portal-logout:hover {
+  background: #e11d48;
+  color: #fff;
+}
+.parent-portal-dashboard-summary {
+  display: flex;
+  gap: 1.2rem;
+  margin-bottom: 1.5rem;
+  width: 100%;
+  justify-content: space-between;
+}
+.parent-portal-summary-card {
+  background: #fff0f6;
+  border-radius: 1rem;
+  box-shadow: 0 2px 8px #e0e0e055;
+  padding: 1rem 0.7rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 90px;
+  flex: 1;
+  gap: 0.3rem;
+}
+.parent-portal-summary-label {
+  font-size: 0.95rem;
+  color: #64748b;
+  font-weight: 500;
+}
+.parent-portal-summary-value {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #e11d48;
+}
+.parent-portal-kid-header {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-bottom: 0.5rem;
+  justify-content: space-between;
+}
+.parent-portal-kid-avatar {
+  background: #fbcfe8;
+  border-radius: 50%;
+  padding: 0.3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.parent-portal-activity-timeline {
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0 0 0;
+}
+.parent-portal-activity-timeline li {
+  display: flex;
+  align-items: center;
+  font-size: 0.98rem;
+  color: #334155;
+  margin-bottom: 0.3rem;
+}
+.parent-portal-activity-date {
+  color: #64748b;
+  font-size: 0.97em;
+  margin-right: 0.2em;
+}
+.parent-portal-add-child {
+  margin-top: 1.2rem;
+  background: #fbcfe8;
+  color: #e11d48;
+  border: 1.5px solid #e11d48;
+  font-size: 1rem;
+  box-shadow: none;
+  transition:
+    background 0.2s,
+    color 0.2s;
+}
+.parent-portal-add-child:hover {
+  background: #e11d48;
+  color: #fff;
+}
+@media (max-width: 600px) {
+  .parent-portal-auth-card {
+    padding: 1.2rem 0.5rem 1rem 0.5rem;
+    max-width: 98vw;
+  }
+  .parent-portal-dashboard-summary {
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+}
+
+/* --- Parent Portal Dashboard Pro Layout --- */
+.parent-portal-dashboard-wrapper {
+  display: flex;
+  min-height: 70vh;
+  width: 100vw;
+  background: linear-gradient(135deg, #f0f4ff 0%, #ffe4f0 50%, #f3e8ff 100%);
+  border-radius: 0;
+  box-shadow: 0 4px 24px #e0e0e0aa;
+  margin: 0;
+  overflow: hidden;
+}
+.parent-portal-sidebar {
+  background: transparent;
+  min-width: 180px;
+  max-width: 220px;
+  padding: 2rem 1rem 1rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.5rem;
+  border-right: 1.5px solid #fbcfe8;
+}
+.parent-portal-sidebar-title {
+  display: none;
+}
+.parent-portal-sidebar-link {
+  color: #e11d48;
+  font-weight: 600;
+  background: none;
+  border: none;
+  font-size: 1rem;
+  padding: 0.5rem 0.7rem;
+  border-radius: 0.7rem;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    color 0.2s;
+}
+.parent-portal-sidebar-link.active,
+.parent-portal-sidebar-link:hover {
+  background: #e11d48;
+  color: #fff;
+}
+.parent-portal-dashboard-main {
+  flex: 1;
+  padding: 2.5rem 2rem 2rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  min-width: 0;
+  width: 100%;
+  max-width: 100vw;
+  background: transparent;
+}
+.parent-portal-dashboard-header-pro {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+.parent-portal-dashboard-header-pro h2 {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #e11d48;
+  margin: 0;
+}
+.parent-portal-dashboard-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+.parent-portal-summary-card {
+  background: #fff;
+  border-radius: 1.2rem;
+  box-shadow: 0 2px 12px #e0e0e055;
+  padding: 1.2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 120px;
+  gap: 0.3rem;
+  transition:
+    box-shadow 0.2s,
+    transform 0.2s;
+}
+.parent-portal-summary-card:hover {
+  box-shadow: 0 6px 24px #e11d4888;
+  transform: translateY(-4px) scale(1.03);
+}
+.parent-portal-kids-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+  width: 100%;
+}
+.parent-portal-kid-card {
+  background: #fff0f6;
+  border-radius: 1.2rem;
+  box-shadow: 0 2px 8px #e0e0e055;
+  padding: 1.5rem 1rem;
+  transition:
+    box-shadow 0.2s,
+    transform 0.2s;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+.parent-portal-kid-card:hover {
+  box-shadow: 0 6px 24px #e11d4888;
+  transform: translateY(-4px) scale(1.03);
+}
+.parent-portal-kid-header {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-bottom: 0.5rem;
+  justify-content: space-between;
+}
+.parent-portal-kid-avatar {
+  background: #fbcfe8;
+  border-radius: 50%;
+  padding: 0.3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.parent-portal-activity-timeline {
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0 0 0;
+}
+.parent-portal-activity-timeline li {
+  display: flex;
+  align-items: center;
+  font-size: 0.98rem;
+  color: #334155;
+  margin-bottom: 0.3rem;
+}
+.parent-portal-activity-date {
+  color: #64748b;
+  font-size: 0.97em;
+  margin-right: 0.2em;
+}
+.parent-portal-add-child {
+  margin-top: 1.2rem;
+  background: #fbcfe8;
+  color: #e11d48;
+  border: 1.5px solid #e11d48;
+  font-size: 1rem;
+  box-shadow: none;
+  transition:
+    background 0.2s,
+    color 0.2s;
+}
+.parent-portal-add-child:hover {
+  background: #e11d48;
+  color: #fff;
+}
+@media (max-width: 900px) {
+  .parent-portal-dashboard-wrapper {
+    flex-direction: column;
+    min-height: unset;
+    width: 100vw;
+    border-radius: 0;
+    margin: 0;
+  }
+  .parent-portal-sidebar {
+    flex-direction: row;
+    min-width: 0;
+    max-width: unset;
+    width: 100%;
+    border-right: none;
+    border-bottom: 1.5px solid #fbcfe8;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem 0.5rem;
+    gap: 1.2rem;
+  }
+  .parent-portal-dashboard-main {
+    padding: 1.2rem 0.5rem 1rem 0.5rem;
+    width: 100vw;
+    max-width: 100vw;
+  }
+}
+@media (max-width: 600px) {
+  .parent-portal-dashboard-header-pro h2 {
+    font-size: 1.2rem;
+  }
+  .parent-portal-dashboard-summary-grid {
+    gap: 0.7rem;
+  }
+  .parent-portal-kids-grid {
+    gap: 0.7rem;
+  }
+}
+
+/* Neon/glassmorphism styles for admin dashboard */
+.neon-border {
+  box-shadow:
+    0 0 16px 2px #22d3ee99,
+    0 0 32px 4px #818cf899;
+}
+.shadow-neon {
+  box-shadow: 0 0 8px 2px #22d3eecc;
+}
+.admin-glass-card {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 2rem;
+  box-shadow:
+    0 8px 32px 0 rgba(31, 38, 135, 0.18),
+    0 0 16px 2px #22d3ee44;
+  border: 2px solid rgba(34, 211, 238, 0.18);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  overflow: hidden;
+}
+.admin-animated-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(120deg, #0f172a 0%, #312e81 50%, #06b6d4 100%);
+  animation: admin-bg-move 12s ease-in-out infinite alternate;
+}
+@keyframes admin-bg-move {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
+}
+
+:root {
+  --admin-primary: #2563eb;
+  --admin-secondary: #0ea5e9;
+  --admin-bg: #f8fafc;
+  --admin-bg-dark: #1e293b;
+  --admin-card: #ffffff;
+  --admin-card-dark: #1e293b;
+  --admin-accent: #06b6d4;
+  --admin-muted: #64748b;
+}
+
+.admin-font {
+  font-family: "Poppins", "Inter", "Roboto", "Segoe UI", Arial, sans-serif;
+}
+
+.admin-heading {
+  font-family: "Poppins", "Inter", "Roboto", "Segoe UI", Arial, sans-serif;
+  font-weight: 800;
+  color: var(--admin-primary);
+  letter-spacing: 0.04em;
+}
+
+.admin-btn {
+  background: linear-gradient(90deg, var(--admin-primary), var(--admin-accent));
+  color: #fff;
+  font-family: "Poppins", "Inter", "Roboto", "Segoe UI", Arial, sans-serif;
+  font-weight: 600;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 8px 0 #2563eb22;
+  transition:
+    background 0.2s,
+    box-shadow 0.2s;
+}
+.admin-btn:hover {
+  background: linear-gradient(90deg, var(--admin-accent), var(--admin-primary));
+  box-shadow: 0 4px 16px 0 #0ea5e922;
+}
+
+.admin-sidebar {
+  background: var(--admin-bg);
+  color: var(--admin-muted);
+  font-family: "Poppins", "Inter", "Roboto", "Segoe UI", Arial, sans-serif;
+}
+.admin-sidebar .active {
+  background: var(--admin-primary);
+  color: #fff;
+}
+
+.admin-card {
+  background: var(--admin-card);
+  color: #1e293b;
+  border-radius: 1.5rem;
+  box-shadow: 0 4px 24px 0 #2563eb11;
+  font-family: "Poppins", "Inter", "Roboto", "Segoe UI", Arial, sans-serif;
+}
+
+body,
+html {
+  font-family: "Poppins", "Inter", "Roboto", "Segoe UI", Arial, sans-serif;
+}
